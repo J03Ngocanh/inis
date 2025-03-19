@@ -5,7 +5,7 @@
 
     $router = new Router();
    // echo "Chuỗi file";
-  //  echo $_SERVER['REQUEST_URI'];
+  //  echo $_SERVER['REQUEST_URI'] 11111;
     $router->dispatch($_SERVER['REQUEST_URI']);
     
 ?>
