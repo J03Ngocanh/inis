@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tạo Mã QR Chuyển Khoản</title>
+    <!-- Thư viện jQuery (không cần thiết cho việc tạo mã QR nhưng có thể dùng cho các tính năng khác) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Thư viện tạo mã QR từ CDN jsdelivr -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  </head>
+  <body>
+    <h1>Chuyển Khoản Ngân Hàng</h1>
+    <p>Sử dụng mã QR dưới đây để thực hiện chuyển khoản.</p>
+
+    <div id="qrcode"></div>
+
+    <script type="text/javascript">
+      // Thông tin chuyển khoản (có thể tùy chỉnh theo yêu cầu ngân hàng hoặc dịch vụ)
+      var transferData = {
+        bankName: "MB bank",
+        accountName: "Nguyen Duc The",
+        accountNumber: "231020031234",
+        amount: "1000000", // Số tiền chuyển khoản
+        note: "Thanh toán dịch vụ",
+      };
+
+      // Dữ liệu mã QR chuyển khoản
+      var qrData = `BANK:${transferData.bankName};ACC:${transferData.accountNumber};NAME:${transferData.accountName};AMT:${transferData.amount};NOTE:${transferData.note}`;
+
+      // Khởi tạo mã QR
+      var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: qrData,
+        width: 256,
+        height: 256,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H,
+      });
+    </script>
+  </body>
+</html>

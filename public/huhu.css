@@ -1,0 +1,307 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.snow-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Không cho phép tương tác với tuyết */
+  z-index: 2; /* Đảm bảo tuyết nằm trên cùng */
+}
+
+.snow {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100vh); /* Rơi đến đáy màn hình */
+  }
+}
+
+.back {
+  display: flex;
+  width: 100%;
+  position: relative;
+  z-index: 1; /* Đảm bảo nằm dưới tuyết */
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 100%;
+  height: 60px;
+  color: black;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  z-index: 1; /* Đảm bảo menu luôn nằm trên cùng */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.logo {
+  position: relative;
+  display: inline-block;
+}
+
+.hat-icon {
+  position: absolute;
+  top: -10px; /* Điều chỉnh để mũ nằm ở vị trí phù hợp */
+  left: 10px; /* Điều chỉnh vị trí theo ý muốn */
+  width: 50px; /* Điều chỉnh kích thước mũ */
+  height: auto;
+}
+
+.duong_dan {
+  display: flex;
+  align-items: center;
+  margin-left: 50px; /* Giảm khoảng cách để logo và duong_dan sát nhau */
+}
+
+/* Đặt vị trí menu con và ẩn nó */
+.duong_dan ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.duong_dan ul li {
+  position: relative;
+}
+
+.duong_dan ul li a {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.duong_dan ul li:hover > a {
+  background-color: #f0f0f0;
+}
+
+.dropdown-menu {
+  display: none; /* Ẩn menu con ban đầu */
+  position: absolute;
+  top: 100%; /* Đặt menu con ngay dưới mục cha */
+  left: 0;
+  background-color: #ffffff;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ddd;
+  z-index: 1000;
+  min-width: 180px;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block; /* Hiển thị menu con khi di chuột vào mục "Sản phẩm" */
+}
+
+.dropdown-menu li {
+  width: 100%;
+}
+
+.dropdown-menu li a {
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f2f2f2; /* Màu nền khi di chuột vào từng mục */
+}
+
+.left {
+  width: 55%;
+  background-color: #bee9b4;
+  height: 680px; /* Điều chỉnh chiều cao nếu cần */
+}
+
+.right {
+  width: 45%;
+  background-color: #e0f7de;
+  height: 680px; /* Điều chỉnh chiều cao nếu cần */
+}
+
+.duong_dan li {
+  display: inline; /* Hiển thị các mục menu trên cùng một dòng */
+  margin-right: 20px; /* Khoảng cách giữa các mục */
+  font-size: 17px;
+  font-family: "Nunito", sans-serif;
+  text-transform: uppercase; /* Chữ in hoa */
+  transition: color 0.3s; /* Hiệu ứng chuyển màu */
+}
+
+.icon-menu span {
+  font-size: 14px;
+
+  color: #333;
+  font-family: "Nunito", sans-serif;
+}
+
+.icon-menu a {
+  text-decoration: none;
+  font-size: 14px;
+
+  color: #007bff;
+  font-family: "Nunito", sans-serif;
+
+}
+.icon-menu a:hover {
+  text-decoration: underline;
+}
+
+menu:hover {
+  background-color: #15512a; /* Đổi màu chữ khi hover */
+  cursor: pointer; /* Thay đổi con trỏ khi hover */
+}
+
+/* Phần ảnh giữa */
+.anh_giua {
+  position: absolute; /* Đặt vị trí của hình ảnh */
+  top: 50%; /* Đặt ở giữa chiều cao */
+  left: 55%; /* Đặt ở giữa chiều rộng */
+  transform: translate(-50%, -50%); /* Di chuyển về giữa chính xác */
+  z-index: 0; /* Đảm bảo nằm dưới menu */
+}
+
+/* Đảm bảo ảnh không vượt quá kích thước màn hình */
+.anh_giua img {
+  width: 270px; /* Chiều rộng tối đa 100% */
+  height: auto; /* Giữ tỉ lệ */
+  border-radius: 10px;
+}
+
+/* Phần ảnh ngang */
+.anh_ngang {
+  position: absolute; /* Đặt vị trí của hình ảnh */
+  top: 30%; /* Đặt ở giữa chiều cao */
+  left: 79%; /* Đặt ở giữa chiều rộng */
+  transform: translate(-50%, -50%); /* Di chuyển về giữa chính xác */
+  z-index: 0; /* Đảm bảo nằm dưới menu */
+}
+
+/* Đảm bảo ảnh không vượt quá kích thước màn hình */
+.anh_ngang img {
+  width: 300px; /* Chiều rộng tối đa 100% */
+  height: auto; /* Giữ tỉ lệ */
+  border-radius: 10px;
+}
+
+.anh_doc {
+  position: absolute; /* Đặt vị trí của hình ảnh */
+  top: 70%; /* Đặt ở giữa chiều cao */
+  left: 75%; /* Đặt ở giữa chiều rộng */
+  transform: translate(-50%, -50%); /* Di chuyển về giữa chính xác */
+  z-index: 0; /* Đảm bảo nằm dưới menu */
+}
+
+/* Đảm bảo ảnh không vượt quá kích thước màn hình */
+.anh_doc img {
+  width: 180px; /* Chiều rộng tối đa 100% */
+  height: auto; /* Giữ tỉ lệ */
+  border-radius: 10px;
+}
+
+.slogan {
+  position: absolute;
+  top: 28%; /* Điều chỉnh vị trí theo chiều cao */
+  left: 50px; /* Vị trí bên trái */
+  font-size: 30px;
+  color: #040404;
+  font-family: "Nunito", sans-serif;
+  max-width: 600px;
+  line-height: 1.5;
+
+}
+
+#shop-now button {
+  position: absolute;
+  top: 80%;
+  left: 55px;
+  z-index: 1; /* Đảm bảo hiển thị trên nền */
+  font-family: "Nunito", sans-serif;
+  background-color: #0b2815;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.login-container {
+  width: 300px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+.login-container input[type="text"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.login-container button:hover {
+  background-color: #45a049;
+}
+.error-message {
+  color: red;
+  margin-top: 7px;
+}
+.remember-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+.remember-container label {
+  font-size: 14px;
+  color: #555;
+}
+.forgot-password {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+}
+.forgot-password:hover {
+  text-decoration: underline;
+}
