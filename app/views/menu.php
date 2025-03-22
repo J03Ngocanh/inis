@@ -146,7 +146,7 @@
                     <ul class="dropdown-menu">
                         <?php While($row=mysqli_fetch_array($loaisp)){ ?>
                             <li style=" text-transform: capitalize; font-size: 15px; padding:1px; margin:1px;">
-                                <a href="/acc/sanpham/sanpham_loai/<?php echo $row['id_loaisp']?>"><?php echo $row['tenloai'];?></a>
+                                <a href="/inis/sanpham/sanpham_loai/<?php echo $row['id_loaisp']?>"><?php echo $row['tenloai'];?></a>
                             </li>
                         <?php } ?>
                     </ul>
@@ -158,7 +158,7 @@
         <!-- Đặt phần tìm kiếm và các icon giỏ hàng vào trong div.icon-menu -->
         <div class="icon-menu">
             <div class="search-bar">
-                <form id="search-form" action="/acc/sanpham/xulytimkiem" method="post">
+                <form id="search-form" action="/inis/sanpham/xulytimkiem" method="post">
                     <input type="text" id="search" name="nd" placeholder="Tìm sản phẩm...">
                     <div id="search-results" style="position: absolute; background: white; border: 1px solid #ccc; width: 100%; z-index: 999;"></div>
                 </form>
@@ -190,7 +190,7 @@
 
         if (query.length > 0) {
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", "/acc/sanpham/goiy_timkiem", true);
+            xhr.open("POST", "/inis/sanpham/goiy_timkiem", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
             xhr.onreadystatechange = function () {

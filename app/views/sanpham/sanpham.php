@@ -83,7 +83,7 @@
             <ul class="chanhoc">
                 <?php while($row = mysqli_fetch_array($loaisp)) { ?>
                 <li class="category-item">
-                    <a href="/acc/sanpham/sanpham_loai/<?php echo $row['id_loaisp']?>"> <?php echo $row['tenloai']; ?> </a>
+                    <a href="/inis/sanpham/sanpham_loai/<?php echo $row['id_loaisp']?>"> <?php echo $row['tenloai']; ?> </a>
                     <i class="fas fa-chevron-down toggle-icon"></i>
                     <ul class="chanhocx2">
                         <?php 
@@ -91,7 +91,7 @@
                         while($huhu = mysqli_fetch_array($danhmucsp)) {
                             if ($huhu['id_loaisp'] == $row['id_loaisp']) { ?>
                             <li>
-                                <a href="/acc/sanpham/sanpham_danhmuc/<?php echo $huhu['id_danhmuc']?>"> <?php echo $huhu['tendanhmuc']; ?> </a>
+                                <a href="/inis/sanpham/sanpham_danhmuc/<?php echo $huhu['id_danhmuc']?>"> <?php echo $huhu['tendanhmuc']; ?> </a>
                             </li>
                         <?php } } ?>
                     </ul>
@@ -128,7 +128,7 @@
                             VND <?php echo number_format($row['giagoc'], 0, ',', '.'); ?>đ
                         </a>
                     </p>
-                    <form action="/acc/giohang/themgh/<?php echo $row['masanpham']; ?>" method="POST">
+                    <form action="/inis/giohang/themgh/<?php echo $row['masanpham']; ?>" method="POST">
                         <input type="hidden" name="masanpham" value="<?= htmlspecialchars($row['masanpham']) ?>">
                         <button type="submit" class="buy-now">Thêm vào giỏ hàng</button>
                     </form>

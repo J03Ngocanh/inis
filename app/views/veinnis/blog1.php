@@ -17,7 +17,7 @@
         <div class="blog-header">
           <h1>Các bước dưỡng da ban đêm hiệu quả</h1>
           <img
-            src="/acc/public/img/blog1.png"
+            src="/inis/public/img/blog1.png"
             alt="blog1"
             class="blog-image"
           />

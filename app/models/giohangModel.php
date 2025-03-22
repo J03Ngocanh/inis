@@ -5,6 +5,8 @@ class giohangModel extends Model {
     protected $tblsanpham = "sanpham";
     protected $tblgiohang = "giohang";
     protected $tblchitietgiohang = "chitiet_giohang";
+    protected $tbldonhang = "hoadon";
+    protected $tblchitietdonhang = "chitiethoadon";
 
 
     public function Getttinsanpham($masanpham){
@@ -206,13 +208,13 @@ class giohangModel extends Model {
     return $result;
 
 }
-public function Getttinchitietdonhang($id_giohang){
-    $sql = "SELECT * FROM $this->tblchitietgiohang WHERE id_giohang = $id_giohang  ";
+public function Getttinchitietdonhang($magiaodich){
+    $sql = "SELECT * FROM $this->tblchitietdonhang WHERE magiaodich = $magiaodich";
     $result=$this->con->query($sql);
     return $result;
 }
-public function Getttindonhang($id_giohang){
-    $sql = "SELECT * FROM $this->tblgiohang WHERE id_giohang = $id_giohang  ";
+public function Getttindonhang($magiaodich){
+    $sql = "SELECT * FROM $this->tbldonhang WHERE magiaodich = $magiaodich";
     $result=$this->con->query($sql);
     return $result;
 }
@@ -244,9 +246,12 @@ public function updatesolgmuangay($masanpham, $soluong) {
     
  }
 
+    public function addOrder($magiaodich,$tongTien,$hoten_nhan, $sdt_nhan,$diachi_nhan, $phuong_thuc, $ngay_tao){
+        $sql = "INSERT INTO $this->tbldonhang(magiaodich,makhachhang,ngaytao,tongtiensaugiam,pttt) VALUES ('$magiaodich','','$ngay_tao','$tongTien', '$phuong_thuc') ";
+        $result=$this->con->query($sql);
+        return $result;
+    }
 
-
-  
 
 }
   

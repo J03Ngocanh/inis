@@ -548,7 +548,7 @@ function closeEditPopup() {
         }
 
         // Sử dụng fetch API để gửi yêu cầu kiểm tra tên đăng nhập
-        fetch('/acc/taikhoan/checksdt', {
+        fetch('/inis/taikhoan/checksdt', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

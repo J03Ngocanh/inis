@@ -105,7 +105,7 @@ class taikhoanController extends Controller {
                     // Xóa session email khi xong
                     unset($_SESSION['email']);
                     // Redirect về trang đăng nhập hoặc trang nào đó
-                    header("Location: /acc/taikhoan/login");
+                    header("Location: /inis/taikhoan/login");
                     exit;
                 } else {
                     $_SESSION['message'] = "Có lỗi xảy ra. Vui lòng thử lại.";
@@ -135,7 +135,8 @@ class taikhoanController extends Controller {
             if (password_verify($password, $row['password'])) {
                 $_SESSION['tenkhachhang'] = $row['tenkhachhang'];
                 $_SESSION['sdt'] = $sdt;
-        
+                $_SESSION['makhachhang'] = $row['id'];
+
                 // Tùy chọn lưu thông tin đăng nhập (Remember Me)
                 if (!empty($_POST['rememberMe'])) {
                     setcookie('login_sdt', $sdt, time() + (7 * 24 * 60 * 60), "/");
@@ -145,7 +146,7 @@ class taikhoanController extends Controller {
                 unset($_SESSION['loidangnhap']);
                 
                 // Chuyển hướng đến trang chủ của khách hàng
-                header('Location: /acc/trangchu/');
+                header('Location: /inis/trangchu/');
                 exit();
             } else {
                 $_SESSION['loidangnhap'] = "Bạn đã nhập sai Password.";
@@ -222,13 +223,13 @@ public function xulydangky(){
               $_SESSION['trungemail'], $_SESSION['hienthiemail'], $_SESSION['hienthipass']);
 
         // Chuyển hướng về trang đăng nhập
-        header('Location: /acc/taikhoan/login');
+        header('Location: /inis/taikhoan/login');
         exit();
     } else {
         // Lưu lại thông tin nhập trước đó để hiển thị lại
         $_SESSION['hienthitenkhachhang'] = $tenkhachhang;
         $_SESSION['hienthipass'] = $password;
-        header('Location: /acc/taikhoan/signup');
+        header('Location: /inis/taikhoan/signup');
         exit();
     }
 }
@@ -271,7 +272,7 @@ public function xulydangkynv(){
         if(isset($_SESSION['sdt'])){
             unset($_SESSION['sdt']);
             unset($_SESSION['tenkhachhang']);
-        header('Location: /acc/trangchu/');
+        header('Location: /inis/trangchu/');
         exit();
         }
     }

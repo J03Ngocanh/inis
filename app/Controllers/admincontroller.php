@@ -56,7 +56,7 @@ class adminController extends Controller {
         
 
         $_SESSION['thanhcong']="Bạn đã sửa thành công sản phẩm mã: $masanpham , tên: $tensanpham ";
-         header("location: /acc/admin/suasp/$masanpham");
+         header("location: /inis/admin/suasp/$masanpham");
 
 
 
@@ -80,7 +80,7 @@ class adminController extends Controller {
          
          $this->adminModel->themsanpham($id_danhmuc,$tensanpham,$mota,$giagoc,$hinhanh,$soluong);
         $_SESSION['thanhcong']="Bạn đã thêm thành công sản phẩm: $tensanpham ";
-        header("location: /acc/admin/sanpham");
+        header("location: /inis/admin/sanpham");
 
 
 
@@ -89,7 +89,7 @@ class adminController extends Controller {
     public function xoasp($masanpham) {
         $this->adminModel->xoasanpham($masanpham);
         $_SESSION['thanhcong']="Bạn đã xóa thành công sản phẩm mã: $masanpham  ";
-        header("location: /acc/admin/sanpham");
+        header("location: /inis/admin/sanpham");
     }
     
     
@@ -101,7 +101,7 @@ class adminController extends Controller {
     }
     public function xulyxacnhan($id_giohang) {
         $this->adminModel->xacnhan($id_giohang);
-        header("location: /acc/admin/listddh");
+        header("location: /inis/admin/listddh");
 
     }
     public function dashboard(){

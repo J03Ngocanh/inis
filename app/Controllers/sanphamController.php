@@ -68,7 +68,7 @@ class sanphamController extends Controller {
             $nd = trim($nd);
             $nd = filter_var($nd, FILTER_SANITIZE_STRING);
             $encoded_nd = urlencode($nd);
-            header("location: /acc/sanpham/sanpham_timkiem/$encoded_nd ") ;
+            header("location: /inis/sanpham/sanpham_timkiem/$encoded_nd ") ;
             exit; 
         }
        }
@@ -94,7 +94,7 @@ class sanphamController extends Controller {
     
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<a href="/acc/sanpham/chitietsp/' . $row['masanpham'] . '" style="text-decoration: none; color: inherit;">
+                    echo '<a href="/inis/sanpham/chitietsp/' . $row['masanpham'] . '" style="text-decoration: none; color: inherit;">
                     <div style="display: flex; align-items: center; padding: 10px 12px; font-size: 14px; color: #333; cursor: pointer; transition: background-color 0.2s;">
                         <img style="width: 30px; height: auto; margin-right: 10px; border-radius: 4px;" src="' . WEBROOT . 'public/img/' . htmlspecialchars($row['hinhanh']) . '" alt="' . htmlspecialchars($row['tensanpham']) . '">
                         ' . htmlspecialchars($row['tensanpham']) . '

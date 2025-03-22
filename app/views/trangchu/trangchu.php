@@ -380,7 +380,7 @@ button {
                                        VND <?php echo number_format($row['giagoc'], 0, ',', '.'); ?>đ
                                       </a>
                                   </p>
-                                  <form action="/acc/giohang/themvaogiohang/<?php echo $row['masanpham']; ?>" method="POST">
+                                  <form action="/inis/giohang/themvaogiohang/<?php echo $row['masanpham']; ?>" method="POST">
                                       <input type="hidden" name="masanpham" value="<?= htmlspecialchars($row['masanpham']) ?>">
                                       <button style="margin-bottom: 20px;" type="submit" class="buy-now">Thêm vào giỏ hàng</button>
                                       <?php
@@ -417,7 +417,7 @@ button {
                                        VND <?php echo number_format($row['giagoc'], 0, ',', '.'); ?>đ
                                       </a>
                                   </p>
-                                  <form action="/acc/giohang/themgh/<?php echo $row['masanpham']; ?>" method="POST">
+                                  <form action="/inis/giohang/themgh/<?php echo $row['masanpham']; ?>" method="POST">
                                       <input type="hidden" name="masanpham" value="<?= htmlspecialchars($row['masanpham']) ?>">
                                       <button style="margin-bottom: 20px;" type="submit" class="buy-now">Thêm vào giỏ hàng</button>
                                   </form>
@@ -454,7 +454,7 @@ button {
             <div class="benefits-container">
               
             <div class="benefit-item">
-                    <a href="/acc/app/views/chinhsach/muahang.php">
+                    <a href="/inis/app/views/chinhsach/muahang.php">
                       <div class="icon">
                           <img src="<?php echo WEBROOT; ?>public/img/1.png" alt="Voucher ưu đãi">
                       </div>
@@ -465,7 +465,7 @@ button {
            
            
                 <div class="benefit-item">
-                    <a href="/acc/app/views/chinhsach/trahang.php">
+                    <a href="/inis/app/views/chinhsach/trahang.php">
                       <div class="icon">
                           <img src="<?php echo WEBROOT; ?>public/img/2.png" alt="Voucher ưu đãi">
                       </div>
@@ -474,7 +474,7 @@ button {
                 </div>
     
                 <div class="benefit-item">
-                    <a href="/acc/app/views/chinhsach/giaohang.php">
+                    <a href="/inis/app/views/chinhsach/giaohang.php">
                       <div class="icon">
                           <img src="<?php echo WEBROOT; ?>public/img/3.png" alt="">
                       </div>
@@ -483,7 +483,7 @@ button {
                 </div>
     
                 <div class="benefit-item">
-                   <a href="/acc/app/views/chinhsach/pttt.php">
+                   <a href="/inis/app/views/chinhsach/pttt.php">
                       <div class="icon">
                           <img src="<?php echo WEBROOT; ?>public/img/4.png" alt="Phương thức thanh toán">
                       </div>

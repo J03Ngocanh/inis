@@ -281,7 +281,7 @@
                 const formData = new FormData();
                 formData.append('month', month);
 
-                fetch('/acc/admin/getDoanhThuJSON', {
+                fetch('/inis/admin/getDoanhThuJSON', {
                     method: 'POST',
                     body: formData
                 })

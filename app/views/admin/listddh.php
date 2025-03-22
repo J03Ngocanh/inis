@@ -293,7 +293,7 @@ a .add-btn:hover {
                 <td><?php echo $row['trangthai']  ?></td>
                 <td>
                     <?php if($row['trangthai']=="Đang xử lý"){?>
-                   <a href="/acc/admin/xulyxacnhan/<?php echo $row['id_giohang'] ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xác nhận đơn hàng mã : <?php echo $row['id_giohang'] ?>')  "><button class="btn edit-btn">Xác nhận</button></a>
+                   <a href="/inis/admin/xulyxacnhan/<?php echo $row['id_giohang'] ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xác nhận đơn hàng mã : <?php echo $row['id_giohang'] ?>')  "><button class="btn edit-btn">Xác nhận</button></a>
                    <?php }?>
                    <button onclick="openPopup('<?php echo $row['id_giohang']; ?>')"style="background-color: #16A085; color: white; border: none; padding: 4px 4px; border-radius: 6px; cursor: pointer;"> Chi tiết</button>
                 </td>
