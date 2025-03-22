@@ -190,11 +190,11 @@ input[type="number"]::-webkit-outer-spin-button {
                         <button type="button" class="quantity-btn plus">+</button>
                     </div>
                     <div class="action-buttons">
-                        <form method="POST" action="/acc/giohang/themvaogiohang/<?php echo $row['masanpham']; ?>">
+                        <form method="POST" action="/inis/giohang/themvaogiohang/<?php echo $row['masanpham']; ?>">
                             <input type="hidden" id="quantityAdd" name="soluong" value="1">
                             <button type="submit" class="nut">THÊM VÀO GIỎ HÀNG</button>
                         </form>
-                        <form method="POST" action="/acc/giohang/muangay/<?php echo $row['masanpham']; ?>">
+                        <form method="POST" action="/inis/giohang/muangay/<?php echo $row['masanpham']; ?>">
                             <input type="hidden" id="quantityBuy" name="soluong" value="1">
                             <button type="submit" class="nut">MUA NGAY</button>
                         </form>

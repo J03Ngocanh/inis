@@ -429,7 +429,7 @@ a .submit-btn:hover {
             <div class="modal-content">
               <span class="close" onclick="closeModal()">&times;</span>
               <h2>Thêm sản phẩm mới</h2>
-              <form method="POST" enctype="multipart/form-data" action="/acc/admin/xulythemsanpham" class="form-edit-product" >
+              <form method="POST" enctype="multipart/form-data" action="/inis/admin/xulythemsanpham" class="form-edit-product" >
       <div class="form-container">
         <!-- Cột 1 -->
         <div class="form-column">
@@ -500,7 +500,7 @@ a .submit-btn:hover {
             <a href="#" onclick="openEditModal('<?php echo $row['masanpham']; ?>')">
                 <i class="fa-solid fa-pen-to-square edit-icon"></i>
             </a>
-            <a href="/acc/admin/xoasp/<?php echo $row['masanpham']; ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xóa sản phẩm mã: <?php echo $row['masanpham']; ?> - Tên: <?php echo $row['tensanpham']; ?>?')">
+            <a href="/inis/admin/xoasp/<?php echo $row['masanpham']; ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xóa sản phẩm mã: <?php echo $row['masanpham']; ?> - Tên: <?php echo $row['tensanpham']; ?>?')">
                 <i class="fa-solid fa-trash delete-icon"></i>
             </a>
                 </td>
@@ -513,7 +513,7 @@ a .submit-btn:hover {
                     <div class="modal-content">
                       <span class="close" onclick="closeEditModal()">&times;</span>
                       <h2>Sửa sản phẩm</h2>
-                      <form method="POST" enctype="multipart/form-data" action="/acc/admin/xulysuasanpham" class="form-edit-product">
+                      <form method="POST" enctype="multipart/form-data" action="/inis/admin/xulysuasanpham" class="form-edit-product">
                         <div class="form-container">
                           <!-- Cột 1 -->
                           <div class="form-column">

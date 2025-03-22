@@ -33,7 +33,6 @@ class giohangController extends Controller {
     public function themgh($masanpham) {
         // Truy vấn thông tin sản phẩm từ database
         $sanpham = $this->giohangModel->Getttinsanpham($masanpham);
-    
         if ($row = mysqli_fetch_assoc($sanpham)) {
             // Bắt đầu session nếu chưa bắt đầu
             if (session_status() == PHP_SESSION_NONE) {
@@ -44,7 +43,7 @@ class giohangController extends Controller {
             $tensanpham = $row['tensanpham'];
             $giagoc = $row['giagoc'];
             $hinhanh = $row['hinhanh']; // Đảm bảo bạn có cột 'hinhanh' trong DB
-            $soluong = $_POST['soluong'] ?? 1;  // Nếu không có số lượng trong POST, mặc định là 1
+            $soluong = isset($_POST['soluong']) ? $_POST['soluong'] : 1;  // Nếu không có số lượng trong POST, mặc định là 1
     
             // Kiểm tra xem giỏ hàng đã có trong session chưa
             if (!isset($_SESSION['giohang'])) {
@@ -67,7 +66,9 @@ class giohangController extends Controller {
       // Lưu thông báo vào session
       $_SESSION['flash_message'] = "Sản phẩm đã được thêm vào giỏ hàng.";
     
-        } 
+        }
+        header('Location: ' . WEBROOT . 'giohang/giohang');
+        exit();
     }
     
     
@@ -81,14 +82,14 @@ class giohangController extends Controller {
                 unset($_SESSION['giohang'][$masanpham]);
             }
         }
-        header('Location: /acc/giohang/giohang');
+        header('Location: /inis/giohang/giohang');
         exit();
     }
 
     public function checkout(){
     
         // Kiểm tra giỏ hàng có sản phẩm không
-        $thanhtoan = $_SESSION['giohang'] ?? [];
+        $thanhtoan = isset($_SESSION['giohang']) ? $_SESSION['giohang'] : [];
         if (empty($thanhtoan)) {
             echo "Giỏ hàng trống!";
             return;
@@ -160,20 +161,20 @@ class giohangController extends Controller {
             } else if ($phuong_thuc == 'tien_mat') {
                echo "<script>alert('Đơn hàng sẽ được giao và thanh toán khi nhận hàng.');</script>";
         }
-         header("location: /acc/giohang/hoanthanhthanhtoan/$id_giohang");
+         header("location: /inis/giohang/hoanthanhthanhtoan/$id_giohang");
             }
     }
 
-    public function thanhtoan(){
-        $loaisp= $this->giohangModel->Getloaisp();  
-        $this->view('menu',['loaisp' => $loaisp]);
-        $thongtinsanpham= $this->giohangModel->thongtinsanphamgiohang($id_giohang);
-        $this->view('giohang/thanhtoangiohang',['thongtinsanpham' => $thongtinsanpham,]);
-        $this->view('footer');
-    }
+//    public function thanhtoan(){
+//        $loaisp= $this->giohangModel->Getloaisp();
+//        $this->view('menu',['loaisp' => $loaisp]);
+//        $thongtinsanpham= $this->giohangModel->thongtinsanphamgiohang($id_giohang);
+//        $this->view('giohang/thanhtoangiohang',['thongtinsanpham' => $thongtinsanpham,]);
+//        $this->view('footer');
+//    }
 
 
- public function tienhanhthanhtoangiohang($id_giohang) {
+ public function tienhanhthanhtoangiohang() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sdt = $_POST['sdt'];
             $hoten_nhan = $_POST['hoten_nhan'];
@@ -183,36 +184,23 @@ class giohangController extends Controller {
             $soluong = $_POST['soluong'];
             $tongTien = $_POST['tongTien'];
             $Ngay_tao = date('Y-m-d H:i:s');
+        }
+        $khachhang = $_SESSION['makhachhang'];
 
-          $result = $this->giohangModel->updatedondathang( $tongTien,$id_giohang , $hoten_nhan, $sdt_nhan, $diachi_nhan, $phuong_thuc, $Ngay_tao);
-            $ketqua = $this->giohangModel->Laymasanpham($id_giohang);
-            echo mysqli_num_rows($ketqua);
-            while($row = mysqli_fetch_array($ketqua)){
-                $this->giohangModel->updatesolgmuangay($row['masanpham'], $row['soluong']);
-            }
-            header("location: /acc/giohang/hoanthanhthanhtoan/$id_giohang");
-            }
+        $magiaodich = $randomNumber = random_int(10000, 100000);
+        $resultAddOrder = $this->giohangModel->addOrder($magiaodich,$tongTien,$hoten_nhan, $sdt_nhan, $diachi_nhan, $phuong_thuc, $Ngay_tao);
+        // tạo bản ghi chi tiết hóa đơn
+        $resultAddOrderDetail = "";
+         header("location: /inis/giohang/hoanthanhthanhtoan/$magiaodich");
     }
 
-    public function hoanthanhthanhtoan($id_giohang){
+    public function hoanthanhthanhtoan($magiaodich){
         $loaisp= $this->giohangModel->Getloaisp();  
         $this->view('menu',['loaisp' => $loaisp]);
-        $ttindonhang = $this->giohangModel->Getttinchitietdonhang($id_giohang);
-        $ttinnguoimua = $this->giohangModel->Getttindonhang($id_giohang);
+        $ttindonhang = $this->giohangModel->Getttinchitietdonhang($magiaodich);
+        $ttinnguoimua = $this->giohangModel->Getttindonhang($magiaodich);
         $this->view('giohang/chitiethoadon' , ['ttindonhang' => $ttindonhang, 'ttinnguoimua' => $ttinnguoimua ]);
         $this->view('footer');
-
-
-
-
     }
 
-    
-
-
-
 }
-
-    
-
-

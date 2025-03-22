@@ -19,7 +19,7 @@
       <!-- Tiêu đề và hình ảnh -->
       <div class="blog-header">
         <h1>Công dụng của Vitamin C nhà Innisfree cho làn da của bạn</h1>
-        <img src="/acc/public/img/dai.png" alt="aaaa" class="blog-image">
+        <img src="/inis/public/img/dai.png" alt="aaaa" class="blog-image">
       </div>
       
       <!-- Nội dung bài viết -->
