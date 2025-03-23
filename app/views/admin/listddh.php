@@ -99,17 +99,6 @@
       margin-top: 10px;
     }
 
-    table th,
-    table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-
-    table th {
-      background-color: #1abc9c;
-      color: white;
-    }
 
     table tr:nth-child(even) {
       background-color: #f2f2f2;
@@ -208,28 +197,45 @@ a .add-btn:hover {
     .close:hover {
       color: #000;
     }
+    table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    td {
+        color: #333;
+        font-size: 14px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
 
     /* Các style cho bảng trong popup */
-    .table {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      overflow: hidden;
-      width: 100%;
-    }
 
-    .table-header {
-      display: flex;
-      background-color: #2c3e50;
-      color: white;
-      font-weight: bold;
-    }
 
-    .table-row {
-      display: flex;
-      border-top: 1px solid #ddd;
-    }
+
 
     .table-cell {
       flex: 1;
@@ -245,11 +251,8 @@ a .add-btn:hover {
 
   </style>
   <body>
-  
       <!-- Main Content -->
       <main class="main-content">
-   
-
         <!-- Sections -->
         <section id="products" class="content-section">
           <h2>Danh Sách đơn đặt hàng</h2>
@@ -265,9 +268,6 @@ a .add-btn:hover {
                 <th>Ngày mua</th>
                 <th>Trạng thái</th>
                 <th>Thao tác</th>
-
-
-
               </tr>
             </thead>
             <tbody>
@@ -278,33 +278,33 @@ a .add-btn:hover {
 
                     ?>
               <tr>
-                <td><?php echo $row['id_giohang']  ?></td>
+                <td><?php echo $row['mahoadon']  ?></td>
                 <td><?php echo $row['hoten_nhan']  ?></td>
-                <td><?php echo $row['sdt']  ?></td>
+                <td><?php echo $row['sdt_nhan']  ?></td>
                 <td><?php echo $row['diachi_nhan']  ?></td>
-                <td><?php if($row['phuong_thuc']=="tien_mat"){
+                <td><?php if($row['pttt']=="tien_mat"){
                     echo "Tiền mặt";
                 } else{
                     echo "Chuyển khoản";
                 }   ?></td>
 
-                <td><?php echo number_format($row['tongTien'], 0, ',', '.'); ?> VNĐ</td>
-                <td><?php echo $row['Ngay_tao']  ?></td>
+                <td><?php echo number_format($row['tongtiensaugiam'], 0, ',', '.'); ?> VNĐ</td>
+                <td><?php echo $row['ngaytao']  ?></td>
                 <td><?php echo $row['trangthai']  ?></td>
                 <td>
                     <?php if($row['trangthai']=="Đang xử lý"){?>
-                   <a href="/inis/admin/xulyxacnhan/<?php echo $row['id_giohang'] ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xác nhận đơn hàng mã : <?php echo $row['id_giohang'] ?>')  "><button class="btn edit-btn">Xác nhận</button></a>
+                   <a href="/inis/admin/xulyxacnhan/<?php echo $row['mahoadon'] ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xác nhận đơn hàng mã : <?php echo $row['mahoadon'] ?>')  "><button class="btn edit-btn">Xác nhận</button></a>
                    <?php }?>
-                   <button onclick="openPopup('<?php echo $row['id_giohang']; ?>')"style="background-color: #16A085; color: white; border: none; padding: 4px 4px; border-radius: 6px; cursor: pointer;"> Chi tiết</button>
+                   <button onclick="openPopup('<?php echo $row['mahoadon']; ?>')"style="background-color: #16A085; color: white; border: none; padding: 4px 4px; border-radius: 6px; cursor: pointer;"> Chi tiết</button>
                 </td>
 
               </tr>
 
     <!-- Popup hiển thị chi tiết đơn hàng -->
-    <div id="orderDetailsPopup<?php echo $row['id_giohang']; ?>" class="popup">
+    <div id="orderDetailsPopup<?php echo $row['mahoadon']; ?>" class="popup">
                 <div class="popup-content">
-                    <span class="close" onclick="closePopup('<?php echo $row['id_giohang']; ?>')">&times;</span>
-                    <h2>Chi tiết đơn hàng mã: <?php echo $row['id_giohang']; ?></h2>
+                    <span class="close" onclick="closePopup('<?php echo $row['mahoadon']; ?>')">&times;</span>
+                    <h2>Chi tiết đơn hàng mã: <?php echo $row['mahoadon']; ?></h2>
                     <div class="table">
                         <div class="table-header">
                             <div class="table-cell">Sản phẩm</div>
@@ -313,7 +313,7 @@ a .add-btn:hover {
                         </div>
 
                         <?php while($rowctsp = mysqli_fetch_array($ctddh)) { ?>
-                            <?php if($rowctsp['id_giohang'] == $row['id_giohang']) { ?>
+                            <?php if($rowctsp['mahoadon'] == $row['mahoadon']) { ?>
                                 <div class="table-row">
                                     <div class="table-cell" style="display:flex">
                                         <?php echo $rowctsp['tensanpham'] ?>
@@ -325,7 +325,7 @@ a .add-btn:hover {
                             <?php } ?>
                         <?php } ?>
                     </div>
-                    <button onclick="closePopup('<?php echo $row['id_giohang']; ?>')" 
+                    <button onclick="closePopup('<?php echo $row['mahoadon']; ?>')"
                         style="background-color: #3498DB; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer;">
                         Đóng
                     </button>

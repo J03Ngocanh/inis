@@ -121,59 +121,70 @@ class taikhoanController extends Controller {
             }
         }
     }
-    
+
 
 
     public function xulydangnhap() {
-        $sdt = $_POST['sdt'];
-        $password = $_POST['password'];
-        
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $_SESSION['loidangnhap'] = "Phương thức không hợp lệ.";
+            $this->view('taikhoan/login');
+            return;
+        }
+
+        $sdt = $_POST['sdt'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        if (empty($sdt) || empty($password)) {
+            $_SESSION['loidangnhap'] = "Vui lòng nhập số điện thoại hoặc email và mật khẩu.";
+            $this->view('taikhoan/login');
+            return;
+        }
+
+        // Kiểm tra khách hàng (sdt hoặc email)
         $check_kh = $this->taikhoanModel->check_kh($sdt);
-        $check_nv = $this->taikhoanModel->check_nv($sdt);
-        
         if ($check_kh && $row = mysqli_fetch_assoc($check_kh)) {
             if (password_verify($password, $row['password'])) {
                 $_SESSION['tenkhachhang'] = $row['tenkhachhang'];
-                $_SESSION['sdt'] = $sdt;
+                $_SESSION['sdt'] = $row['sdt']; // Lưu sdt thực tế từ database
                 $_SESSION['makhachhang'] = $row['id'];
 
-                // Tùy chọn lưu thông tin đăng nhập (Remember Me)
                 if (!empty($_POST['rememberMe'])) {
                     setcookie('login_sdt', $sdt, time() + (7 * 24 * 60 * 60), "/");
                     setcookie('login_password', $password, time() + (7 * 24 * 60 * 60), "/");
                 }
-                
+
                 unset($_SESSION['loidangnhap']);
-                
-                // Chuyển hướng đến trang chủ của khách hàng
                 header('Location: /inis/trangchu/');
                 exit();
             } else {
-                $_SESSION['loidangnhap'] = "Bạn đã nhập sai Password.";
+                $_SESSION['loidangnhap'] = "Mật khẩu không đúng cho khách hàng.";
             }
-        } elseif ($check_nv && $row = mysqli_fetch_assoc($check_nv)) {
-            if (password_verify($password, $row['password'])) {
-                $_SESSION['tennhanvien'] = $row['tennhanvien'];
-                $_SESSION['sdt'] = $sdt;
-        
-                // Tùy chọn lưu thông tin đăng nhập (Remember Me)
-                if (!empty($_POST['rememberMe'])) {
-                    setcookie('login_sdt', $sdt, time() + (7 * 24 * 60 * 60), "/");
-                    setcookie('login_password', $password, time() + (7 * 24 * 60 * 60), "/");
-                }
-                
-                unset($_SESSION['loidangnhap']);
-                
-                // Chuyển hướng đến trang admin
-                header('Location: /admin/listsp');
-                exit();
-            } else {
-                $_SESSION['loidangnhap'] = "Bạn đã nhập sai Password.";
-            }
-        } else {
-            $_SESSION['loidangnhap'] = "Không tồn tại tài khoản.";
         }
-        
+        // Kiểm tra nhân viên (chỉ sdt)
+        else {
+            $check_nv = $this->taikhoanModel->check_nv($sdt);
+            if ($check_nv && $row = mysqli_fetch_assoc($check_nv)) {
+                if (password_verify($password, $row['password'])) {
+                    $_SESSION['tennhanvien'] = $row['Tennhanvien']; // Đồng bộ với bảng nhanvien
+                    $_SESSION['sdt'] = $row['sdt'];
+                    $_SESSION['manhanvien'] = $row['Manhanvien']; // Thêm mã nhân viên
+
+                    if (!empty($_POST['rememberMe'])) {
+                        setcookie('login_sdt', $sdt, time() + (7 * 24 * 60 * 60), "/");
+                        setcookie('login_password', $password, time() + (7 * 24 * 60 * 60), "/");
+                    }
+
+                    unset($_SESSION['loidangnhap']);
+                    header('Location: /inis/admin/sanpham');
+                    exit();
+                } else {
+                    $_SESSION['loidangnhap'] = "Mật khẩu không đúng cho nhân viên.";
+                }
+            } else {
+                $_SESSION['loidangnhap'] = "Không tồn tại tài khoản với số điện thoại hoặc email này.";
+            }
+        }
+
         $this->view('taikhoan/login');
     }
     
@@ -272,9 +283,9 @@ public function xulydangkynv(){
         if(isset($_SESSION['sdt'])){
             unset($_SESSION['sdt']);
             unset($_SESSION['tenkhachhang']);
-        header('Location: /inis/trangchu/');
-        exit();
+            unset($_SESSION['tennhanvien']);
         }
+        header('Location: /inis/taikhoan/login/');
     }
 
     public function checksdt() {

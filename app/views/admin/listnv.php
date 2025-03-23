@@ -321,289 +321,60 @@ input:checked + .slider:before {
 
 <div class="detail">
     <h2>Danh Sách Tài Khoản</h2>
+    <a href="/inis/admin/addnv" class="btn-add">Thêm Tài khoản</a>
 
-   
-    <button class="btn-add" onclick="openPopup()">Thêm Tài khoản</button>
-
-    <div id="overlay" onclick="closePopup()"></div>
     <table>
         <thead>
-            <tr>
-                <th>Mã nhân viên</th>
-                <th>Tên nhân viên</th>
-                <th>Số điện thoại</th>
-                <th>Phân quyền</th>
-                <th>Trạng Thái</th>
-                <th>Thao tác</th>
-             
-            </tr>
+        <tr>
+            <th>Mã nhân viên</th>
+            <th>Tên nhân viên</th>
+            <th>Số điện thoại</th>
+            <th>Phân quyền</th>
+            <th>Trạng Thái</th>
+            <th>Thao tác</th>
+        </tr>
         </thead>
         <tbody>
         <?php while ($row = mysqli_fetch_array($listnv)) { ?>
             <tr>
-                <td><?= $row['Manhanvien']; ?></td>
-                <td><?= $row['Tennhanvien']; ?></td>
-                <td><?= $row['sdt']; ?></td>
-                <td><?= $row['ten']; ?></td>
+                <td><?= htmlspecialchars($row['Manhanvien']); ?></td>
+                <td><?= htmlspecialchars($row['Tennhanvien']); ?></td>
+                <td><?= htmlspecialchars($row['sdt']); ?></td>
+                <td><?= htmlspecialchars($row['ten']); ?></td>
                 <td>
-    <label class="switch">
-    <input type="checkbox" 
-       onchange="toggleStatus(this, <?= $row['Manhanvien']; ?>)"  
-       <?= $row['trangthai'] == 1 ? 'checked' : ''; ?> >
-        <span class="slider round"></span>
-    </label></td>
-    <td>         
-    <a href="javascript:void(0);" class="btn btn-edit" 
-       onclick="openEditPopup(<?= $row['Manhanvien']; ?>,'<?= $row['Tennhanvien']; ?>','<?= $row['sdt']; ?>', '<?= $row['ten']; ?>')">
-        <i class="fas fa-edit"></i>
-    </a>
-</td>
-
+                    <label class="switch">
+                        <input type="checkbox" onchange="toggleStatus(this, '<?= $row['Manhanvien']; ?>')" <?= $row['trangthai'] == 1 ? 'checked' : ''; ?>>
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td>
+                    <a href="/inis/admin/editnv/<?= $row['Manhanvien']; ?>" class="btn btn-edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
             </tr>
         <?php } ?>
         </tbody>
     </table>
-    <div id="orderDetailsPopup">
-    <span class="close" onclick="closePopup()">&times;</span>
-    <h2>Thêm Tài Khoản</h2>
-    <form action="<?php echo WEBROOT . 'taikhoan/xulydangkynv'?>" method="POST" onsubmit="return validateForm()">
-        <div class="form-item">
-        
-            <input type="text" name="tennhanvien" id="tennhanvien" placeholder="Nhập họ tên" onblur="checkTennhanvien()" required>
-            <div id="TennhanvienFeedback" style="color: red; font-size: 12px;"></div>
-        </div>
-        <div class="form-item">
-        
-            <input type="text" name="sdt" id="sdt" placeholder="Số điện thoại" onkeypress="return isNumberKey(event)" required>
-        </div>
-        <div class="form-item">
-       
-            <input type="password" name="password" id="password" placeholder="Mật khẩu" required>
-        </div>
-        <div class="form-item">
-        
-            <input type="password" name="mat_khau_2" id="mat_khau_2" placeholder="Nhập lại mật khẩu" required>
-        </div>
-      
-        <div class="form-item">
-        <select name="id_role" id="id_role">
-        <?php while ($row = $role->fetch_assoc()): ?>
-            <option value="<?= $row['id_role'] ?>"><?= $row['ten'] ?></option>
-        <?php endwhile; ?>
-    </select>
-       </div>
-       <div class="nut" style="display:flex;">
-            <button type="submit" class="btn_ne">Lưu Tài Khoản</button>
-            <button type="button" class="btn-cancel" onclick="closePopup()">Hủy</button>
-          
-       </div>
-    </form>
-</div>
-</div>
-
-    <div id="editPopup" >
-    <span class="close" onclick="closeEditPopup()">&times;</span>
-    <h2>Sửa Tài Khoản</h2>
-    <form id="editForm" action="<?php echo WEBROOT . 'taikhoan/xulysua';?>" method="POST" onsubmit="return validateEditForm()">
-        <input type="hidden" name="Manhanvien" id="editId">
-
-        <div class="form-item">
-            <input type="text" name="tennhanvien" id="editTennhanvien" placeholder="Tên đăng nhập" required>
-        </div>
-        <div class="form-item">
-            <input type="text" name="sdt" id="editSdt" placeholder="Số điện thoại" readonly>
-        </div>
-        <div class="form-item">
-            <input type="password" name="password" id="editPassword" placeholder="Mật khẩu" required>
-        </div>
-        <div class="form-item">
-            <input type="password" name="mat_khau_2" id="editMatKhau2" placeholder="Nhập lại mật khẩu" required>
-        </div>
-        
-        <div class="form-item">
-            <select id="editRole" name="id_role" required>
-                <option value="" disabled selected >Quyền truy cập</option>
-
-                <?php while ($row2= mysqli_fetch_array($role2)) { ?>
-                    <option value="<?= $row2['id_role']; ?>"><?= $row2['ten']  ?></option>
-                <?php } ?>
-            </select>
-        </div>
-        <div class="nut" style="display:flex;">
-            <button type="submit" class="btn_ne">Lưu Thay Đổi</button>
-            <button type="button" class="btn-cancel" onclick="closeEditPopup()">Hủy</button>
-        </div>
-    </form>
-</div>
-
 </div>
 <script>
-function openPopup() {
-    let overlay = document.getElementById('overlay');
-    let popup = document.getElementById('orderDetailsPopup');
-
-    if (overlay && popup) {
-        overlay.style.display = 'block';
-        popup.style.display = 'block';
-        setTimeout(() => {
-            overlay.classList.add('active');
-            popup.classList.add('active');
-        }, 10); // Tạo hiệu ứng trễ nhẹ
-    } else {
-        console.error("Không tìm thấy phần tử overlay hoặc orderDetailsPopup!");
-    }
-}
-
-function closePopup() {
-    let overlay = document.getElementById('overlay');
-    let popup = document.getElementById('orderDetailsPopup');
-
-    if (overlay && popup) {
-        overlay.classList.remove('active');
-        popup.classList.remove('active');
-        setTimeout(() => {
-            overlay.style.display = 'none';
-            popup.style.display = 'none';
-        }, 300); // Chờ hiệu ứng mờ dần trước khi ẩn
-    }
-}
-
-
-function openEditPopup(id, Tennhanvien, sdt, role) {
-    document.getElementById('overlay').classList.add('active'); // Hiển thị overlay
-
-    // Điền thông tin vào form sửa tài khoản
-    document.getElementById('editId').value = id;
-    document.getElementById('editTennhanvien').value = Tennhanvien; // Không sửa Tennhanvien
-    document.getElementById('editSdt').value = sdt;
-   // document.getElementById('editRole').value = role;
-    document.getElementById('overlay').classList.add('active'); // Hiển thị overlay
-
-    // Hiển thị popup sửa tài khoản
-    document.getElementById('editPopup').classList.add('active'); // Thêm lớp active
-}
-
-
-// Đóng popup sửa tài khoản
-function closeEditPopup() {
-    document.getElementById('editPopup').classList.remove('active');
-    document.getElementById('overlay').classList.remove('active');
-}
-
-
-    // Kiểm tra form thêm tài khoản
-    function validateForm() {
-
-        var password = document.getElementById("password").value;
-        var mat_khau_2 = document.getElementById("mat_khau_2").value;
-        var sdt = document.getElementById("sdt").value;
-
-     
-        if (mat_khau_2 !== password) {
-            alert("Mật khẩu không khớp.");
-            return false;
-        }
-        if (!/^0[0-9]{9,10}$/.test(sdt)) {
-            alert("Số điện thoại không hợp lệ.");
-            return false;
-        }
-        return true;
-    }
-
-    // Kiểm tra form sửa tài khoản
-    function validateEditForm() {
-
-        var password = document.getElementById("editPassword").value;
-        var mat_khau_2 = document.getElementById("editMatKhau2").value;
-        var sdt = document.getElementById("editSdt").value;
-
-       
-        if (mat_khau_2 !== password) {
-            alert("Mật khẩu không khớp.");
-            return false;
-        }
-        if (!/^0[0-9]{9,10}$/.test(sdt)) {
-            alert("Số điện thoại không hợp lệ.");
-            return false;
-        }
-        return true;
-    }
-
-    // Chỉ cho phép nhập số khi nhập số điện thoại
-    function isNumberKey(evt) {
-        var charCode = evt.which ? evt.which : evt.keyCode;
-        return !(charCode > 31 && (charCode < 48 || charCode > 57));
-    }
-
-    // Kiểm tra tên đăng nhập khi người dùng nhập vào
-    function checksdt() {
-        const sdt = document.getElementById('sdt').value.trim();
-        const feedback = document.getElementById('sdtFeedback');
-
-        // Kiểm tra nếu tên đăng nhập trống
-        if (sdt === "") {
-            feedback.textContent = "Tên đăng nhập không được để trống.";
-            feedback.style.color = 'red';
-            return;
-        }
-
-        // Sử dụng fetch API để gửi yêu cầu kiểm tra tên đăng nhập
-        fetch('/inis/taikhoan/checksdt', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'sdt=' + encodeURIComponent(username),  // Cập nhật body đúng
-        })
-        .then(response => response.text())  // Lấy phản hồi dạng text
-        .then(data => {
-            // Kiểm tra kết quả trả về từ server
-            if (data.trim() === 'exists') {
-                feedback.textContent = "Tên đăng nhập đã tồn tại.";
-                feedback.style.color = 'red';
-            } else if (data.trim() === 'available') {
-                feedback.textContent = "Tên đăng nhập có sẵn.";
-                feedback.style.color = 'green';
-            } else {
-                feedback.textContent = "Lỗi kiểm tra tên đăng nhập.";
-                feedback.style.color = 'red';
-            }
-        })
-        .catch(error => {
-            // Xử lý lỗi khi gọi fetch
-            console.error('Error during sdt check:', error);
-            feedback.textContent = "Có lỗi xảy ra khi kiểm tra tên đăng nhập. Vui lòng thử lại sau.";
-            feedback.style.color = 'red';
-        });
-    }
-
     function toggleStatus(checkbox, Manhanvien) {
-        var trangthai = checkbox.checked ? 1 : 0; // 1 nếu checkbox được chọn, 0 nếu không
-        console.log('Manhanvien:', Manhanvien);
-        console.log('status:', status);
-
-        // Gửi yêu cầu Ajax đến controller để cập nhật trạng thái
-        fetch('/khoinnis/taikhoan/updatetrangthai', {
+        var trangthai = checkbox.checked ? 1 : 0;
+        fetch('/inis/admin/updatetrangthai', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'Manhanvien=' + Manhanvien + '&trangthai=' + trangthai
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Trạng thái tài khoản đã được cập nhật.');
-            } else {
-                alert('Có lỗi xảy ra.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Trạng thái tài khoản đã được cập nhật.');
+                } else {
+                    alert('Có lỗi xảy ra.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
     }
-   
-
 </script>
 </body>
 </html>
