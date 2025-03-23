@@ -5,17 +5,21 @@ class taikhoanModel extends Model {
    protected $tblnv="nhanvien";
    protected $tblloaisp='loaisp';
 
-   public function check_kh($sdt){
-    $sql = "SELECT * FROM $this->tblkh WHERE (sdt = '$sdt' OR email = '$sdt')";
-    $result=$this->con->query($sql);
-    return $result;
-   }
+    public function check_nv($sdt) {
+        $sql = "SELECT * FROM $this->tblnv WHERE sdt = ?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("s", $sdt);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
 
-   public function check_nv($sdt){
-    $sql = "SELECT * FROM $this->tblnv WHERE (sdt = '$sdt')";
-    $result=$this->con->query($sql);
-    return $result;
-   }
+    public function check_kh($sdt) {
+        $sql = "SELECT * FROM $this->tblkh WHERE sdt = ? OR email = ?";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bind_param("ss", $sdt, $sdt);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
    
    public function checksdt($sdt){
      $sql = "SELECT * FROM $this->tblnv WHERE sdt='$sdt'";

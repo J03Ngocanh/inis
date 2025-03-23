@@ -423,8 +423,7 @@ a .submit-btn:hover {
   <div class="detail">
           <h2>Danh Sách Sản Phẩm</h2>
           <!-- Nút mở popup -->
-          <button class="add-btn" onclick="openModal()">Thêm sản phẩm</button>
-          <!-- Modal (Popup) -->
+      <button class="add-btn" onclick="window.location.href='/inis/admin/add'">Thêm sản phẩm</button>          <!-- Modal (Popup) -->
           <div id="productModal" class="modal">
             <div class="modal-content">
               <span class="close" onclick="closeModal()">&times;</span>
@@ -497,9 +496,9 @@ a .submit-btn:hover {
                 <td><?php echo $row['soluong']  ?></td>
                 <td>
                     <!-- Nút sửa -->
-            <a href="#" onclick="openEditModal('<?php echo $row['masanpham']; ?>')">
-                <i class="fa-solid fa-pen-to-square edit-icon"></i>
-            </a>
+                    <a href="/inis/admin/edit/<?php echo $row['masanpham']; ?>">
+                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                    </a>
             <a href="/inis/admin/xoasp/<?php echo $row['masanpham']; ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xóa sản phẩm mã: <?php echo $row['masanpham']; ?> - Tên: <?php echo $row['tensanpham']; ?>?')">
                 <i class="fa-solid fa-trash delete-icon"></i>
             </a>

@@ -8,21 +8,25 @@ class adminModel extends Model {
    protected $tblrank = "rank";
    protected $tbldanhmucsp = "danhmucsp";
    protected $tblloaisp='loaisp';
-   protected $tblgiohang = "giohang";
-   protected $tblchitietgiohang = "chitiet_giohang";
+    protected $tbldonhang = "hoadon";
+    protected $tblchitietdonhang = "chitiethoadon";
+
 
    public fUNCTION getlistsanpham(){
       $sql = "SELECT * FROM $this->tblsanpham ";
       $result = $this->con->query($sql);
       return $result;
   }
-  public function getlistnv(){
-   $sql = "SELECT * FROM $this->tblnhanvien INNER JOIN $this->tblrole ON $this->tblnhanvien.id_role = $this->tblrole.id_role";
-   $result = $this->con->query($sql);
-   return $result;
-  }
+    public function getlistnv() {
+        $sql = "SELECT nv.*, r.ten FROM nhanvien nv 
+                LEFT JOIN role r ON nv.id_role = r.id_role";
+        return $this->con->query($sql);
+    }
 
-
+    public function getRoles() {
+        $sql = "SELECT * FROM role";
+        return $this->con->query($sql);
+    }
   public fUNCTION getsanpham($masanpham){
    $sql = "SELECT * FROM $this->tblsanpham WHERE masanpham='$masanpham' ";
    $result = $this->con->query($sql);
@@ -40,20 +44,31 @@ public fUNCTION getdanhmuc(){
    return $result;
 }
 
-public fUNCTION suasanpham($masanpham,$tensanpham,$id_danhmuc,$soluong,$giagoc,$mota,$hinhanh){
-   $sql = " UPDATE $this->tblsanpham SET tensanpham='$tensanpham',mota='$mota',giagoc=$giagoc,hinhanh='$hinhanh',soluong=$soluong,id_danhmuc=$id_danhmuc
-   WHERE masanpham='$masanpham'";
-   echo $sql ;
-   $result = $this->con->query($sql);
-   return $result;
-}
-public fUNCTION themsanpham($id_danhmuc,$tensanpham,$mota,$giagoc,$hinhanh,$soluong){
-   $sql = "INSERT INTO $this->tblsanpham(id_danhmuc,tensanpham,mota,giagoc,hinhanh,soluong)  
-   VALUES($id_danhmuc,'$tensanpham','$mota',$giagoc,'$hinhanh',$soluong)
-   ";
-   $result = $this->con->query($sql);
-   return $result;
-}
+    public function suasanpham($masanpham, $tensanpham, $id_danhmuc, $soluong, $giagoc, $mota, $hinhanh, $hinhanh1, $hinhanh2, $hinhanh3, $hinhanh4) {
+        $sql = "UPDATE sanpham SET 
+            tensanpham = '$tensanpham', 
+            id_danhmuc = '$id_danhmuc', 
+            soluong = '$soluong', 
+            giagoc = '$giagoc', 
+            mota = '$mota', 
+            hinhanh = '$hinhanh', 
+            hinhanh1 = '$hinhanh1', 
+            hinhanh2 = '$hinhanh2', 
+            hinhanh3 = '$hinhanh3', 
+            hinhanh4 = '$hinhanh4' 
+            WHERE masanpham = '$masanpham'";
+        // echo $sql; // Để debug, có thể bỏ comment khi cần kiểm tra
+        $result = $this->con->query($sql);
+        return $result;
+    }
+
+    public function themsanpham($id_danhmuc, $tensanpham, $mota, $giagoc, $hinhanh, $hinhanh1, $hinhanh2, $hinhanh3, $hinhanh4, $soluong) {
+        $ngay_them = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
+        $sql = "INSERT INTO sanpham (id_danhmuc, tensanpham, mota, giagoc, hinhanh, hinhanh1, hinhanh2, hinhanh3, hinhanh4, soluong, ngay_them) 
+            VALUES ('$id_danhmuc', '$tensanpham', '$mota', '$giagoc', '$hinhanh', '$hinhanh1', '$hinhanh2', '$hinhanh3', '$hinhanh4', '$soluong', '$ngay_them')";
+        $result = $this->con->query($sql);
+        return $result;
+    }
 
 public fUNCTION checkmasanpham($masanpham){
    $sql = "SELECT * FROM $this->tblsanpham WHERE masanpham='$masanpham' ";
@@ -67,7 +82,7 @@ public fUNCTION xoasanpham($masanpham){
    return $result;
 }
 public fUNCTION getddh(){
-   $sql = "SELECT * FROM $this->tblgiohang WHERE active=1  ";
+   $sql = "SELECT * FROM $this->tbldonhang";
    $result = $this->con->query($sql);
    return $result;
 }
@@ -78,12 +93,48 @@ public fUNCTION xacnhan($id_giohang){
    return $result;
 }
 public fUNCTION chitietdonhang(){
-   $sql = "SELECT $this->tblchitietgiohang.*, $this->tblsanpham.hinhanh  FROM $this->tblchitietgiohang INNER JOIN $this->tblsanpham
-   ON $this->tblchitietgiohang.masanpham = $this->tblsanpham.masanpham
+   $sql = "SELECT $this->tblchitietdonhang.*, $this->tblsanpham.hinhanh  FROM $this->tblchitietdonhang INNER JOIN $this->tblsanpham
+   ON $this->tblchitietdonhang.masanpham = $this->tblsanpham.masanpham
        ";
    $result = $this->con->query($sql);
    return $result;
 }
+
+    public function getnhanvien($manhanvien) {
+        $sql = "SELECT nv.*, r.ten FROM nhanvien nv 
+                LEFT JOIN role r ON nv.id_role = r.id_role 
+                WHERE nv.Manhanvien = '$manhanvien'";
+        return $this->con->query($sql);
+    }
+
+    public function getLastNhanvien() {
+        $sql = "SELECT Manhanvien FROM nhanvien ORDER BY Manhanvien DESC LIMIT 1";
+        $result = $this->con->query($sql);
+        return $result->fetch_assoc();
+    }
+
+    public function themnhanvien($manhanvien, $tennhanvien, $sdt, $password, $id_role) {
+        $sql = "INSERT INTO nhanvien (Manhanvien, Tennhanvien, sdt, password, id_role, trangthai) 
+                VALUES ('$manhanvien', '$tennhanvien', '$sdt', '$password', '$id_role', 1)";
+        return $this->con->query($sql);
+    }
+
+    public function suanhanvien($manhanvien, $tennhanvien, $sdt, $password, $id_role) {
+        $sql = "UPDATE nhanvien SET 
+                Tennhanvien = '$tennhanvien', 
+                sdt = '$sdt', 
+                id_role = '$id_role'";
+        if ($password) {
+            $sql .= ", password = '$password'";
+        }
+        $sql .= " WHERE Manhanvien = '$manhanvien'";
+        return $this->con->query($sql);
+    }
+
+    public function updatetrangthai($manhanvien, $trangthai) {
+        $sql = "UPDATE nhanvien SET trangthai = '$trangthai' WHERE Manhanvien = '$manhanvien'";
+        return $this->con->query($sql);
+    }
 
 // SELECT 
 //                 DATE(ngaydat) AS ngay,
