@@ -209,7 +209,28 @@ public function tienhanhthanhtoangiohang() {
 }
 
 
+    public function updateQuantity() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $masanpham = $_POST['masanpham'];
+            $soluong = (int)$_POST['soluong'];
 
+            // Cập nhật số lượng trong session
+            if (isset($_SESSION['giohang'])) {
+                foreach ($_SESSION['giohang'] as &$item) {
+                    if ($item['masanpham'] === $masanpham) {
+                        $item['soluong'] = $soluong;
+                        break;
+                    }
+                }
+            }
+
+            // Trả về phản hồi JSON (có thể tùy chỉnh)
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
+        }
+        exit;
+    }
     public function hoanthanhthanhtoan($magiaodich){
         $loaisp= $this->giohangModel->Getloaisp();  
         $this->view('menu',['loaisp' => $loaisp]);
@@ -218,5 +239,14 @@ public function tienhanhthanhtoangiohang() {
         $this->view('giohang/chitiethoadon' , ['ttindonhang' => $ttindonhang, 'ttinnguoimua' => $ttinnguoimua ]);
         $this->view('footer');
     }
-
+    public function getCartCount() {
+        $cartCount = 0;
+        if (isset($_SESSION['giohang']) && !empty($_SESSION['giohang'])) {
+            foreach ($_SESSION['giohang'] as $item) {
+                $cartCount += $item['soluong'];
+            }
+        }
+        echo $cartCount;
+        exit;
+    }
 }

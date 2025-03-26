@@ -119,6 +119,22 @@
 #search-results div:not(:last-child) {
     border-bottom: 1px solid #f0f0f0; /* Đường ngăn giữa các kết quả */
 }
+        .cart-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px; /* Điều chỉnh vị trí theo ý bạn */
+            right: -8px; /* Điều chỉnh vị trí theo ý bạn */
+            background-color: red; /* Màu nền của số */
+            color: white; /* Màu chữ */
+            border-radius: 50%; /* Tạo hình tròn */
+            padding: 2px 6px; /* Kích thước vòng tròn */
+            font-size: 12px; /* Kích thước chữ */
+            font-weight: bold;
+        }
 .noi-dung{
     margin-top: 80px;
 }
@@ -164,17 +180,35 @@
                 </form>
             </div>
 
-            <!-- Kiểm tra người dùng đã đăng nhập hay chưa để hiển thị giỏ hàng, tên và đăng xuất -->
+            <!-- Tính số lượng sản phẩm trong giỏ hàng -->
+            <?php
+            $cartCount = 0;
+            if (isset($_SESSION['giohang']) && !empty($_SESSION['giohang'])) {
+                foreach ($_SESSION['giohang'] as $item) {
+                    $cartCount += $item['soluong']; // Tổng số lượng sản phẩm
+                }
+            }
+            ?>
+
+            <!-- Hiển thị icon giỏ hàng với số lượng -->
             <?php if (isset($_SESSION['tenkhachhang'])): ?>
-               <a href="<?php echo WEBROOT; ?>giohang/giohang" class="icon">
-                <i class="fas fa-shopping-cart"></i></a>
-                
-                <span ><strong><?= htmlspecialchars($_SESSION['tenkhachhang']); ?></strong></span>
+                <a href="<?php echo WEBROOT; ?>giohang/giohang" class="icon cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <?php if ($cartCount > 0): ?>
+                        <span class="cart-count"><?php echo $cartCount; ?></span>
+                    <?php endif; ?>
+                </a>
+                <span><strong><?= htmlspecialchars($_SESSION['tenkhachhang']); ?></strong></span>
                 <p>|</p>
                 <a style="font-size:15px;" href="<?php echo WEBROOT; ?>taikhoan/logout" class="icon">Đăng xuất</a>
             <?php else: ?>
-                <a href="<?php echo WEBROOT; ?>giohang/giohang" class="icon"><i class="fas fa-shopping-cart"></i></a>
-                <a  href="<?php echo WEBROOT; ?>taikhoan/login" class="icon"><i class="fas fa-user"></i></a>
+                <a href="<?php echo WEBROOT; ?>giohang/giohang" class="icon cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <?php if ($cartCount > 0): ?>
+                        <span class="cart-count"><?php echo $cartCount; ?></span>
+                    <?php endif; ?>
+                </a>
+                <a href="<?php echo WEBROOT; ?>taikhoan/login" class="icon"><i class="fas fa-user"></i></a>
             <?php endif; ?>
         </div>
     </div>
@@ -215,8 +249,27 @@
             this.style.display = "none"; // Ẩn gợi ý sau khi chọn
         }
     });
-    
 
+   function updateCartCount() {
+       $.ajax({
+           url: '<?php echo WEBROOT; ?>giohang/getCartCount',
+           type: 'GET',
+           success: function (response) {
+               var count = parseInt(response);
+               if (count > 0) {
+                   $('.cart-count').text(count).show();
+               } else {
+                   $('.cart-count').hide();
+               }
+           },
+           error: function () {
+               console.log('Lỗi khi lấy số lượng giỏ hàng');
+           }
+       });
+   }
+
+   // Gọi hàm khi trang tải
+   updateCartCount();
    
 
 </script>
