@@ -283,8 +283,8 @@ button {
 </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
         $(document).ready(function () {
             // Khi click vào nút xóa, xác nhận xóa sản phẩm
             $('.delete-btn').click(function (e) {
@@ -363,12 +363,7 @@ function updateCartTotal() {
     // Cập nhật tổng tiền giỏ hàng khi trang tải
     updateCartTotal();
 });
-
-
-        });
-
-        
-        
+});   
     </script>
 </body>
 </html>

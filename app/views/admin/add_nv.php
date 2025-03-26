@@ -6,7 +6,7 @@
     <title>Thêm Nhân Viên</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Style tương tự listnv.php */
+        
         body { font-family: 'Roboto', sans-serif; background-color: #f4f7fa; margin: 0; padding: 0; color: #333; }
         .main-content { max-width: 650px; margin: 20px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
         h2 { color: #333; text-align: center; }
@@ -22,6 +22,7 @@
     </style>
 </head>
 <body>
+    <div class="detail">
 <div class="main-content">
     <h2>Thêm Nhân Viên</h2>
     <form action="/inis/admin/xulythemnv" method="POST" onsubmit="return validateForm()">
@@ -62,7 +63,7 @@
     }
     ?>
 </div>
-
+</div>
 <script>
     function validateForm() {
         var password = document.getElementById("password").value;

@@ -121,6 +121,7 @@
     </style>
 </head>
 <body>
+<div class="detail">
 <div class="main-content">
     <div class="main-content">
         <h2>Sửa sản phẩm</h2>
@@ -205,7 +206,7 @@
 
         <!-- Thông báo giữ nguyên -->
     </div>
-
+                    </div>
     <script>
         // Script preview ảnh cho 5 field
         const imageInputs = [

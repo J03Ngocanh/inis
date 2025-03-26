@@ -240,19 +240,44 @@ public function updatesolgmuangay($masanpham, $soluong) {
  public function Laymasanpham($id_giohang) {
     $sql ="SELECT id_giohang, masanpham, soluong FROM $this->tblchitietgiohang 
     WHERE id_giohang=$id_giohang";
-    echo $sql;
     $result=$this->con->query($sql);
     return $result;
     
  }
+ public function addOrder($makhachhang, $tongTien, $hoten_nhan, $sdt_nhan, $diachi_nhan, $phuong_thuc, $ngay_tao) {
+    $sql = "INSERT INTO $this->tbldonhang (makhachhang, tongtiensaugiam, hoten_nhan, sdt_nhan, diachi_nhan, pttt, ngaytao) 
+            VALUES ('$makhachhang', '$tongTien', '$hoten_nhan', '$sdt_nhan', '$diachi_nhan', '$phuong_thuc', '$ngay_tao')";
+    $this->con->query($sql);
 
-    public function addOrder($magiaodich,$tongTien,$hoten_nhan, $sdt_nhan,$diachi_nhan, $phuong_thuc, $ngay_tao){
-        $sql = "INSERT INTO $this->tbldonhang(magiaodich,makhachhang,ngaytao,tongtiensaugiam,pttt) VALUES ('$magiaodich','','$ngay_tao','$tongTien', '$phuong_thuc') ";
-        $result=$this->con->query($sql);
-        return $result;
+    if ($this->con->affected_rows > 0) {
+        // Lấy mã hóa đơn mới nhất của khách hàng đang đặt
+        $sql_get = "SELECT mahoadon FROM $this->tbldonhang 
+                    WHERE makhachhang = '$makhachhang' 
+                      AND ngaytao = '$ngay_tao'
+                    ORDER BY ngaytao DESC LIMIT 1";
+
+        $result = $this->con->query($sql_get);
+        $row = $result->fetch_assoc();
+        
+        return $row['mahoadon'] ?? false;
+    } else {
+        return false;
     }
+}
+
+public function addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc) {
+    $sql = "INSERT INTO $this->tblchitietdonhang (mahoadon, masanpham, soluong, dongia) 
+            VALUES ('$mahoadon', '$masanpham', $soluong, $giagoc)";
+             echo $sql;
+
+    if ($this->con->query($sql)) {
+        echo $sql;
+        return true; // Thành công
+    } else {
+        return false; // Lỗi
+    }
+}
 
 
 }
-  
 ?>

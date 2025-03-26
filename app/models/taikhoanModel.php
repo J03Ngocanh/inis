@@ -47,14 +47,14 @@ class taikhoanModel extends Model {
 
     // Lưu mã xác nhận vào cơ sở dữ liệu
     public function saveVerificationCode($userId, $verificationCode) {
-        $sql = "UPDATE khachhang SET verification_code = '$verificationCode' WHERE id = $userId";
+        $sql = "UPDATE khachhang SET verification_code = '$verificationCode' WHERE id = '$userId'";
         return $this->con->query($sql);
     }
 
 
     // Kiểm tra mã xác nhận
     public function checkVerificationCode($userId, $verificationCode) {
-        $sql = "SELECT * FROM khachhang WHERE id = $userId AND verification_code = '$verificationCode'";
+        $sql = "SELECT * FROM khachhang WHERE id = '$userId' AND verification_code = '$verificationCode'";
         $result = $this->con->query($sql);
 
         if ($result->num_rows > 0) {

@@ -310,8 +310,7 @@ button {
          if(isset( $_SESSION['loidangnhap'])){
             unset( $_SESSION['loidangnhap']);
          }
-        ?>
-    
+        ?> 
         <div class="snow-container"></div>
         
             <div class='anh_giua'>
@@ -365,8 +364,6 @@ button {
     </div>
 </div>
 
-    
-     
 <section class="event-blog-section">
     <h2 class="section-title">BEST SELLER</h2>            
         <div  class="product-detail"  style="margin-top:20px">

@@ -8,7 +8,7 @@ class veinnisController extends Controller {
         $this->veinnisModel = $this->model('veinnisModel');
     }
 
-    public function trangchu(){
+    public function veinnis(){
         $loaisp= $this->veinnisModel->Getloaisp(); 
         $this->view('menu', ['loaisp' => $loaisp]);
         $this->view('veinnis/veinnis');

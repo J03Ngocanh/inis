@@ -139,8 +139,8 @@
         </div>
         <div class="duong_dan">
             <ul>
-            <li><a href="<?php echo WEBROOT; ?>taikhoan/thongtin">TRANG CỦA TÔI</a></li>
-                <li><a href="<?php echo WEBROOT; ?>veinnis/trangchu">Về Innisfree</a></li>
+            <li><a href="<?php echo WEBROOT; ?>trangchu/thongtin">TRANG CỦA TÔI</a></li>
+                <li><a href="<?php echo WEBROOT; ?>veinnis/veinnis">Về Innisfree</a></li>
                 <li class="dropdown">
                     <a href="<?php echo WEBROOT; ?>sanpham/sanpham">Sản phẩm</a>
                     <ul class="dropdown-menu">

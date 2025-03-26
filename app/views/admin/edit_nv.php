@@ -22,6 +22,7 @@
     </style>
 </head>
 <body>
+<div class="detail">
 <div class="main-content">
     <h2>Sửa Nhân Viên</h2>
     <form action="/inis/admin/xulysuanv" method="POST" onsubmit="return validateForm()">
@@ -64,7 +65,7 @@
     }
     ?>
 </div>
-
+</div>
 <script>
     function validateForm() {
         var password = document.getElementById("password").value;
