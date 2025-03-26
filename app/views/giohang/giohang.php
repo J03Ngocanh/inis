@@ -281,15 +281,12 @@ button {
         <a href="<?php echo WEBROOT; ?>giohang/checkout" class="btn-thanh-toan">Thanh toán</a>
     </div>
 </div>
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
         $(document).ready(function () {
             // Khi click vào nút xóa, xác nhận xóa sản phẩm
             $('.delete-btn').click(function (e) {
                 e.preventDefault(); // Ngăn hành động mặc định của form
-
                 var masanpham = $(this).data('masanpham'); // Lấy mã sản phẩm từ thuộc tính data-masanpham
                 confirmDelete(masanpham); // Gọi hàm confirmDelete
             });
@@ -299,7 +296,6 @@ button {
             function confirmDelete(masanpham) {
                 // Lưu mã sản phẩm cần xóa
                 masanphamToDelete = masanpham;
-
                 // Hiển thị modal xác nhận
                 $('#confirmModal').show();
             }
@@ -322,48 +318,84 @@ button {
                 $('#confirmModal').hide(); // Ẩn modal
             }
 
-$(document).ready(function () {
-    // Nút tăng số lượng
-    $('.btn-increase').click(function () {
-        var input = $(this).siblings('.quantity-input');
-        var currentValue = parseInt(input.val());
-        input.val(currentValue + 1);
-        updateCartTotal(); // Gọi hàm cập nhật tổng tiền
-    });
+            // Nút tăng số lượng
+            $('.btn-increase').click(function () {
+                var input = $(this).siblings('.quantity-input');
+                var masanpham = $(this).data('masanpham');
+                var currentValue = parseInt(input.val());
+                var newValue = currentValue + 1;
+                updateQuantity(masanpham, newValue, input);
+            });
 
-    // Nút giảm số lượng
-    $('.btn-decrease').click(function () {
-        var input = $(this).siblings('.quantity-input');
-        var currentValue = parseInt(input.val());
-        if (currentValue > 1) {
-            input.val(currentValue - 1);
-        }
-        updateCartTotal(); // Gọi hàm cập nhật tổng tiền
-    });
+            // Nút giảm số lượng
+            $('.btn-decrease').click(function () {
+                var input = $(this).siblings('.quantity-input');
+                var masanpham = $(this).data('masanpham');
+                var currentValue = parseInt(input.val());
+                if (currentValue > 1) {
+                    var newValue = currentValue - 1;
+                    updateQuantity(masanpham, newValue, input);
+                }
+            });
 
-// Hàm cập nhật tổng tiền giỏ hàng
-function updateCartTotal() {
-    var total = 0;
-    
-    // Lặp qua tất cả các sản phẩm trong giỏ hàng và cộng tổng tiền
-    $('.cart-item').each(function () {
-        var quantity = parseInt($(this).find('.quantity-input').val()); // Số lượng của sản phẩm
-        var unitPriceText = $(this).find('.cart-item-info p:nth-child(2)').text(); // Lấy văn bản giá sản phẩm
-        var unitPrice = parseFloat(unitPriceText.replace('VND', '').replace('đ', '').replace(/\s/g, '').replace(',', '')); // Loại bỏ các ký tự không phải số
+            // Hàm gửi yêu cầu AJAX để cập nhật số lượng
+            function updateQuantity(masanpham, newQuantity, inputElement) {
+                $.ajax({
+                    url: '<?php echo WEBROOT; ?>giohang/updateQuantity',
+                    type: 'POST',
+                    data: {
+                        masanpham: masanpham,
+                        soluong: newQuantity
+                    },
+                    success: function (response) {
+                        inputElement.val(newQuantity);
+                        updateCartTotal(); // Cập nhật tổng tiền
+                        updateCartCount(); // Cập nhật số lượng trên icon
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra khi cập nhật số lượng!');
+                    }
+                });
+            }
 
-        total += (quantity * unitPrice); 
-    });
+            // Hàm cập nhật tổng tiền giỏ hàng
+            function updateCartTotal() {
+                var total = 0;
+                $('.cart-item').each(function () {
+                    var quantity = parseInt($(this).find('.quantity-input').val());
+                    var unitPriceText = $(this).find('.cart-item-info p:nth-child(2)').text();
+                    var unitPrice = parseFloat(unitPriceText.replace('đ', '').replace(/\./g, '').replace(',', '.'));
+                    total += (quantity * unitPrice);
+                });
 
+                var formattedTotal = total.toLocaleString('vi-VN') + 'đ';
+                $('#tongTien p').text('Tổng tiền: ' + formattedTotal);
+            }
 
-    var formattedTotal = total.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
-    $('#tongTien p').text('Tổng tiền: ' + formattedTotal + 'đ'); 
-}
+            // Hàm cập nhật số lượng trên icon giỏ hàng
+            function updateCartCount() {
+                $.ajax({
+                    url: '<?php echo WEBROOT; ?>giohang/getCartCount',
+                    type: 'GET',
+                    success: function (response) {
+                        console.log(response)
+                        var count = parseInt(response);
+                        if (count > 0) {
+                            $('.cart-count').text(count).show();
+                        } else {
+                            $('.cart-count').hide();
+                        }
+                    },
+                    error: function () {
+                        console.log('Lỗi khi lấy số lượng giỏ hàng');
+                    }
+                });
+            }
 
-
-    // Cập nhật tổng tiền giỏ hàng khi trang tải
-    updateCartTotal();
-});
-});   
+            // Cập nhật tổng tiền và số lượng khi trang tải
+            updateCartTotal();
+            updateCartCount();
+        });
     </script>
 </body>
 </html>
