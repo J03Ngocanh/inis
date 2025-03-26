@@ -78,28 +78,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
-        .submit-btn {
-            background-color: #2ecc71;
-            color: white;
-        }
-
-        .submit-btn:hover {
-            background-color: #27ae60;
-            transform: scale(1.05);
-        }
-
-        .reset-btn {
-            background-color: white;
-            border: 1px solid #ccc;
-            color: black;
-        }
-
-        .reset-btn:hover {
-            background-color: #e74c3c;
-            color: white;
-            transform: scale(1.05);
-        }
+        .btn { padding: 12px 20px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
+        .submit-btn { background-color: #4CAF50; color: white; }
+        .submit-btn:hover { background-color: #388E3C; }
+        .reset-btn { background-color: #f44336; color: white; }
+        .reset-btn:hover { background-color: #d32f2f; }
 
         #previewImage {
             width: 100px;
@@ -122,6 +105,7 @@
     </style>
 </head>
 <body>
+<div class="detail">
 <div class="main-content">
     <div class="main-content">
         <h2>Thêm sản phẩm mới</h2>
@@ -192,7 +176,7 @@
         }
         ?>
     </div>
-
+    </div>
     <script>
         // Script preview ảnh cho 5 field
         const imageInputs = [

@@ -28,8 +28,6 @@ class taikhoanController extends Controller {
             if ($user) {
                 // Tạo mã xác nhận
                 $verificationCode = rand(100000, 999999);
-
-                // Lưu mã xác nhận vào cơ sở dữ liệu
                 if ($this->taikhoanModel->saveVerificationCode($user['id'], $verificationCode)) {
                     // Gửi mã xác nhận qua email (sử dụng PHPMailer hoặc thư viện khác)
                     $mailer = new Mailer();
@@ -281,9 +279,8 @@ public function xulydangkynv(){
 
     public function logout() {
         if(isset($_SESSION['sdt'])){
-            unset($_SESSION['sdt']);
-            unset($_SESSION['tenkhachhang']);
-            unset($_SESSION['tennhanvien']);
+            session_destroy();
+            
         }
         header('Location: /inis/taikhoan/login/');
     }
@@ -305,12 +302,6 @@ public function xulydangkynv(){
         }
         
     }
-    
 
-    public function thongtin(){
-        $loaisp= $this->taikhoanModel->Getloaisp(); 
-        $this->view('menu',['loaisp' => $loaisp]);
-   
-    }
 }
 ?>

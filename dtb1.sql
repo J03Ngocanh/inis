@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2025 at 10:06 AM
+-- Generation Time: Mar 26, 2025 at 05:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dtb`
+-- Database: `dtb1`
 --
 
 -- --------------------------------------------------------
@@ -34,6 +34,16 @@ CREATE TABLE `chitiethoadon` (
   `dongia` decimal(10,2) NOT NULL,
   `thanhtien` decimal(10,2) GENERATED ALWAYS AS (`soluong` * `dongia`) STORED
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `chitiethoadon`
+--
+
+INSERT INTO `chitiethoadon` (`mahoadon`, `masanpham`, `soluong`, `dongia`) VALUES
+('HD0026', 'SP004', 1, 300000.00),
+('HD0027', 'SP004', 1, 300000.00),
+('HD0028', 'SP004', 2, 300000.00),
+('HD0028', 'SP007', 1, 510000.00);
 
 -- --------------------------------------------------------
 
@@ -79,14 +89,28 @@ INSERT INTO `danhmucsp` (`id_danhmuc`, `tendanhmuc`, `id_loaisp`) VALUES
 --
 
 CREATE TABLE `hoadon` (
-  `Mahoadon` varchar(10) NOT NULL,
-  `Makhachhang` varchar(10) NOT NULL,
-  `Ngaytao` datetime NOT NULL,
-  `Tongtientruocgiam` decimal(10,2) NOT NULL,
-  `Giamgia` int(10) NOT NULL,
-  `Tongtiensaugiam` decimal(10,2) NOT NULL,
-  `pttt` varchar(200) NOT NULL
+  `id` int(3) NOT NULL,
+  `mahoadon` varchar(10) NOT NULL,
+  `makhachhang` varchar(10) NOT NULL,
+  `hoten_nhan` varchar(200) NOT NULL,
+  `sdt_nhan` varchar(10) NOT NULL,
+  `diachi_nhan` varchar(500) NOT NULL,
+  `ngaytao` datetime NOT NULL,
+  `tongtientruocgiam` decimal(10,2) NOT NULL,
+  `giamgia` int(10) NOT NULL,
+  `tongtiensaugiam` decimal(10,2) NOT NULL,
+  `pttt` varchar(200) NOT NULL,
+  `trangthai` varchar(10) NOT NULL DEFAULT 'new'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hoadon`
+--
+
+INSERT INTO `hoadon` (`id`, `mahoadon`, `makhachhang`, `hoten_nhan`, `sdt_nhan`, `diachi_nhan`, `ngaytao`, `tongtientruocgiam`, `giamgia`, `tongtiensaugiam`, `pttt`, `trangthai`) VALUES
+(13, 'HD0026', 'KH0002', 'aa', '0987654', 'aaa', '2025-03-22 12:49:20', 0.00, 0, 0.00, 'tien_mat', 'new'),
+(14, 'HD0027', 'KH0002', 'Ngô Ngọc Ánh', '0987654', 'aa', '2025-03-22 12:55:12', 0.00, 0, 0.00, 'tien_mat', 'new'),
+(15, 'HD0028', 'KH0002', 'sdfgh', '0987654345', 'aa', '2025-03-22 12:56:00', 0.00, 0, 0.00, 'tien_mat', 'new');
 
 --
 -- Triggers `hoadon`
@@ -129,9 +153,9 @@ CREATE TABLE `incrementtable` (
 --
 
 INSERT INTO `incrementtable` (`TableName`, `CurrentValue`) VALUES
-('hoadon', 1),
-('khachhang', 2),
-('nhanvien', 1),
+('hoadon', 28),
+('khachhang', 3),
+('nhanvien', 3),
 ('SanPham', 82);
 
 -- --------------------------------------------------------
@@ -148,17 +172,17 @@ CREATE TABLE `khachhang` (
   `password` varchar(200) NOT NULL,
   `ngaysinh` date DEFAULT NULL,
   `id_rank` int(3) NOT NULL,
-  `verification_code` int(6) DEFAULT NULL,
-  `role` int(2) NOT NULL
+  `verification_code` int(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `khachhang`
 --
 
-INSERT INTO `khachhang` (`id`, `tenkhachhang`, `email`, `sdt`, `password`, `ngaysinh`, `id_rank`, `verification_code`, `role`) VALUES
-('KH0001', 'evfrv', 'ngoanh@gmail.com', '0937482367', 'ddd', NULL, 1, NULL, 0),
-('KH0002', 'Ngô Ngọc Á', 'ngoanh2345@gmail.com', '0987654321', '$2y$10$.wPymwBoKVq6nAldWBHL1uERSjfH9nQkwuZ5IWHcMxFdpT.e.eg/e', '2003-11-25', 1, NULL, 1);
+INSERT INTO `khachhang` (`id`, `tenkhachhang`, `email`, `sdt`, `password`, `ngaysinh`, `id_rank`, `verification_code`) VALUES
+('KH0001', 'evfrv', 'ngoanh@gmail.com', '0937482367', 'ddd', NULL, 1, NULL),
+('KH0002', 'Ngô Ngọc Á', 'ngoanh2345@gmail.com', '0987654321', '$2y$10$.wPymwBoKVq6nAldWBHL1uERSjfH9nQkwuZ5IWHcMxFdpT.e.eg/e', '2003-11-25', 1, NULL),
+('KH0003', 'Vũ Nguyên Hương', 'ngongocanh15072311@gmail.com', '0000000000', '$2y$10$d50RdGxa9wo5oSbTKzt0/.NAX0NgmkRrOw66WeNcmoulaC7613s5i', '2003-11-25', 1, 576270);
 
 --
 -- Triggers `khachhang`
@@ -225,7 +249,9 @@ CREATE TABLE `nhanvien` (
 --
 
 INSERT INTO `nhanvien` (`Manhanvien`, `Tennhanvien`, `sdt`, `password`, `id_role`, `trangthai`) VALUES
-('NV001', 'Phan Văn Tuấn', '0827928097', 'fgg', 1, 1);
+('NV001', 'Phan Văn Tuấn', '0827928097', 'fgg', 1, 1),
+('NV002', 'Ngô Ngọc Ánh', '0987654321', '$2y$10$WiLFDeTzqDRiER8LJWi96.GSCQjyTMdK5X0VcoqMY3lDFLdAO3ooy', 1, 1),
+('NV003', 'Vũ Nguyên Hương', '0123456777', '$2y$10$jTEcVtfL3aL3.C00m6KtwuXB.gRLVt3Muzk2yHk13Jb9KOxeSQ1Te', 2, 1);
 
 --
 -- Triggers `nhanvien`
@@ -264,6 +290,7 @@ CREATE TABLE `rank` (
 --
 
 INSERT INTO `rank` (`id_rank`, `name`, `Min_point`, `discount`) VALUES
+(1, 'Member', 0, '0%'),
 (2, 'Silver', 2000, '5%'),
 (3, 'Gold', 4000, '10%'),
 (4, 'Diamond', 8000, '15%');
@@ -431,7 +458,6 @@ DELIMITER ;
 -- Indexes for table `chitiethoadon`
 --
 ALTER TABLE `chitiethoadon`
-  ADD PRIMARY KEY (`mahoadon`,`masanpham`),
   ADD KEY `fk_sanpham` (`masanpham`);
 
 --
@@ -444,7 +470,7 @@ ALTER TABLE `danhmucsp`
 -- Indexes for table `hoadon`
 --
 ALTER TABLE `hoadon`
-  ADD PRIMARY KEY (`Mahoadon`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `incrementtable`
@@ -494,6 +520,12 @@ ALTER TABLE `danhmucsp`
   MODIFY `id_danhmuc` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
+-- AUTO_INCREMENT for table `hoadon`
+--
+ALTER TABLE `hoadon`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `loaisp`
 --
 ALTER TABLE `loaisp`
@@ -513,7 +545,7 @@ ALTER TABLE `rank`
 -- Constraints for table `chitiethoadon`
 --
 ALTER TABLE `chitiethoadon`
-  ADD CONSTRAINT `fk_hoadon` FOREIGN KEY (`mahoadon`) REFERENCES `hoadon` (`Mahoadon`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_hoadon` FOREIGN KEY (`mahoadon`) REFERENCES `hoadon` (`mahoadon`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_sanpham` FOREIGN KEY (`masanpham`) REFERENCES `sanpham` (`masanpham`) ON DELETE CASCADE;
 COMMIT;
 

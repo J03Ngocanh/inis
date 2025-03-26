@@ -34,7 +34,7 @@ class adminController extends Controller
 
     public function donhang()
     {
-       // $this->view('header');
+       $this->view('header');
         $listddh = $this->adminModel->getddh();
         $chitietddh = $this->adminModel->chitietdonhang();
         $this->view('admin/listddh', ['listddh' => $listddh, 'ctddh' => $chitietddh]);
@@ -66,14 +66,6 @@ class adminController extends Controller
         header("location: /inis/admin/sanpham");
     }
 
-
-    public function listddh()
-    {
-        $listddh = $this->adminModel->getddh();
-        $chitietddh = $this->adminModel->chitietdonhang();
-        $this->view('admin/listddh', ['listddh' => $listddh, 'ctddh' => $chitietddh]);
-
-    }
 
     public function xulyxacnhan($id_giohang)
     {

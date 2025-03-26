@@ -34,7 +34,6 @@ class adminModel extends Model {
 }
 public function getlistkh(){
    $sql = "SELECT * FROM $this->tblkhachhang INNER JOIN $this->tblrank ON $this->tblkhachhang.id_rank = $this->tblrank.id_rank";
-
    $result = $this->con->query($sql);
    return $result;
 }
@@ -92,10 +91,9 @@ public fUNCTION xacnhan($id_giohang){
    $result = $this->con->query($sql);
    return $result;
 }
-public fUNCTION chitietdonhang(){
-   $sql = "SELECT $this->tblchitietdonhang.*, $this->tblsanpham.hinhanh  FROM $this->tblchitietdonhang INNER JOIN $this->tblsanpham
-   ON $this->tblchitietdonhang.masanpham = $this->tblsanpham.masanpham
-       ";
+public function chitietdonhang(){
+   $sql = "SELECT $this->tblchitietdonhang.*, $this->tblsanpham.hinhanh, $this->tblsanpham.tensanpham FROM $this->tblchitietdonhang INNER JOIN $this->tblsanpham
+   ON $this->tblchitietdonhang.masanpham = $this->tblsanpham.masanpham";
    $result = $this->con->query($sql);
    return $result;
 }

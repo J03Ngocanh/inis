@@ -62,7 +62,7 @@ class giohangController extends Controller {
                     'hinhanh' => $hinhanh,
                     'soluong' => $soluong,
                 ];
-            }
+            } 
       // Lưu thông báo vào session
       $_SESSION['flash_message'] = "Sản phẩm đã được thêm vào giỏ hàng.";
     
@@ -165,34 +165,50 @@ class giohangController extends Controller {
             }
     }
 
-//    public function thanhtoan(){
-//        $loaisp= $this->giohangModel->Getloaisp();
-//        $this->view('menu',['loaisp' => $loaisp]);
-//        $thongtinsanpham= $this->giohangModel->thongtinsanphamgiohang($id_giohang);
-//        $this->view('giohang/thanhtoangiohang',['thongtinsanpham' => $thongtinsanpham,]);
-//        $this->view('footer');
-//    }
 
+public function tienhanhthanhtoangiohang() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Lấy thông tin từ form
+        $sdt = $_POST['sdt'] ?? '';
+        $hoten_nhan = $_POST['hoten_nhan'] ?? '';
+        $sdt_nhan = $_POST['sdt_nhan'] ?? '';
+        $diachi_nhan = $_POST['diachi_nhan'] ?? '';
+        $phuong_thuc = $_POST['phuong_thuc'] ?? '';
+        $tongTien = $_POST['tongTien'] ?? 0;
+        $ngay_tao = date('Y-m-d H:i:s');
 
- public function tienhanhthanhtoangiohang() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $sdt = $_POST['sdt'];
-            $hoten_nhan = $_POST['hoten_nhan'];
-            $sdt_nhan = $_POST['sdt_nhan'];
-            $diachi_nhan = $_POST['diachi_nhan'];
-            $phuong_thuc = $_POST['phuong_thuc'];
-            $soluong = $_POST['soluong'];
-            $tongTien = $_POST['tongTien'];
-            $Ngay_tao = date('Y-m-d H:i:s');
+        // Lấy mã khách hàng từ session (phải có đăng nhập)
+        $makhachhang = $_SESSION['makhachhang'] ?? 'KH0000';
+
+        // Thêm đơn hàng và lấy mã hóa đơn vừa tạo
+        $mahoadon = $this->giohangModel->addOrder($makhachhang, $tongTien, $hoten_nhan, $sdt_nhan, $diachi_nhan, $phuong_thuc, $ngay_tao);
+
+        if ($mahoadon) {
+            if (!empty($_SESSION['giohang'])) {
+                foreach ($_SESSION['giohang'] as $masanpham => $sanpham) {
+                    $soluong = $sanpham['soluong'] ;
+                    $giagoc = $sanpham['giagoc'];
+                    
+                    // Thêm sản phẩm vào chi tiết hóa đơn
+                    $this->giohangModel->addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc);
+                }
+            }
+
+            // Xóa giỏ hàng sau khi đặt hàng
+            unset($_SESSION['giohang']);
+
+            // Điều hướng đến trang xác nhận đơn hàng
+          //  header("Location: " . WEBROOT . "giohang/hoanthanhthanhtoan/$mahoadon");
+            exit();
+        } else {
+            die("Lỗi: Không thể tạo đơn hàng.");
         }
-        $khachhang = $_SESSION['makhachhang'];
-
-        $magiaodich = $randomNumber = random_int(10000, 100000);
-        $resultAddOrder = $this->giohangModel->addOrder($magiaodich,$tongTien,$hoten_nhan, $sdt_nhan, $diachi_nhan, $phuong_thuc, $Ngay_tao);
-        // tạo bản ghi chi tiết hóa đơn
-        $resultAddOrderDetail = "";
-         header("location: /inis/giohang/hoanthanhthanhtoan/$magiaodich");
+    } else {
+        die("Lỗi: Phương thức không hợp lệ.");
     }
+}
+
+
 
     public function hoanthanhthanhtoan($magiaodich){
         $loaisp= $this->giohangModel->Getloaisp();  

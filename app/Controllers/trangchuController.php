@@ -23,7 +23,15 @@ class trangchuController extends Controller {
         $this->view('menu',['loaisp' => $loaisp]);
         $this->view('trangchu/veinnis');
         $this->view('footer');
-
+    }
+    
+    public function thongtin(){
+        $makhachhang =  $_SESSION['makhachhang'];
+        $loaisp= $this->trangchuModel->Getloaisp(); 
+        $info = $this->trangchuModel->info($makhachhang);
+        $history = $this->trangchuModel->getLichSuDonHang($makhachhang);
+        $this->view('menu',['loaisp' => $loaisp]);
+        $this->view('thongtin/thongtin', [ 'info' => $info, 'history' => $history]);
     }
 
    
