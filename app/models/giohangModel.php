@@ -268,15 +268,49 @@ public function updatesolgmuangay($masanpham, $soluong) {
 public function addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc) {
     $sql = "INSERT INTO $this->tblchitietdonhang (mahoadon, masanpham, soluong, dongia) 
             VALUES ('$mahoadon', '$masanpham', $soluong, $giagoc)";
-             echo $sql;
 
     if ($this->con->query($sql)) {
-        echo $sql;
         return true; // Thành công
     } else {
         return false; // Lỗi
     }
 }
+public function updatePointsAndRank($makhachhang, $tongTien)
+{
+    // Lấy thông tin khách hàng
+    $sql = "SELECT point FROM $this->tblkhachhang WHERE id = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("s", $makhachhang);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $khachhang = $result->fetch_assoc();
+    $stmt->close();
+
+    if ($khachhang) {
+        // Cộng điểm từ hóa đơn (1/1000 tổng tiền)
+        $newPoints = $khachhang['point'] + floor($tongTien / 1000);
+
+        // Xác định cấp bậc mới
+        if ($newPoints >= 3000) {
+            $id_rank = 4; // Diamond
+        } elseif ($newPoints >= 1500) {
+            $id_rank = 3; // Gold
+        } elseif ($newPoints >= 500) {
+            $id_rank = 2; // Silver
+        } else {
+            $id_rank = 1; // Member
+        }
+
+        // Cập nhật điểm và rank
+        $sqlUpdate = "UPDATE $this->tblkhachhang SET point = ?, id_rank = ? WHERE id = ?";
+        $stmtUpdate = $this->conn->prepare($sqlUpdate);
+        $stmtUpdate->bind_param("iis", $newPoints, $id_rank, $makhachhang);
+        $stmtUpdate->execute();
+        $stmtUpdate->close();
+    }
+}
+
+
 
 
 }

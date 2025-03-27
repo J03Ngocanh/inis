@@ -152,6 +152,26 @@ input[type="number"]::-webkit-outer-spin-button {
  input[type="number"] {
     -moz-appearance: textfield;
 } 
+.flash-message {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    display: none; /* Initially hidden */
+    z-index: 1000;
+    font-size: 16px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.flash-message.show {
+    display: block;
+    animation: slide-in 0.5s ease-out forwards;
+}
+
     </style>
 </head>
 <div class="noi-dung">
@@ -190,9 +210,15 @@ input[type="number"]::-webkit-outer-spin-button {
                         <button type="button" class="quantity-btn plus">+</button>
                     </div>
                     <div class="action-buttons">
-                        <form method="POST" action="/inis/giohang/themvaogiohang/<?php echo $row['masanpham']; ?>">
+                        <form method="POST" action="/inis/giohang/themgh/<?php echo $row['masanpham']; ?>">
                             <input type="hidden" id="quantityAdd" name="soluong" value="1">
                             <button type="submit" class="nut">THÊM VÀO GIỎ HÀNG</button>
+                            <?php
+                                       if (isset($_SESSION['flash_message'])) {
+                                       echo "<div id='flash-message' class='flash-message'>" . $_SESSION['flash_message'] . "</div>";
+                                     unset($_SESSION['flash_message']);
+                                    }
+                                     ?>
                         </form>
                         <form method="POST" action="/inis/giohang/muangay/<?php echo $row['masanpham']; ?>">
                             <input type="hidden" id="quantityBuy" name="soluong" value="1">
@@ -210,8 +236,7 @@ input[type="number"]::-webkit-outer-spin-button {
         </div>
     </body>
 </div>
-    <script>
-   
+<script>
 function changeImage(thumbnail) {
     let largeImage = document.getElementById("largeImage");
     largeImage.src = thumbnail.src;
@@ -224,6 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const quantityAdd = document.getElementById("quantityAdd");
     const quantityBuy = document.getElementById("quantityBuy");
 
+    // Xử lý giảm số lượng
     minusBtn.addEventListener("click", function () {
         let value = parseInt(quantityInput.value) || 1;
         if (value > 1) {
@@ -234,6 +260,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Xử lý tăng số lượng
     plusBtn.addEventListener("click", function () {
         let value = parseInt(quantityInput.value) || 1;
         value++;
@@ -242,13 +269,23 @@ document.addEventListener("DOMContentLoaded", function () {
         quantityBuy.value = value;
     });
 
+    // Xử lý nhập số lượng trực tiếp
     quantityInput.addEventListener("input", function () {
         const value = parseInt(quantityInput.value) || 1;
         quantityAdd.value = value;
         quantityBuy.value = value;
     });
-});
 
-    </script>
+    // Hiển thị thanh thông báo flash nếu có
+    const flashMessage = document.getElementById("flash-message");
+    if (flashMessage) {
+        flashMessage.classList.add("show"); // Hiển thị thông báo
+        setTimeout(function () {
+            flashMessage.style.display = "none"; // Ẩn sau 5 giây
+        }, 5000);
+    }
+});
+</script>
+
 
 </html>

@@ -20,7 +20,6 @@ class trangchuModel extends Model {
             INNER JOIN {$this->tblsanpham} AS sp ON cthd.masanpham = sp.masanpham
             GROUP BY sp.masanpham
             ORDER BY total_sold DESC LIMIT 4";
-            echo $sql;
     $result = $this->con->query($sql);
     return $result;
 }
@@ -40,7 +39,6 @@ public function getLichSuDonHang($makhachhang){
             JOIN $this->tblchitiethoadon cthd ON hd.mahoadon = cthd.mahoadon 
             JOIN $this->tblsanpham sp ON cthd.masanpham = sp.masanpham WHERE hd.makhachhang = '$makhachhang'
             ORDER BY hd.ngaytao DESC";
-    echo $sql;
     $result = $this->con->query($sql);
 
     $history = [];

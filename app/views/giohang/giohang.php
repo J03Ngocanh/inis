@@ -12,8 +12,13 @@
             display: none; 
         }
         body {
-            background: linear-gradient(to bottom right, rgb(134, 204, 118), rgb(217, 235, 215));
-        }
+    background: linear-gradient(to bottom right, rgb(134, 204, 118), rgb(217, 235, 215));
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+}
+
 
 .cart-container {
     align-items: center;

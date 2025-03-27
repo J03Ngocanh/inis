@@ -377,7 +377,7 @@ button {
                                        VND <?php echo number_format($row['giagoc'], 0, ',', '.'); ?>đ
                                       </a>
                                   </p>
-                                  <form action="/inis/giohang/themvaogiohang/<?php echo $row['masanpham']; ?>" method="POST">
+                                  <form action="/inis/giohang/themgh/<?php echo $row['masanpham']; ?>" method="POST">
                                       <input type="hidden" name="masanpham" value="<?= htmlspecialchars($row['masanpham']) ?>">
                                       <button style="margin-bottom: 20px;" type="submit" class="buy-now">Thêm vào giỏ hàng</button>
                                       <?php
@@ -417,6 +417,12 @@ button {
                                   <form action="/inis/giohang/themgh/<?php echo $row['masanpham']; ?>" method="POST">
                                       <input type="hidden" name="masanpham" value="<?= htmlspecialchars($row['masanpham']) ?>">
                                       <button style="margin-bottom: 20px;" type="submit" class="buy-now">Thêm vào giỏ hàng</button>
+                                      <?php
+                                       if (isset($_SESSION['flash_message'])) {
+                                       echo "<div id='flash-message' class='flash-message'>" . $_SESSION['flash_message'] . "</div>";
+                                     unset($_SESSION['flash_message']);
+                                    }
+                                     ?>
                                   </form>
       
                               </div>
@@ -509,32 +515,5 @@ $(document).ready(function() {
     }
 });
 </script>
-
-<!-- <script>
-
-// Cài đặt thời gian kết thúc Flash Sale
-var countDownDate = new Date().getTime() + 60 * 60 * 1000; // 1 giờ sau
-
-// Cập nhật đồng hồ đếm ngược mỗi giây
-var x = setInterval(function() {
-
-    var now = new Date().getTime();
-    var distance = countDownDate - now;
-
-    // Tính toán thời gian còn lại
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Hiển thị thời gian còn lại trên trang
-    document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
-
-    // Nếu thời gian kết thúc, hiển thị thông báo
-    if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("timer").innerHTML = "Flash Sale đã kết thúc!";
-    }
-}, 1000);
-</script> -->
 
 </html>

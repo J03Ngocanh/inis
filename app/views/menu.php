@@ -119,25 +119,52 @@
 #search-results div:not(:last-child) {
     border-bottom: 1px solid #f0f0f0; /* Đường ngăn giữa các kết quả */
 }
-        .cart-icon {
-            position: relative;
-            display: inline-block;
-        }
+/* Căn chỉnh icon giỏ hàng */
+/* Căn chỉnh icon giỏ hàng */
+/* Căn chỉnh icon giỏ hàng */
+.cart-icon {
+    position: relative;
+    display: inline-block;
+    font-size: 22px; /* Điều chỉnh kích thước icon */
+    color: #333;
+    transition: color 0.3s ease;
+}
 
-        .cart-count {
-            position: absolute;
-            top: -8px; /* Điều chỉnh vị trí theo ý bạn */
-            right: -8px; /* Điều chỉnh vị trí theo ý bạn */
-            background-color: red; /* Màu nền của số */
-            color: white; /* Màu chữ */
-            border-radius: 50%; /* Tạo hình tròn */
-            padding: 2px 6px; /* Kích thước vòng tròn */
-            font-size: 12px; /* Kích thước chữ */
-            font-weight: bold;
-        }
+.cart-icon i {
+    font-size: 25px; /* Kích thước giỏ hàng vừa phải */
+}
+
+
+
+/* Badge hiển thị số lượng sản phẩm */
+.cart-count {
+    position: absolute;
+    top: -5px; /* Căn chỉnh vị trí số */
+    right: -8px; /* Điều chỉnh để nằm gọn trên icon */
+    background-color:rgb(158, 254, 187);
+    color: white;
+    border-radius: 50%;
+    width: 18px; /* Kích thước nhỏ gọn */
+    height: 18px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white; /* Viền trắng giúp nổi bật */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Khi không có sản phẩm thì ẩn số */
+.cart-count:empty {
+    display: none;
+}
+
+
 .noi-dung{
     margin-top: 80px;
 }
+
 
     </style>
 </head>
@@ -250,27 +277,29 @@
         }
     });
 
-   function updateCartCount() {
-       $.ajax({
-           url: '<?php echo WEBROOT; ?>giohang/getCartCount',
-           type: 'GET',
-           success: function (response) {
-               var count = parseInt(response);
-               if (count > 0) {
-                   $('.cart-count').text(count).show();
-               } else {
-                   $('.cart-count').hide();
-               }
-           },
-           error: function () {
-               console.log('Lỗi khi lấy số lượng giỏ hàng');
-           }
-       });
-   }
+    function updateCartCount() {
+    $.ajax({
+        url: '<?php echo WEBROOT; ?>giohang/getCartCount',
+        type: 'GET',
+        success: function (response) {
+            var count = parseInt(response);
+            var cartCountElement = $('.cart-count');
 
-   // Gọi hàm khi trang tải
-   updateCartCount();
-   
+            if (count > 0) {
+                cartCountElement.text(count).show();
+            } else {
+                cartCountElement.hide();
+            }
+        },
+        error: function () {
+            console.log('Lỗi khi lấy số lượng giỏ hàng');
+        }
+    });
+}
+
+// Cập nhật số lượng ngay khi trang tải
+updateCartCount();
+
 
 </script>
 </body>

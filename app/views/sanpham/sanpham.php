@@ -131,6 +131,12 @@
                     <form action="/inis/giohang/themgh/<?php echo $row['masanpham']; ?>" method="POST">
                         <input type="hidden" name="masanpham" value="<?= htmlspecialchars($row['masanpham']) ?>">
                         <button type="submit" class="buy-now">Thêm vào giỏ hàng</button>
+                        <?php
+                                       if (isset($_SESSION['flash_message'])) {
+                                       echo "<div id='flash-message' class='flash-message'>" . $_SESSION['flash_message'] . "</div>";
+                                     unset($_SESSION['flash_message']);
+                                    }
+                                     ?>
                     </form>
                 </div>
                 <?php } ?>

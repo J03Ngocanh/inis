@@ -56,7 +56,7 @@ public fUNCTION getdanhmuc(){
             hinhanh3 = '$hinhanh3', 
             hinhanh4 = '$hinhanh4' 
             WHERE masanpham = '$masanpham'";
-        // echo $sql; // Để debug, có thể bỏ comment khi cần kiểm tra
+       
         $result = $this->con->query($sql);
         return $result;
     }

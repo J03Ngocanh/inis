@@ -128,6 +128,26 @@
             color:green; 
             font-weight: bold;
         }
+        .flash-message {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    display: none; /* Initially hidden */
+    z-index: 1000;
+    font-size: 16px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.flash-message.show {
+    display: block;
+    animation: slide-in 0.5s ease-out forwards;
+}
+
     </style>
 </head>
 <body>
@@ -187,6 +207,12 @@
                     <form action="/inis/giohang/themgh/<?php echo $row['masanpham']; ?>" method="POST">
                         <input type="hidden" name="masanpham" value="<?= htmlspecialchars($row['masanpham']) ?>">
                         <button type="submit" class="buy-now">Thêm vào giỏ hàng</button>
+                        <?php
+                                       if (isset($_SESSION['flash_message'])) {
+                                       echo "<div id='flash-message' class='flash-message'>" . $_SESSION['flash_message'] . "</div>";
+                                     unset($_SESSION['flash_message']);
+                                    }
+                                     ?>
                     </form>
                 </div>
                 <?php } ?>
@@ -195,23 +221,33 @@
     </div>
     </div>
 </main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function() {
+$(document).ready(function() {
+    // Hiệu ứng hover cho .loai-wrapper
     $(".loai-wrapper").mouseenter(function() {
-        $(this).find(".chanhocx2").stop(true, true).fadeIn(200); 
+        $(this).find(".chanhocx2").stop(true, true).fadeIn(200);
     }).mouseleave(function() {
         setTimeout(() => {
             if (!$(this).find(".chanhocx2:hover").length) {
-                $(this).find(".chanhocx2").stop(true, true).fadeOut(200); 
+                $(this).find(".chanhocx2").stop(true, true).fadeOut(200);
             }
         }, 200);
     });
 
     $(".chanhocx2").mouseleave(function() {
-        $(this).stop(true, true).fadeOut(200); 
+        $(this).stop(true, true).fadeOut(200);
     });
-});
 
+    // Hiển thị thanh thông báo flash nếu có
+    if ($('#flash-message').length > 0) {
+        $('#flash-message').addClass('show'); // Hiển thị thông báo
+        setTimeout(function() {
+            $('#flash-message').fadeOut(500); // Ẩn sau 5 giây
+        }, 5000);
+    }
+});
 </script>
+
 </body>
 </html>
