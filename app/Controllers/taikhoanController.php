@@ -182,17 +182,15 @@ class taikhoanController extends Controller {
                 $_SESSION['loidangnhap'] = "Không tồn tại tài khoản với số điện thoại hoặc email này.";
             }
         }
-
         $this->view('taikhoan/login');
     }
     
 public function signup() {
-   
     $this->view('taikhoan/signup1');
- 
 }
+
+
 public function xulydangky(){
-   
     $tenkhachhang = $_POST['tenkhachhang'] ?? '';
     $sdt = $_POST['sdt'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -200,11 +198,9 @@ public function xulydangky(){
     $email = $_POST['email'] ?? '';
     $ngaysinh = $_POST['ngaysinh'] ?? '';
     $id_rank = 1;
-
     $checksdt = $this->taikhoanModel->check_sdt($sdt);
     $checkemail = $this->taikhoanModel->checkEmailExists($email);
     $i = 0;
-
     // Kiểm tra số điện thoại có tồn tại không
     if (mysqli_num_rows($checksdt) > 0) {
         $_SESSION['trungsdt'] = "Số điện thoại này đã được sử dụng";
@@ -214,7 +210,6 @@ public function xulydangky(){
         $_SESSION['hienthisdt'] = $sdt;
     }
 
-    // Kiểm tra email có tồn tại không
     if ($checkemail) {
         $_SESSION['trungemail'] = "Email này đã tồn tại";
         $i++;
@@ -223,7 +218,6 @@ public function xulydangky(){
         $_SESSION['hienthiemail'] = $email;
     }
 
-    // Nếu không có lỗi, thêm tài khoản vào database
     if ($i == 0) {
         $this->taikhoanModel->themtaikhoan($tenkhachhang, $email, $sdt, $ngaysinh, $password_hash, $id_rank);
 
@@ -231,11 +225,10 @@ public function xulydangky(){
         unset($_SESSION['hienthitenkhachhang'], $_SESSION['trungsdt'], $_SESSION['hienthisdt'], 
               $_SESSION['trungemail'], $_SESSION['hienthiemail'], $_SESSION['hienthipass']);
 
-        // Chuyển hướng về trang đăng nhập
+
         header('Location: /inis/taikhoan/login');
         exit();
     } else {
-        // Lưu lại thông tin nhập trước đó để hiển thị lại
         $_SESSION['hienthitenkhachhang'] = $tenkhachhang;
         $_SESSION['hienthipass'] = $password;
         header('Location: /inis/taikhoan/signup');
@@ -269,10 +262,8 @@ public function xulydangkynv(){
 
    
     } else {
-        // Lưu lại thông tin nhập trước đó để hiển thị lại
         $_SESSION['hienthitennhanvien'] = $tennhanvien;
         $_SESSION['hienthipass'] = $password;
- 
     }
 }
 

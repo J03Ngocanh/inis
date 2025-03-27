@@ -6,6 +6,6 @@ class Model {
 
     public function __construct() {
        
-            $this->con = new mysqli('localhost','root','','dtb');
+            $this->con = new mysqli('localhost','root','','dtb1');
     }
 }
