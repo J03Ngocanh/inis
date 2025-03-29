@@ -23,7 +23,7 @@
 }
 .search-bar {
     position: relative;
-    width: 300px; /* Tùy chỉnh theo yêu cầu */
+    width: 400px;; /* Tùy chỉnh theo yêu cầu */
     align-items: center;
 }
 .menu {
@@ -53,7 +53,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px; 
+    gap: 25px; 
 }
 
 .icon-menu span {
@@ -130,7 +130,7 @@
     transition: color 0.3s ease;
 }
 
-.cart-icon i {
+.icon i {
     font-size: 25px; /* Kích thước giỏ hàng vừa phải */
 }
 
@@ -164,6 +164,23 @@
 .noi-dung{
     margin-top: 80px;
 }
+.points-container {
+    display: inline-flex;
+    align-items: center;
+    background:rgb(216, 250, 210); /* Màu vàng giống icon coins */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.points-container i {
+    margin-right: 5px;
+    font-size: 16px;
+}
+
 
 
     </style>
@@ -226,6 +243,10 @@
                     <?php endif; ?>
                 </a>
                 <span><strong><?= htmlspecialchars($_SESSION['tenkhachhang']); ?></strong></span>
+                <div class="points-container">
+                &#x1FA99;
+                    <span><?php echo $_SESSION['point']?> điểm</span>
+                </div>
                 <p>|</p>
                 <a style="font-size:15px;" href="<?php echo WEBROOT; ?>taikhoan/logout" class="icon">Đăng xuất</a>
             <?php else: ?>

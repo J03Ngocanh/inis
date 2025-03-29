@@ -4,6 +4,7 @@ class giohangModel extends Model {
     protected $tblloaisp = "loaisp";
     protected $tblsanpham = "sanpham";
     protected $tblgiohang = "giohang";
+    protected $tblkhachhang = "khachhang";
     protected $tblchitietgiohang = "chitiet_giohang";
     protected $tbldonhang = "hoadon";
     protected $tblchitietdonhang = "chitiethoadon";
@@ -83,60 +84,15 @@ class giohangModel extends Model {
            return $result;    
     }
 
-    public fUNCTION Getchitietgiohang($id_giohang){
-        $sql = "SELECT * FROM $this->tblchitietgiohang WHERE id_giohang = $id_giohang";
-        $result = $this->con->query($sql);
-        return $result;
-    }
-    public function capnhatsoluong($sdt, $masanpham, $soluong) {
-        // Cập nhật số lượng sản phẩm trong giỏ hàng
-        $sql = "UPDATE $this->tblchitietgiohang 
-                SET soluong = $soluong 
-                WHERE masanpham = '$masanpham' AND id_giohang IN (SELECT id_giohang FROM $this->tblgiohang WHERE sdt = '$sdt' AND active = 0)";
-
-        $result = $this->con->query($sql);
-        return $result;
-    }
-
-
-
-    public function capnhattongtien($tongTien, $sdt, $id_giohang){
-        $sql = "UPDATE $this->tblgiohang SET tongTien = $tongTien WHERE sdt = '$sdt' AND id_giohang = $id_giohang";
-        $result = $this->con->query($sql);
-        return $result;
-        
-    }
+  
     
-        //Tính tổng tiền
-        public function tinhTongTien($sdt) {
-            $sql = "SELECT SUM(ctgh.soluong * ctgh.giagoc) AS tongTien
-                    FROM $this->tblgiohang AS gh
-                    INNER JOIN $this->tblchitietgiohang AS ctgh ON gh.id_giohang = ctgh.id_giohang
-                    WHERE gh.sdt = '$sdt' AND gh.active = 0";
-            
-            $result = $this->con->query($sql);
-           
-    
-        if ($result) {
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc() ;
-                $tongTien = $row['tongTien']; 
-                return $row['tongTien'];
-                }
-             else {
-                return 0;
-
-            }
-        }
-    }
-
-    public function themmuangay($sdt, $hoten_nhan, $sdt_nhan, $diachi_nhan, $phuong_thuc, $tongTien, $Ngay_tao) {
+    public function themmuangay($sdt, $hoten_nhan, $diachi_nhan, $phuong_thuc, $tongTien, $Ngay_tao) {
         // Kết nối MySQLi (giả sử bạn đã có kết nối $this->con là một đối tượng MySQLi)
         
         // Escape dữ liệu đầu vào để bảo vệ khỏi SQL Injection
         $sdt = $this->con->real_escape_string($sdt);
         $hoten_nhan = $this->con->real_escape_string($hoten_nhan);
-        $sdt_nhan = $this->con->real_escape_string($sdt_nhan);
+      
         $diachi_nhan = $this->con->real_escape_string($diachi_nhan);
         $phuong_thuc = $this->con->real_escape_string($phuong_thuc);
     
@@ -151,8 +107,8 @@ class giohangModel extends Model {
         
     
         // Câu lệnh SQL để chèn dữ liệu vào bảng giỏ hàng
-        $sql = "INSERT INTO $this->tblgiohang(sdt, hoten_nhan, sdt_nhan, diachi_nhan, phuong_thuc, tongTien, Ngay_tao, active)
-                VALUES ('$sdt', '$hoten_nhan', '$sdt_nhan', '$diachi_nhan', '$phuong_thuc', $tongTien, NOW(), 1)";
+        $sql = "INSERT INTO $this->tblgiohang(sdt, hoten_nhan, diachi_nhan, phuong_thuc, tongTien, Ngay_tao, active)
+                VALUES ('$sdt', '$hoten_nhan', '$diachi_nhan', '$phuong_thuc', $tongTien, NOW(), 1)";
         echo 
         $result=$this->con->query($sql);
         return $result; 
@@ -191,30 +147,30 @@ class giohangModel extends Model {
     $result=$this->con->query($sql);
     return $result;
   }
-  public function updatedondathang($tongTien, $id_giohang ,$hoten_nhan, $sdt_nhan, $diachi_nhan, $phuong_thuc, $Ngay_tao) {
+  public function updatedondathang($tongTien, $id_giohang ,$hoten_nhan, $diachi_nhan, $phuong_thuc, $Ngay_tao) {
     // Kết nối MySQLi (giả sử bạn đã có kết nối $this->con là một đối tượng MySQLi)
     
     // Escape dữ liệu đầu vào để bảo vệ khỏi SQL Injection
     $hoten_nhan = $this->con->real_escape_string($hoten_nhan);
-    $sdt_nhan = $this->con->real_escape_string($sdt_nhan);
+   
     $diachi_nhan = $this->con->real_escape_string($diachi_nhan);
     $phuong_thuc = $this->con->real_escape_string($phuong_thuc);
 
     // Câu lệnh SQL để chèn dữ liệu vào bảng giỏ hàng
     $sql = "UPDATE $this->tblgiohang 
-    SET tongTien= $tongTien, hoten_nhan='$hoten_nhan', sdt_nhan='$sdt_nhan',diachi_nhan='$diachi_nhan',
+    SET tongTien= $tongTien, hoten_nhan='$hoten_nhan', diachi_nhan='$diachi_nhan',
     phuong_thuc='$phuong_thuc',Ngay_tao =NOW(), active=1  WHERE id_giohang= $id_giohang";
     $result=$this->con->query($sql);
     return $result;
 
 }
-public function Getttinchitietdonhang($magiaodich){
-    $sql = "SELECT * FROM $this->tblchitietdonhang WHERE magiaodich = $magiaodich";
+public function Getttinchitietdonhang($mahoadon){
+    $sql = "SELECT * FROM $this->tblchitietdonhang ctdh INNER JOIN $this->tblsanpham sp ON ctdh.masanpham = sp.masanpham WHERE mahoadon = '$mahoadon'";
     $result=$this->con->query($sql);
     return $result;
 }
-public function Getttindonhang($magiaodich){
-    $sql = "SELECT * FROM $this->tbldonhang WHERE magiaodich = $magiaodich";
+public function Getttindonhang($mahoadon){
+    $sql = "SELECT * FROM $this->tbldonhang WHERE mahoadon = '$mahoadon'";
     $result=$this->con->query($sql);
     return $result;
 }
@@ -244,9 +200,9 @@ public function updatesolgmuangay($masanpham, $soluong) {
     return $result;
     
  }
- public function addOrder($makhachhang, $tongTien, $hoten_nhan, $sdt_nhan, $diachi_nhan, $phuong_thuc, $ngay_tao) {
+ public function addOrder($makhachhang, $tongTien, $hoten_nhan, $sdt, $diachi_nhan, $phuong_thuc, $ngay_tao) {
     $sql = "INSERT INTO $this->tbldonhang (makhachhang, tongtiensaugiam, hoten_nhan, sdt_nhan, diachi_nhan, pttt, ngaytao) 
-            VALUES ('$makhachhang', '$tongTien', '$hoten_nhan', '$sdt_nhan', '$diachi_nhan', '$phuong_thuc', '$ngay_tao')";
+            VALUES ('$makhachhang', '$tongTien', '$hoten_nhan','$sdt', '$diachi_nhan', '$phuong_thuc', '$ngay_tao')";
     $this->con->query($sql);
 
     if ($this->con->affected_rows > 0) {
@@ -268,6 +224,7 @@ public function updatesolgmuangay($masanpham, $soluong) {
 public function addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc) {
     $sql = "INSERT INTO $this->tblchitietdonhang (mahoadon, masanpham, soluong, dongia) 
             VALUES ('$mahoadon', '$masanpham', $soluong, $giagoc)";
+            echo $sql;
 
     if ($this->con->query($sql)) {
         return true; // Thành công
@@ -275,11 +232,18 @@ public function addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc) {
         return false; // Lỗi
     }
 }
+public function Getcoupon($makhachhang){
+    $sql = "SELECT discount FROM $this->tblrank r INNER JOIN $this->tblkhachhang kh ON r.id_rank = kh.id_rank WHERE id='$makhachhang'";
+    $result=$this->con->query($sql);
+    return $result;
+    
+
+}
 public function updatePointsAndRank($makhachhang, $tongTien)
 {
     // Lấy thông tin khách hàng
     $sql = "SELECT point FROM $this->tblkhachhang WHERE id = ?";
-    $stmt = $this->conn->prepare($sql);
+    $stmt = $this->con->prepare($sql);
     $stmt->bind_param("s", $makhachhang);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -303,7 +267,8 @@ public function updatePointsAndRank($makhachhang, $tongTien)
 
         // Cập nhật điểm và rank
         $sqlUpdate = "UPDATE $this->tblkhachhang SET point = ?, id_rank = ? WHERE id = ?";
-        $stmtUpdate = $this->conn->prepare($sqlUpdate);
+        echo $sqlUpdate;
+        $stmtUpdate = $this->con->prepare($sqlUpdate);
         $stmtUpdate->bind_param("iis", $newPoints, $id_rank, $makhachhang);
         $stmtUpdate->execute();
         $stmtUpdate->close();

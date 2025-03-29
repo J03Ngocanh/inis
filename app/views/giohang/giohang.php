@@ -261,7 +261,7 @@ button {
         </div>
         <?php endforeach; ?>
     </div>
-    <!-- Custom Confirm Modal -->
+ 
     <div id="confirmModal" style="display:none;">
         <div class="modal-content">
             <p style="color: black;">Bạn có chắc chắn muốn xóa sản phẩm này?</p>

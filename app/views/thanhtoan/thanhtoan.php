@@ -254,11 +254,12 @@ th, td {
             <td><strong><?php echo number_format($tongtien, 0, ',', '.'); ?> VND</strong></td>
         </tr>
         <tr>
-        <td colspan="4">Mã giảm giá:</td>
-        <td colspan="4"></td>
+        <?php while ($row = $coupon->fetch_assoc()): ?>
+        <td colspan="4">Mã giảm giá: </td>
+        <td colspan="4"><?php echo $row['discount']?></td>
         </tr>
         <tr>
-        <td colspan="4">Phí vận chuyển:</td>
+        <td colspan="4">Phí vận chuyển: </td>
         <td colspan="4"></td>
         </tr>
         <tr>
@@ -273,18 +274,17 @@ th, td {
         <h2>Thông tin mua hàng</h2>
         <div class="form-group">
             <label for="sdt">Số điện thoại của bạn:</label>
-            <input type="text" id="sdt" name="sdt" placeholder="Số điện thoại của bạn" required>
+            <input type="text" id="sdt" name="sdt" placeholder="Số điện thoại của bạn"
+       value="<?php echo isset($_SESSION['sdt']) ? $_SESSION['sdt'] : ''; ?>" readonly>
         </div>
 
         <div class="form-group">
             <label for="hoten_nhan">Họ và tên người nhận:</label>
-            <input type="text" id="hoten_nhan" name="hoten_nhan" placeholder="Nhập họ và tên" required>
+            <input type="text" id="hoten_nhan" name="hoten_nhan" placeholder="Họ tên người nhận"
+       value="<?php echo isset($_SESSION['tenkhachhang']) ? $_SESSION['tenkhachhang'] : ''; ?>" required>
         </div>
 
-        <div class="form-group">
-            <label for="sdt_nhan">Số điện thoại người nhận:</label>
-            <input type="text" id="sdt_nhan" name="sdt_nhan" placeholder="Nhập số điện thoại" required>
-        </div>
+       
 
         <div class="form-group">
             <label for="diachi_nhan">Địa chỉ giao hàng:</label>
@@ -371,6 +371,5 @@ th, td {
     });
 
 </script>
-
 </body>
 </html>

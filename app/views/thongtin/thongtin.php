@@ -92,6 +92,7 @@
             <p><strong>Email:</strong><?php echo $row['email']?></p>
             <p><strong>Số điện thoại:</strong> <?php echo $row['sdt']?></p>
             <p><strong>Ngày sinh:</strong> <?php echo $row['ngaysinh']?></p>
+            <p><strong>Điểm tích lũy:</strong> <?php echo $row['point']?></p>
             <p><strong>Hạng thành viên:</strong> <?php echo $row['name']?></p>
             <?php } ?>
         </div>

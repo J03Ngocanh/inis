@@ -153,6 +153,14 @@ table {
   flex: 3; /* Tăng độ rộng cho cột sản phẩm */
   gap: 5%;
 }
+.edit-btn{
+    background-color: #16A085;
+     color: white;
+    border: none; 
+    padding: 4px 4px;
+    border-radius: 6px;
+    cursor: pointer;
+}
 
 
 /* Hiệu ứng mở popup */
@@ -219,8 +227,10 @@ table {
                 <td><?php echo $row['ngaytao']  ?></td>
                 <td><?php echo $row['trangthai']  ?></td>
                 <td>
-                    <?php if($row['trangthai']=="Đang xử lý"){?>
-                   <a href="/inis/admin/xulyxacnhan/<?php echo $row['mahoadon'] ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xác nhận đơn hàng mã : <?php echo $row['mahoadon'] ?>')  "><button class="btn edit-btn">Xác nhận</button></a>
+                    <?php if($row['trangthai']=="new"){?>
+                        <a href="/inis/admin/xulyxacnhan/<?php echo $row['mahoadon'] ?>" id="confirm-link-<?php echo $row['mahoadon'] ?>">
+                            <button class="btn edit-btn">Xác nhận</button>
+                        </a>
                    <?php }?>
                    <button onclick="openPopup('<?php echo $row['mahoadon']; ?>')"style="background-color: #16A085; color: white; border: none; padding: 4px 4px; border-radius: 6px; cursor: pointer;"> Chi tiết</button>
                 </td>
@@ -290,6 +300,7 @@ function openPopup(mahd) {
       const popup = document.getElementById('orderDetailsPopup' + mahd);
       popup.style.display = 'none'; // Ẩn popup
   }
+  
 </script>
   </body>
 </html>
