@@ -134,8 +134,8 @@
 
           <div class="order-info">
           <?php while($row=mysqli_fetch_array($ttinnguoimua)){?>
-            <div>Phương thức thanh toán: <strong><?php if($row['phuong_thuc']=="tien_mat"){echo "Tiền mặt " ;} else{ echo "Chuyển khoản" ;} ?></strong></div>
-            <div>Tổng tiền thu: <strong class="total"><?php echo number_format($row['tongTien'], 0, ',', '.'); ?>đ</strong></div>
+            <div>Phương thức thanh toán: <strong><?php if($row['pttt']=="tien_mat"){echo "Tiền mặt " ;} else{ echo "Chuyển khoản" ;} ?></strong></div>
+            <div>Tổng tiền thu: <strong class="total"><?php echo number_format($row['tongtiensaugiam'], 0, ',', '.'); ?>đ</strong></div>
           </div>
 
           <div class="order-info">

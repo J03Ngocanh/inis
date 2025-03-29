@@ -145,6 +145,8 @@ class taikhoanController extends Controller {
                 $_SESSION['tenkhachhang'] = $row['tenkhachhang'];
                 $_SESSION['sdt'] = $row['sdt']; // Lưu sdt thực tế từ database
                 $_SESSION['makhachhang'] = $row['id'];
+                $_SESSION['point'] = $row['point'];
+           
 
                 if (!empty($_POST['rememberMe'])) {
                     setcookie('login_sdt', $sdt, time() + (7 * 24 * 60 * 60), "/");
@@ -220,6 +222,7 @@ public function xulydangky(){
 
     if ($i == 0) {
         $this->taikhoanModel->themtaikhoan($tenkhachhang, $email, $sdt, $ngaysinh, $password_hash, $id_rank);
+        $_SESSION['dangky_thanhcong'] = true;
 
         // Xóa session lưu tạm
         unset($_SESSION['hienthitenkhachhang'], $_SESSION['trungsdt'], $_SESSION['hienthisdt'], 

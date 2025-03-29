@@ -94,19 +94,18 @@ class giohangController extends Controller {
     }
 
     public function checkout(){
-    
-        // Kiểm tra giỏ hàng có sản phẩm không
         $thanhtoan = isset($_SESSION['giohang']) ? $_SESSION['giohang'] : [];
         if (empty($thanhtoan)) {
             echo "Giỏ hàng trống!";
             return;
         }
+        $makhachhang = $_SESSION['makhachhang'];
+        $coupon = $this->giohangModel->Getcoupon($makhachhang);
         $loaisp= $this->giohangModel->Getloaisp(); 
         $this->view('menu', ['loaisp' => $loaisp]);
         // Truyền giỏ hàng vào view 'thanhtoan'
-        $this->view('thanhtoan/thanhtoan', ['thanhtoan' => $thanhtoan]);
+        $this->view('thanhtoan/thanhtoan', ['thanhtoan' => $thanhtoan, 'coupon'=> $coupon]);
     }
-
 
     public function muangay($masp){
         if(isset($_SESSION['sdt'])){
@@ -138,13 +137,12 @@ class giohangController extends Controller {
             // Lấy dữ liệu từ form
             $sdt = $_POST['sdt'];
             $hoten_nhan = $_POST['hoten_nhan'];
-            $sdt_nhan = $_POST['sdt_nhan'];
             $diachi_nhan = $_POST['diachi_nhan'];
             $phuong_thuc = $_POST['phuong_thuc'];
             $soluong = $_POST['soluong'];
             $tongTien = $_POST['tongTien'];
             $Ngay_tao = date('Y-m-d H:i:s');
-            $this->giohangModel->themmuangay($sdt, $hoten_nhan, $sdt_nhan,$diachi_nhan, $phuong_thuc,$tongTien, $Ngay_tao);
+            $this->giohangModel->themmuangay($sdt, $hoten_nhan, $diachi_nhan, $phuong_thuc,$tongTien, $Ngay_tao);
 
             $aaaa = $this->giohangModel ->layid_giohang($sdt);
             $chothe = mysqli_fetch_array($aaaa);
@@ -177,7 +175,6 @@ class giohangController extends Controller {
             // Lấy thông tin từ form
             $sdt = $_POST['sdt'] ?? '';
             $hoten_nhan = $_POST['hoten_nhan'] ?? '';
-            $sdt_nhan = $_POST['sdt_nhan'] ?? '';
             $diachi_nhan = $_POST['diachi_nhan'] ?? '';
             $phuong_thuc = $_POST['phuong_thuc'] ?? '';
             $tongTien = $_POST['tongTien'] ?? 0;
@@ -187,27 +184,23 @@ class giohangController extends Controller {
             $makhachhang = $_SESSION['makhachhang'] ?? 'KH0000';
     
             // Thêm đơn hàng và lấy mã hóa đơn vừa tạo
-            $mahoadon = $this->giohangModel->addOrder($makhachhang, $tongTien, $hoten_nhan, $sdt_nhan, $diachi_nhan, $phuong_thuc, $ngay_tao);
+            $mahoadon = $this->giohangModel->addOrder($makhachhang, $tongTien, $hoten_nhan, $sdt, $diachi_nhan, $phuong_thuc, $ngay_tao);
     
             if ($mahoadon) {
+                echo $mahoadon;
                 if (!empty($_SESSION['giohang'])) {
                     foreach ($_SESSION['giohang'] as $masanpham => $sanpham) {
                         $soluong = $sanpham['soluong'];
                         $giagoc = $sanpham['giagoc'];
-    
-                        // Thêm sản phẩm vào chi tiết hóa đơn
                         $this->giohangModel->addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc);
+                           // 🎯 Cập nhật điểm và xếp hạng khách hàng
+                        $this->giohangModel->updatePointsAndRank($makhachhang, $tongTien);
+                        unset($_SESSION['giohang']);
                     }
                 }
     
-                // 🎯 Cập nhật điểm và xếp hạng khách hàng
-                $this->giohangModel->updatePointsAndRank($makhachhang, $tongTien);
-    
-                // Xóa giỏ hàng sau khi đặt hàng
-                unset($_SESSION['giohang']);
-    
                 // Điều hướng đến trang xác nhận đơn hàng
-                // header("Location: " . WEBROOT . "giohang/hoanthanhthanhtoan/$mahoadon");
+                //header("Location: " . WEBROOT . "giohang/hoanthanhthanhtoan/$mahoadon");
                 exit();
             } else {
                 die("Lỗi: Không thể tạo đơn hàng.");
@@ -217,9 +210,6 @@ class giohangController extends Controller {
         }
     }
     
-    
-
-
     public function updateQuantity() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $masanpham = $_POST['masanpham'];
@@ -242,11 +232,11 @@ class giohangController extends Controller {
         }
         exit;
     }
-    public function hoanthanhthanhtoan($magiaodich){
+    public function hoanthanhthanhtoan($mahoadon){
         $loaisp= $this->giohangModel->Getloaisp();  
         $this->view('menu',['loaisp' => $loaisp]);
-        $ttindonhang = $this->giohangModel->Getttinchitietdonhang($magiaodich);
-        $ttinnguoimua = $this->giohangModel->Getttindonhang($magiaodich);
+        $ttindonhang = $this->giohangModel->Getttinchitietdonhang($mahoadon);
+        $ttinnguoimua = $this->giohangModel->Getttindonhang($mahoadon);
         $this->view('giohang/chitiethoadon' , ['ttindonhang' => $ttindonhang, 'ttinnguoimua' => $ttinnguoimua ]);
         $this->view('footer');
     }

@@ -6,6 +6,11 @@
     <title>Innisfree</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+      <script>
+        function closeBanner() {
+            document.getElementById('promo-banner').style.display = 'none';
+        }
+    </script>
 </head>
 <style>
     body {
@@ -301,17 +306,55 @@ button {
         width: 100%;
     }
 }
+       /* Thêm hiệu ứng chạy ngang */
+       #promo-banner {
+            padding: 10px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        /* Chỉnh sửa phần chạy chữ */
+        #promo-banner span {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        @keyframes slideBanner {
+            0% {
+                left: 100%;
+            }
+            100% {
+                left: -100%;
+            }
+        }
+
+        /* Style cho nút đóng */
+        button {
+            margin-left: 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        #flag {
+            width: 50px; /* Bạn có thể thay đổi kích thước tùy ý */
+            height: auto;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+ 
 
 </style>
 <div class="noi-dung">
+
     <body>
-        
         <?php 
          if(isset( $_SESSION['loidangnhap'])){
             unset( $_SESSION['loidangnhap']);
          }
         ?> 
-        <div class="snow-container"></div>
         
             <div class='anh_giua'>
                 <img src="<?php echo WEBROOT; ?>public/img/anh_giua.jpeg" alt="anh giua">
@@ -324,6 +367,7 @@ button {
             </div>
            <div class="slider" style="display: flex;">
                 <div class='left'>
+                
                     <div class="slogan" style="margin-top:-40px,">
                 <p style= "font-size: 26px">"Effective, nature-powered </p>
                 <p style="text-transform: uppercase;font-weight:bolder; font-size:50px; margin-top: -30px; letter-spacing: 5px;"> skincare </p>  
@@ -338,8 +382,6 @@ button {
                 <div class='right'></div>
            </div>
         </div>
-
-
         <div class="flash-sale">
     <h2>Flash Sale</h2>
     <div class="countdown-timer">
@@ -360,7 +402,7 @@ button {
             <p class="flash-sale-price">Giảm còn: 100.000 VND</p>
             <button>Mua ngay</button>
         </div>
-        <!-- Thêm các sản phẩm khác -->
+
     </div>
 </div>
 

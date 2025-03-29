@@ -5,11 +5,86 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <meta name="google-site-verification" content=""><link rel="stylesheet" href="https://web.nvnstatic.net/css/fontAwesome/font-awesome-4.7.0.min.css?v=2" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/css/bootstrap/bootstrap.4.3.1.min.css?v=2" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/css/appLib.css" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/tp/T0299/css/plugin.css?v=10" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/tp/T0299/css/animate.css?v=10" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/tp/T0299/css/define.css?v=10" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/tp/T0299/css/style.css?v=10" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/tp/T0299/css/responsive.css?v=10" type="text/css"><script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.min.js?v=17"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/js/bootstrap/boostrap.popper.min.js?v=17"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/js/bootstrap/bootstrap.4.3.1.min.js?v=17"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/js/lib.js?v=17"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.cookie.js?v=17"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/tp/T0299/js/plugin.js?v=3"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/tp/T0299/js/mains.js?v=3"></script><style type="text/css"></style><style type="text/css">img {max-width: 100%;} img.lazyload{ opacity: 0.001; object-fit: scale-down !important; } .fb-customerchat>span>iframe.fb_customer_chat_bounce_out_v2 {max-height: 0 !important;}  .fb-customerchat>span>iframe.fb_customer_chat_bounce_in_v2{max-height: calc(100% - 80px) !important;}</style><script src="https://pos.nvnstatic.net/cache/location.vn.js?v=241115_150026" defer></script><script src="https://web.nvnstatic.net/js/lazyLoad/lazysizes.min.js" async></script><style>figure.image{clear: both;display: table;margin: .9em auto;min-width: 50px;text-align: center;width: auto !important;}figure.image img {display: block;margin: 0 auto;max-width: 100%;min-width: 100%;}figure.image>figcaption {background-color: #f7f7f7;caption-side: bottom;color: #333;display: block;font-size: .75em;outline-offset: -1px;padding: .6em;word-break: break-word;}figure.image img, img.image_resized {height: auto !important;aspect-ratio: auto !important;}</style><script src="https://web.nvnstatic.net/js/translate/vi-vn.js" defer></script><script>
 </script></head>
+<?php 
+if (isset($_SESSION['dangky_thanhcong'])) { 
+?>
+    <div id="popupSuccess" class="popup">
+        <div class="popup-content">
+             <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="Success Icon" class="icon-success">
+             <h2>Đăng ký thành công<h2>
+             <div class="message-box">Xin chúc mừng, bạn đã nhận được 50 điểm tích lũy đầu tiên</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("popupSuccess").style.display = "flex";
+            setTimeout(function () {
+                window.location.href = "<?php echo WEBROOT . 'taikhoan/login'; ?>";
+            }, 20000); // Chuyển hướng sau 3 giây
+        });
+    </script>
+
+    <style>
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 520px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .icon-success {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .message-box {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 15px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+<?php 
+    unset($_SESSION['dangky_thanhcong']); // Xóa session sau khi hiển thị popup
+} 
+?>
+
 <body>
         <?php 
          if(isset( $_SESSION['loidangnhap'])){echo  $_SESSION['loidangnhap'];}
-        
         ?>
+ 
 <script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.validationEngine.js?v=19"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.validationEngine-vi.js?v=19"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/tp/T0299/js/user.js?v=2"></script><link rel="stylesheet" href="https://web.nvnstatic.net/css/validationEngine.jquery.css?v=3" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/css/appLib.css" type="text/css"><input type="hidden" id="redirect" value=""><main class="main-site main-childs">
     <div class="user-wrapper">
         <div class="user-nav anonymous-awe">
