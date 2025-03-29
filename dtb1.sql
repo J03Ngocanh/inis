@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2025 at 05:50 PM
+-- Generation Time: Mar 29, 2025 at 03:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -30,20 +30,22 @@ SET time_zone = "+00:00";
 CREATE TABLE `chitiethoadon` (
   `mahoadon` varchar(10) NOT NULL,
   `masanpham` varchar(10) NOT NULL,
-  `soluong` int(11) NOT NULL CHECK (`soluong` > 0),
+  `soluong` int(11) NOT NULL,
   `dongia` decimal(10,2) NOT NULL,
-  `thanhtien` decimal(10,2) GENERATED ALWAYS AS (`soluong` * `dongia`) STORED
+  `thanhtien` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `chitiethoadon`
 --
 
-INSERT INTO `chitiethoadon` (`mahoadon`, `masanpham`, `soluong`, `dongia`) VALUES
-('HD0026', 'SP004', 1, 300000.00),
-('HD0027', 'SP004', 1, 300000.00),
-('HD0028', 'SP004', 2, 300000.00),
-('HD0028', 'SP007', 1, 510000.00);
+INSERT INTO `chitiethoadon` (`mahoadon`, `masanpham`, `soluong`, `dongia`, `thanhtien`) VALUES
+('HD0002', 'SP004', 1, 300000.00, 0.00),
+('HD0004', 'SP003', 1, 280000.00, 0.00),
+('HD0005', 'SP004', 1, 300000.00, 0.00),
+('HD0006', 'SP003', 1, 280000.00, 0.00),
+('HD0007', 'SP004', 1, 300000.00, 0.00),
+('HD0008', 'SP004', 1, 300000.00, 0.00);
 
 -- --------------------------------------------------------
 
@@ -95,12 +97,12 @@ CREATE TABLE `hoadon` (
   `hoten_nhan` varchar(200) NOT NULL,
   `sdt_nhan` varchar(10) NOT NULL,
   `diachi_nhan` varchar(500) NOT NULL,
-  `ngaytao` datetime NOT NULL,
+  `ngaytao` datetime NOT NULL DEFAULT current_timestamp(),
   `tongtientruocgiam` decimal(10,2) NOT NULL,
-  `giamgia` int(10) NOT NULL,
+  `giamgia` int(10) NOT NULL DEFAULT 0,
   `tongtiensaugiam` decimal(10,2) NOT NULL,
   `pttt` varchar(200) NOT NULL,
-  `trangthai` varchar(10) NOT NULL DEFAULT 'new'
+  `trangthai` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -108,31 +110,30 @@ CREATE TABLE `hoadon` (
 --
 
 INSERT INTO `hoadon` (`id`, `mahoadon`, `makhachhang`, `hoten_nhan`, `sdt_nhan`, `diachi_nhan`, `ngaytao`, `tongtientruocgiam`, `giamgia`, `tongtiensaugiam`, `pttt`, `trangthai`) VALUES
-(13, 'HD0026', 'KH0002', 'aa', '0987654', 'aaa', '2025-03-22 12:49:20', 0.00, 0, 0.00, 'tien_mat', 'new'),
-(14, 'HD0027', 'KH0002', 'Ngô Ngọc Ánh', '0987654', 'aa', '2025-03-22 12:55:12', 0.00, 0, 0.00, 'tien_mat', 'new'),
-(15, 'HD0028', 'KH0002', 'sdfgh', '0987654345', 'aa', '2025-03-22 12:56:00', 0.00, 0, 0.00, 'tien_mat', 'new');
+(2, 'HD0002', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'sdds', '2025-03-29 12:40:26', 0.00, 0, 0.00, 'tien_mat', ''),
+(3, 'HD0003', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'sdds', '2025-03-29 12:42:43', 0.00, 0, 0.00, 'tien_mat', ''),
+(4, 'HD0004', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'dddddđ', '2025-03-29 12:42:57', 0.00, 0, 0.00, 'tien_mat', ''),
+(5, 'HD0005', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'dddđ', '2025-03-29 12:45:14', 0.00, 0, 0.00, 'tien_mat', ''),
+(6, 'HD0006', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'assssssssss', '2025-03-29 12:46:18', 0.00, 0, 0.00, 'tien_mat', ''),
+(7, 'HD0007', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'aaaaaaaaaaa', '2025-03-29 12:46:48', 0.00, 0, 0.00, 'tien_mat', ''),
+(8, 'HD0008', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'ưdwd', '2025-03-29 12:58:00', 0.00, 0, 0.00, 'tien_mat', '');
 
 --
 -- Triggers `hoadon`
 --
 DELIMITER $$
-CREATE TRIGGER `before_insert_hoadon` BEFORE INSERT ON `hoadon` FOR EACH ROW BEGIN
-    DECLARE next_value INT;
+CREATE TRIGGER `trg_generate_mahoadon` BEFORE INSERT ON `hoadon` FOR EACH ROW BEGIN
+    DECLARE last_id INT;
+    DECLARE new_mahoadon VARCHAR(10);
+    
+    -- Lấy số ID lớn nhất từ bảng hóa đơn
+    SELECT COALESCE(MAX(CAST(SUBSTRING(mahoadon, 3, 4) AS UNSIGNED)), 0) + 1 INTO last_id FROM hoadon;
+    
+    -- Tạo mã hóa đơn mới theo định dạng HD0001, HD0002, ...
+    SET new_mahoadon = CONCAT('HD', LPAD(last_id, 4, '0'));
 
-    -- Kiểm tra xem bảng IncrementTable đã có dữ liệu cho khachhang chưa
-    IF (SELECT COUNT(*) FROM IncrementTable WHERE TableName = 'hoadon') = 0 THEN
-        -- Nếu chưa có, thêm mới với giá trị bắt đầu là 0
-        INSERT INTO IncrementTable (TableName, CurrentValue) VALUES ('hoadon', 0);
-    END IF;
-
-    -- Lấy giá trị hiện tại từ IncrementTable
-    SELECT CurrentValue INTO next_value FROM IncrementTable WHERE TableName = 'hoadon' FOR UPDATE;
-
-    -- Sinh mã khách hàng tự động (VD: KH0001, KH0002, ...)
-    SET NEW.Mahoadon = CONCAT('HD', LPAD(next_value + 1, 4, '0'));
-
-    -- Cập nhật giá trị trong IncrementTable
-    UPDATE IncrementTable SET CurrentValue = next_value + 1 WHERE TableName = 'hoadon';
+    -- Gán mã mới vào bản ghi chuẩn bị insert
+    SET NEW.mahoadon = new_mahoadon;
 END
 $$
 DELIMITER ;
@@ -153,8 +154,7 @@ CREATE TABLE `incrementtable` (
 --
 
 INSERT INTO `incrementtable` (`TableName`, `CurrentValue`) VALUES
-('hoadon', 28),
-('khachhang', 3),
+('khachhang', 9),
 ('nhanvien', 3),
 ('SanPham', 82);
 
@@ -172,6 +172,7 @@ CREATE TABLE `khachhang` (
   `password` varchar(200) NOT NULL,
   `ngaysinh` date DEFAULT NULL,
   `id_rank` int(3) NOT NULL,
+  `point` int(6) NOT NULL DEFAULT 50,
   `verification_code` int(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -179,10 +180,15 @@ CREATE TABLE `khachhang` (
 -- Dumping data for table `khachhang`
 --
 
-INSERT INTO `khachhang` (`id`, `tenkhachhang`, `email`, `sdt`, `password`, `ngaysinh`, `id_rank`, `verification_code`) VALUES
-('KH0001', 'evfrv', 'ngoanh@gmail.com', '0937482367', 'ddd', NULL, 1, NULL),
-('KH0002', 'Ngô Ngọc Á', 'ngoanh2345@gmail.com', '0987654321', '$2y$10$.wPymwBoKVq6nAldWBHL1uERSjfH9nQkwuZ5IWHcMxFdpT.e.eg/e', '2003-11-25', 1, NULL),
-('KH0003', 'Vũ Nguyên Hương', 'ngongocanh15072311@gmail.com', '0000000000', '$2y$10$d50RdGxa9wo5oSbTKzt0/.NAX0NgmkRrOw66WeNcmoulaC7613s5i', '2003-11-25', 1, 576270);
+INSERT INTO `khachhang` (`id`, `tenkhachhang`, `email`, `sdt`, `password`, `ngaysinh`, `id_rank`, `point`, `verification_code`) VALUES
+('KH0002', 'Ngô Ngọc Á', 'ngoanh2345@gmail.com', '0987654321', '$2y$10$.wPymwBoKVq6nAldWBHL1uERSjfH9nQkwuZ5IWHcMxFdpT.e.eg/e', '2003-11-25', 1, 50, NULL),
+('KH0003', 'Vũ Nguyên Hương', 'ngongocanh15072311@gmail.com', '0000000000', '$2y$10$d50RdGxa9wo5oSbTKzt0/.NAX0NgmkRrOw66WeNcmoulaC7613s5i', '2003-11-25', 1, 50, 576270),
+('KH0004', 'UUUUUUUUUU', 'ngoanh2311@gmail.com', '1111111111', '$2y$10$J3UQWi0ziIHmVRoIx6HKReiwUaEydo4RxDmwcK8rEXiXAi4aWufFS', '2003-11-25', 1, 50, NULL),
+('KH0005', 'aaaa', 'sfsgg@gmail.com', '123456', '$2y$10$.Nfl21z/wAXXXa9tII35KeTmZt6xffMk88OiJQRjdZ/ThfeNqH8FG', '2003-11-23', 1, 50, NULL),
+('KH0006', 'aaaaaaaaaaaaaaaaa', 'dgthtymj@gmail.com', '123556876', '$2y$10$FUGS5xN1K5QxCuCS6LeuE.veefXyRi7AL8ePUE8ED51Pv2ibIOjVu', '2003-11-23', 1, 50, NULL),
+('KH0007', 'dkvbjfbvkj', 'ngtye@gmail.com', '24568976543', '$2y$10$yVjtIlaKB3l31PxAoiI8BeGM4RCmB0MQTVhGKrMhNPvKYCNTDuYwq', '3456-12-31', 1, 50, NULL),
+('KH0008', 'Ngô Lan Anh', 'abcded@gmail.com', '03947573212', '$2y$10$hUqebhA6UnlnrbqI1XooCOWHqs6Ji.vX2aANZodQj1XtDgdP/06vy', '2003-11-23', 1, 50, NULL),
+('KH0009', 'Trần Văn B', 'ngfnyk@gmail.com', '1234567890', '$2y$10$DMA/JEHWpHpqdFl6iZZBJOwSqmO1n/RxaqQaRobXUhoZrcF.Cz.GK', '0000-00-00', 1, 50, NULL);
 
 --
 -- Triggers `khachhang`
@@ -351,7 +357,6 @@ INSERT INTO `sanpham` (`masanpham`, `id_danhmuc`, `tensanpham`, `mota`, `giagoc`
 ('SP009', 1, 'Kem dưỡng', '<p>jhdgfefbjbd</p>', 400000, NULL, 'duong_toc_3.jpg', '', '', '', '', 300, NULL),
 ('SP010', 2, 'Sữa rửa mặt se khít lỗ chân lông INNISFREE Volcanic Pore BHA Cleansing Foam 150 g', '<div class=\"container\">\r\n<details>\r\n<summary>Th&ocirc;ng tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Th&acirc;n thiện với m&ocirc;i trường:</strong></p>\r\n<p>- Cả nắp v&agrave; hộp đựng đều được l&agrave;m ho&agrave;n to&agrave;n bằng nhựa PP để dễ d&agrave;ng t&aacute;i chế.</p>\r\n<p>- Nắp nhựa c&oacute; thể t&aacute;i chế.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>- Sản phẩm đ&atilde; được Cơ quan Chứng nhận Vegan tại H&agrave;n Quốc x&aacute;c nhận l&agrave; sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng th&iacute;ch hợp rồi nhẹ nh&agrave;ng tạo bọt.</p>\r\n<p>- Massage l&ecirc;n to&agrave;n bộ khu&ocirc;n mặt. Sau đ&oacute; rửa sạch với nước ấm.</p>\r\n</div>\r\n</details>\r\n</div>', 260000, NULL, 'srm1.png', '', '', '', '', 89, '2024-12-09 22:45:03'),
 ('SP011', 2, 'Sữa rửa mặt dưỡng ẩm da từ trà xanh INNISFREE Green Tea Amino Cleansing Foam 150g', '<div class=\"container\">\r\n<details>\r\n<summary>Th&ocirc;ng tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Th&acirc;n thiện với m&ocirc;i trường:</strong></p>\r\n<p>- Cả nắp v&agrave; hộp đựng đều được l&agrave;m ho&agrave;n to&agrave;n bằng nhựa PP để dễ d&agrave;ng t&aacute;i chế.</p>\r\n<p>- Nắp nhựa c&oacute; thể t&aacute;i chế.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>- Sản phẩm đ&atilde; được Cơ quan Chứng nhận Vegan tại H&agrave;n Quốc x&aacute;c nhận l&agrave; sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng th&iacute;ch hợp rồi nhẹ nh&agrave;ng tạo bọt.</p>\r\n<p>- Massage l&ecirc;n to&agrave;n bộ khu&ocirc;n mặt. Sau đ&oacute; rửa sạch với nước ấm.</p>\r\n</div>\r\n</details>\r\n</div>', 280000, NULL, 'srm2.jpg', '', '', '', '', 70, '2024-12-09 22:44:57'),
-('SP012', 8, 'NIEBVJE', '<p>FCEKLGH</p>', 45000, NULL, 'blog2.jpg', '', '', '', '', 45, NULL),
 ('SP013', 3, 'Nước cân bằng độ ẩm cho da INNISFREE Green Tea Hyaluronic Skin 170 mL', '<div class=\"container\">\r\n<details>\r\n<summary>Thông tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Thân thiện với môi trường:</strong></p>\r\n<p>Nước cân bằng độ ẩm cho da innisfree Green Tea Seed Hyaluronic Skin, cấp ẩm cho làn da tươi mát và mịn màng.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>Sản phẩm đã được Cơ quan Chứng nhận Vegan tại Hàn Quốc xác nhận là sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng tinh chất vừa phải ra bông tẩy trang.</p>\r\n<p>- Lau nhẹ nhàng lên khuôn mặt để tính chất thẩm thẩu từ từ và nhẹ nhàng vào làn da.</p>\r\n</div>\r\n</details>', 365000, NULL, 'toner_1.jpg', '', '', '', '', 60, '2024-12-11 22:44:57'),
 ('SP014', 1, 'Dầu tẩy trang INNISFREE Green Tea Hydrating Amino Acid Cleansing Oil 150 mL', '<div class=\"container\">\r\n<details>\r\n<summary>Th&ocirc;ng tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Th&acirc;n thiện với m&ocirc;i trường:</strong></p>\r\n<p>- Cả nắp v&agrave; hộp đựng đều được l&agrave;m ho&agrave;n to&agrave;n bằng nhựa PP để dễ d&agrave;ng t&aacute;i chế.</p>\r\n<p>- Nắp nhựa c&oacute; thể t&aacute;i chế.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>- Sản phẩm đ&atilde; được Cơ quan Chứng nhận Vegan tại H&agrave;n Quốc x&aacute;c nhận l&agrave; sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng th&iacute;ch hợp rồi nhẹ nh&agrave;ng tạo bọt.</p>\r\n<p>- Massage l&ecirc;n to&agrave;n bộ khu&ocirc;n mặt. Sau đ&oacute; rửa sạch với nước ấm.</p>\r\n</div>\r\n</details>\r\n</div>', 510000, NULL, 'tay_trang_1.jpg', '', '', '', '', 98, '2024-12-09 22:45:12'),
 ('SP015', 1, 'Sản phẩm tẩy trang mắt và môi INNISFREE Apple Seed Lip & Eye Makeup Remover 100 mL', '<div class=\"container\">\r\n<details>\r\n<summary>Th&ocirc;ng tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Th&acirc;n thiện với m&ocirc;i trường:</strong></p>\r\n<p>- Cả nắp v&agrave; hộp đựng đều được l&agrave;m ho&agrave;n to&agrave;n bằng nhựa PP để dễ d&agrave;ng t&aacute;i chế.</p>\r\n<p>- Nắp nhựa c&oacute; thể t&aacute;i chế.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>- Sản phẩm đ&atilde; được Cơ quan Chứng nhận Vegan tại H&agrave;n Quốc x&aacute;c nhận l&agrave; sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng th&iacute;ch hợp rồi nhẹ nh&agrave;ng tạo bọt.</p>\r\n<p>- Massage l&ecirc;n to&agrave;n bộ khu&ocirc;n mặt. Sau đ&oacute; rửa sạch với nước ấm.</p>\r\n</div>\r\n</details>\r\n</div>', 190000, NULL, 'tay_trang_1.jpg', '', '', '', '', 59, '2024-12-23 22:45:08'),
@@ -392,7 +397,6 @@ INSERT INTO `sanpham` (`masanpham`, `id_danhmuc`, `tensanpham`, `mota`, `giagoc`
 ('SP049', 1, 'Kem dưỡng', '<p>jhdgfefbjbd</p>', 400000, NULL, 'duong_toc_3.jpg', '', '', '', '', 300, NULL),
 ('SP050', 2, 'Sữa rửa mặt se khít lỗ chân lông INNISFREE Volcanic Pore BHA Cleansing Foam 150 g', '<div class=\"container\">\r\n<details>\r\n<summary>Th&ocirc;ng tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Th&acirc;n thiện với m&ocirc;i trường:</strong></p>\r\n<p>- Cả nắp v&agrave; hộp đựng đều được l&agrave;m ho&agrave;n to&agrave;n bằng nhựa PP để dễ d&agrave;ng t&aacute;i chế.</p>\r\n<p>- Nắp nhựa c&oacute; thể t&aacute;i chế.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>- Sản phẩm đ&atilde; được Cơ quan Chứng nhận Vegan tại H&agrave;n Quốc x&aacute;c nhận l&agrave; sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng th&iacute;ch hợp rồi nhẹ nh&agrave;ng tạo bọt.</p>\r\n<p>- Massage l&ecirc;n to&agrave;n bộ khu&ocirc;n mặt. Sau đ&oacute; rửa sạch với nước ấm.</p>\r\n</div>\r\n</details>\r\n</div>', 260000, NULL, 'srm1.png', '', '', '', '', 89, '2024-12-09 22:45:03'),
 ('SP051', 2, 'Sữa rửa mặt dưỡng ẩm da từ trà xanh INNISFREE Green Tea Amino Cleansing Foam 150g', '<div class=\"container\">\r\n<details>\r\n<summary>Th&ocirc;ng tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Th&acirc;n thiện với m&ocirc;i trường:</strong></p>\r\n<p>- Cả nắp v&agrave; hộp đựng đều được l&agrave;m ho&agrave;n to&agrave;n bằng nhựa PP để dễ d&agrave;ng t&aacute;i chế.</p>\r\n<p>- Nắp nhựa c&oacute; thể t&aacute;i chế.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>- Sản phẩm đ&atilde; được Cơ quan Chứng nhận Vegan tại H&agrave;n Quốc x&aacute;c nhận l&agrave; sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng th&iacute;ch hợp rồi nhẹ nh&agrave;ng tạo bọt.</p>\r\n<p>- Massage l&ecirc;n to&agrave;n bộ khu&ocirc;n mặt. Sau đ&oacute; rửa sạch với nước ấm.</p>\r\n</div>\r\n</details>\r\n</div>', 280000, NULL, 'srm2.jpg', '', '', '', '', 70, '2024-12-09 22:44:57'),
-('SP052', 8, 'NIEBVJE', '<p>FCEKLGH</p>', 45000, NULL, 'blog2.jpg', '', '', '', '', 45, NULL),
 ('SP053', 3, 'Nước cân bằng độ ẩm cho da INNISFREE Green Tea Hyaluronic Skin 170 mL', '<div class=\"container\">\r\n<details>\r\n<summary>Thông tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Thân thiện với môi trường:</strong></p>\r\n<p>Nước cân bằng độ ẩm cho da innisfree Green Tea Seed Hyaluronic Skin, cấp ẩm cho làn da tươi mát và mịn màng.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>Sản phẩm đã được Cơ quan Chứng nhận Vegan tại Hàn Quốc xác nhận là sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng tinh chất vừa phải ra bông tẩy trang.</p>\r\n<p>- Lau nhẹ nhàng lên khuôn mặt để tính chất thẩm thẩu từ từ và nhẹ nhàng vào làn da.</p>\r\n</div>\r\n</details>', 365000, NULL, 'toner_1.jpg', '', '', '', '', 60, '2024-12-11 22:44:57'),
 ('SP054', 1, 'Dầu tẩy trang INNISFREE Green Tea Hydrating Amino Acid Cleansing Oil 150 mL', '<div class=\"container\">\r\n<details>\r\n<summary>Th&ocirc;ng tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Th&acirc;n thiện với m&ocirc;i trường:</strong></p>\r\n<p>- Cả nắp v&agrave; hộp đựng đều được l&agrave;m ho&agrave;n to&agrave;n bằng nhựa PP để dễ d&agrave;ng t&aacute;i chế.</p>\r\n<p>- Nắp nhựa c&oacute; thể t&aacute;i chế.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>- Sản phẩm đ&atilde; được Cơ quan Chứng nhận Vegan tại H&agrave;n Quốc x&aacute;c nhận l&agrave; sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng th&iacute;ch hợp rồi nhẹ nh&agrave;ng tạo bọt.</p>\r\n<p>- Massage l&ecirc;n to&agrave;n bộ khu&ocirc;n mặt. Sau đ&oacute; rửa sạch với nước ấm.</p>\r\n</div>\r\n</details>\r\n</div>', 510000, NULL, 'tay_trang_1.jpg', '', '', '', '', 98, '2024-12-09 22:45:12'),
 ('SP055', 1, 'Sản phẩm tẩy trang mắt và môi INNISFREE Apple Seed Lip & Eye Makeup Remover 100 mL', '<div class=\"container\">\r\n<details>\r\n<summary>Th&ocirc;ng tin sản phẩm <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p><strong>Th&acirc;n thiện với m&ocirc;i trường:</strong></p>\r\n<p>- Cả nắp v&agrave; hộp đựng đều được l&agrave;m ho&agrave;n to&agrave;n bằng nhựa PP để dễ d&agrave;ng t&aacute;i chế.</p>\r\n<p>- Nắp nhựa c&oacute; thể t&aacute;i chế.</p>\r\n<p><strong>Chứng nhận thuần chay:</strong></p>\r\n<p>- Sản phẩm đ&atilde; được Cơ quan Chứng nhận Vegan tại H&agrave;n Quốc x&aacute;c nhận l&agrave; sản phẩm thuần chay.</p>\r\n</div>\r\n</details>\r\n<hr><!-- Đường kẻ ngang ngăn cách -->\r\n<details>\r\n<summary>Hướng dẫn sử dụng <span class=\"arrow\">▾</span></summary>\r\n<div class=\"content\">\r\n<p>- Lấy một lượng th&iacute;ch hợp rồi nhẹ nh&agrave;ng tạo bọt.</p>\r\n<p>- Massage l&ecirc;n to&agrave;n bộ khu&ocirc;n mặt. Sau đ&oacute; rửa sạch với nước ấm.</p>\r\n</div>\r\n</details>\r\n</div>', 190000, NULL, 'tay_trang_1.jpg', '', '', '', '', 59, '2024-12-23 22:45:08'),
@@ -453,12 +457,6 @@ DELIMITER ;
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `chitiethoadon`
---
-ALTER TABLE `chitiethoadon`
-  ADD KEY `fk_sanpham` (`masanpham`);
 
 --
 -- Indexes for table `danhmucsp`
@@ -523,7 +521,7 @@ ALTER TABLE `danhmucsp`
 -- AUTO_INCREMENT for table `hoadon`
 --
 ALTER TABLE `hoadon`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `loaisp`
@@ -536,17 +534,6 @@ ALTER TABLE `loaisp`
 --
 ALTER TABLE `rank`
   MODIFY `id_rank` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `chitiethoadon`
---
-ALTER TABLE `chitiethoadon`
-  ADD CONSTRAINT `fk_hoadon` FOREIGN KEY (`mahoadon`) REFERENCES `hoadon` (`mahoadon`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_sanpham` FOREIGN KEY (`masanpham`) REFERENCES `sanpham` (`masanpham`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
