@@ -118,7 +118,7 @@
 <div class="to">
     <header class="header">
         <div class="logo">
-            <a href="<?php echo WEBROOT; ?>tongquan/tongquan">
+            <a href="<?php echo WEBROOT; ?>admin/tongquan">
                 <img src="<?php echo WEBROOT; ?>public/img/innis.png" alt="Logo">
             </a>
         </div>

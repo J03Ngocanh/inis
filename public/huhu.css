@@ -147,7 +147,6 @@ body {
 .duong_dan li {
   display: inline; /* Hiển thị các mục menu trên cùng một dòng */
   margin-right: 20px; /* Khoảng cách giữa các mục */
-  font-size: 20px;
   font-family: "Nunito", sans-serif;
   text-transform: uppercase; /* Chữ in hoa */
   transition: color 0.3s; /* Hiệu ứng chuyển màu */

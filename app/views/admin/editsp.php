@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sửa Sản Phẩm</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400&display=swap" rel="stylesheet">
+  <!-- Place the first <script> tag in your HTML's <head> -->
+<script src="https://cdn.tiny.cloud/1/mkkyk1aqb6tdvt5446ukrbo13oot52fqv2y7nhwwjmflhz4k/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+<!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    plugins: [
+        'code',
+      // Core editing features
+      'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+      // Your account includes a free trial of TinyMCE premium features
+      // Try the most popular premium features until Apr 14, 2025:
+      'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown','importword', 'exportword', 'exportpdf'
+    ],
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+    tinycomments_mode: 'embedded',
+    tinycomments_author: 'Author name',
+    mergetags_list: [
+      { value: 'First.Name', title: 'First Name' },
+      { value: 'Email', title: 'Email' },
+    ],
+    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+  });
+</script>
+
     <style>
         h2 {
             text-align: center;
@@ -123,7 +149,6 @@
 <body>
 <div class="detail">
 <div class="main-content">
-    <div class="main-content">
         <h2>Sửa sản phẩm</h2>
         <form method="POST" enctype="multipart/form-data" action="/inis/admin/xulysuasanpham" class="form-edit-product">
             <div class="form-container">
@@ -146,23 +171,21 @@
                             </option>
                         <?php endwhile; ?>
                     </select>
+                    <label for="edit-product-price">Giá sản phẩm:</label>
+                    <input type="number" id="edit-product-price" name="gia" value="<?php echo htmlspecialchars($product['giagoc']); ?>" min="0" required>
 
-                    <label for="edit-product-image">Hình ảnh 1:</label>
+                 
+                </div>
+
+                <!-- Cột 2 -->
+                <div class="form-column">
+                <label for="edit-product-image">Hình ảnh 1:</label>
                     <input type="file" id="edit-product-image" name="hinhanh" accept="image/*">
                     <?php if (!empty($product['hinhanh'])): ?>
                         <img id="previewImage" src="/public/img/<?php echo htmlspecialchars($product['hinhanh']); ?>" alt="Xem trước ảnh 1">
                     <?php else: ?>
                         <img id="previewImage" src="#" alt="Xem trước ảnh 1" style="display: none;">
                     <?php endif; ?>
-                </div>
-
-                <!-- Cột 2 -->
-                <div class="form-column">
-                    <label for="edit-product-description">Mô tả sản phẩm:</label>
-                    <textarea id="edit-product-description" name="mota"><?php echo htmlspecialchars($product['mota']); ?></textarea>
-
-                    <label for="edit-product-price">Giá sản phẩm:</label>
-                    <input type="number" id="edit-product-price" name="gia" value="<?php echo htmlspecialchars($product['giagoc']); ?>" min="0" required>
 
                     <label for="edit-product-image1">Hình ảnh 2:</label>
                     <input type="file" id="edit-product-image1" name="hinhanh1" accept="image/*">
@@ -197,6 +220,8 @@
                     <?php endif; ?>
                 </div>
             </div>
+            <label for="edit-product-description">Mô tả sản phẩm:</label>
+            <textarea id="edit-product-description" class="mytextarea" name="mota"><?php echo htmlspecialchars($product['mota'], ENT_QUOTES, 'UTF-8'); ?></textarea>
 
             <div class="form-buttons">
                 <button type="submit" class="btn submit-btn">Lưu thay đổi</button>
@@ -206,31 +231,40 @@
 
         <!-- Thông báo giữ nguyên -->
     </div>
-                    </div>
+ </div>
     <script>
-        // Script preview ảnh cho 5 field
-        const imageInputs = [
-            { input: 'edit-product-image', preview: 'previewImage' },
-            { input: 'edit-product-image1', preview: 'previewImage1' },
-            { input: 'edit-product-image2', preview: 'previewImage2' },
-            { input: 'edit-product-image3', preview: 'previewImage3' },
-            { input: 'edit-product-image4', preview: 'previewImage4' }
-        ];
+       document.addEventListener("DOMContentLoaded", function() {
+    const imageInputs = [
+        { input: 'edit-product-image', preview: 'previewImage', src: '<?php echo "/public/img/" . htmlspecialchars($product["hinhanh"]); ?>' },
+        { input: 'edit-product-image1', preview: 'previewImage1', src: '<?php echo "/public/img/" . htmlspecialchars($product["hinhanh1"]); ?>' },
+        { input: 'edit-product-image2', preview: 'previewImage2', src: '<?php echo "/public/img/" . htmlspecialchars($product["hinhanh2"]); ?>' },
+        { input: 'edit-product-image3', preview: 'previewImage3', src: '<?php echo "/public/img/" . htmlspecialchars($product["hinhanh3"]); ?>' },
+        { input: 'edit-product-image4', preview: 'previewImage4', src: '<?php echo "/public/img/" . htmlspecialchars($product["hinhanh4"]); ?>' }
+    ];
 
-        imageInputs.forEach(({ input, preview }) => {
-            document.getElementById(input).addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                const previewImg = document.getElementById(preview);
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        previewImg.src = e.target.result;
-                        previewImg.style.display = 'block';
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
+    imageInputs.forEach(({ input, preview, src }) => {
+        const inputFile = document.getElementById(input);
+        const previewImg = document.getElementById(preview);
+
+        if (src && src !== "/public/img/") {
+            previewImg.src = src;
+            previewImg.style.display = 'block';
+        }
+
+        inputFile.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
         });
+    });
+});
+
     </script>
 </body>
 </html>

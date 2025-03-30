@@ -508,60 +508,7 @@ a .submit-btn:hover {
             </tbody>
           </table>
  <!-- Modal (Popup) sửa sản phẩm -->
-            <div id="editProductModal" class="modal">
-                    <div class="modal-content">
-                      <span class="close" onclick="closeEditModal()">&times;</span>
-                      <h2>Sửa sản phẩm</h2>
-                      <form method="POST" enctype="multipart/form-data" action="/inis/admin/xulysuasanpham" class="form-edit-product">
-                        <div class="form-container">
-                          <!-- Cột 1 -->
-                          <div class="form-column">
-                            <label for="edit-product-id">Mã sản phẩm:</label>
-                            
-                            <input type="text" id="edit-product-id" name="masanpham" value="<?php echo $row['masanpham']; ?>" required readonly>
-
-                            <label for="edit-product-name">Tên sản phẩm:</label>
-                            <input type="text" id="edit-product-name" name="tensanpham" value="<?php echo $row['tensanpham']; ?>" required>
-
-
-                            <label for="edit-product-quantity">Số lượng:</label>
-                            <input type="number" id="edit-product-quantity" name="soluong" value="<?php echo $row['soluong']; ?>" min="1" required>
-
-                            <label for="edit-product-category">Danh mục:</label>
-                            <select id="edit-product-category" name="danhmuc" required>
-                    <?php
-                    // Giả sử $dvt chứa dữ liệu đơn vị tính
-                    while ($row = mysqli_fetch_array($danhmucsp)) {
-                        $selected = ($row['id_danhmuc'] == $row['id_danhmuc']) ? 'selected' : '';
-                        echo "<option value='" . $row['id_danhmuc'] . "' $selected>" . $row['tendanhmuc'] . "</option>";
-                    }
-                    ?>
-                </select>
-                          </div>
-
-                          <!-- Cột 2 -->
-                          <div class="form-column">
-                            <label for="edit-product-description">Mô tả sản phẩm:</label>
-                            <textarea id="mytextarea" name="mota"><?php echo $row['mo_ta']?></textarea>
-                            
-                            <label for="edit-product-price">Giá sản phẩm:</label>
-                            <input type="number" id="edit-product-price" name="gia" value="<?php echo $row['giagoc']; ?>" min="0" required>
-
-                            <label for="edit-product-image">Hình ảnh:</label>
-                            <input type="file" id="edit-product-image" name="hinhanh" accept="image/*" required>
-                            <img id="previewImage" src="<?php echo WEBROOT . 'public/img/' . $row['hinhanh']; ?>" alt="Xem trước ảnh" style="display: none;">
-                          </div>
-
-                        </div>
-
-                        <!-- Nút điều khiển -->
-                        <div class="form-buttons">
-                          <button type="submit" class="btn submit-btn">Lưu thay đổi</button>
-                          <button type="button" class="btn reset-btn" onclick="closeEditModal()">Hủy</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
+   
     </div>  
   
         <?php 
@@ -598,21 +545,7 @@ if (isset($_SESSION['thanhcong'])) {
     }
   };
 </script>
-<script>
-    function openEditModal(masanpham) {
-    document.getElementById('edit-product-id').value = masanpham;
-    document.getElementById('editProductModal').classList.add('show');
-}
-    function closeEditModal() {
-        document.getElementById("editProductModal").classList.remove('show');
-    }
-    window.onclick = function(event) {
-    const modal = document.getElementById("editProductModal");
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  };
-</script>
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('product-image');

@@ -132,7 +132,6 @@ class adminController extends Controller
             header("location: /inis/admin/sanpham");
             return;
         }
-
         $masanpham = $_POST['masanpham'] ?? '';
         $tensanpham = $_POST['tensanpham'] ?? '';
         $id_danhmuc = $_POST['danhmuc'] ?? '';
