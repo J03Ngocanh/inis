@@ -282,10 +282,18 @@ button {
 </div>
 
 
-    <div class="thanh-toan">
-        <a href="<?php echo WEBROOT; ?>giohang/checkout" class="btn-thanh-toan">Thanh toán</a>
-    </div>
+<?php
+$cartEmpty = empty($_SESSION['giohang']); // Kiểm tra giỏ hàng có trống không
+?>
+
+<div class="thanh-toan">
+    <a href="<?php echo !$cartEmpty ? WEBROOT . 'giohang/checkout' : 'javascript:void(0)'; ?>" 
+       class="btn-thanh-toan <?php echo $cartEmpty ? 'disabled' : ''; ?>"
+       <?php echo $cartEmpty ? 'style="background-color: gray; border: 1px solid gray; cursor: not-allowed; pointer-events: none; color: white;"' : ''; ?>>
+       Thanh toán
+    </a>
 </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {

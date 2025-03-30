@@ -8,30 +8,27 @@ class trangchuController extends Controller {
         $this->trangchuModel = $this->model('trangchuModel');
     }  
     public function trangchu() {
+        $makhachhang =  $_SESSION['makhachhang'];
         $loaisp= $this->trangchuModel->Getloaisp(); 
         $best = $this->trangchuModel->laybestseller();
+        $info = $this->trangchuModel->info($makhachhang);
+        $rank_up = $_SESSION['rank_up'] ?? null;
+        unset($_SESSION['rank_up']);
         $new = $this->trangchuModel->laynewitem();
-        $this->view('menu',['loaisp' => $loaisp]);
+        $this->view('menu',['loaisp' => $loaisp, 'info' => $info]);
+        $this->view('trangchu/trangchu',['best' => $best, 'new' => $new, 'rank_up' => $rank_up]);
+        $this->view('footer');
+    }
     
-        
-        $this->view('trangchu/trangchu',['best' => $best, 'new' => $new]);
-        $this->view('footer');
-    }
-
-    public function veinnis(){
-        $loaisp= $this->trangchuModel->Getloaisp(); 
-        $this->view('menu',['loaisp' => $loaisp]);
-        $this->view('trangchu/veinnis');
-        $this->view('footer');
-    }
     
     public function thongtin(){
         $makhachhang =  $_SESSION['makhachhang'];
         $loaisp= $this->trangchuModel->Getloaisp(); 
         $info = $this->trangchuModel->info($makhachhang);
+        $info1 = $this->trangchuModel->info($makhachhang);
         $history = $this->trangchuModel->getLichSuDonHang($makhachhang);
-        $this->view('menu',['loaisp' => $loaisp]);
-        $this->view('thongtin/thongtin', [ 'info' => $info, 'history' => $history]);
+        $this->view('menu',['loaisp' => $loaisp, 'info' => $info]);
+        $this->view('thongtin/thongtin', [ 'info1' => $info1,'history' => $history]);
     }
     
 }

@@ -9,22 +9,27 @@ class veinnisController extends Controller {
     }
 
     public function veinnis(){
+        $makhachhang =  $_SESSION['makhachhang'];
         $loaisp= $this->veinnisModel->Getloaisp(); 
-        $this->view('menu', ['loaisp' => $loaisp]);
+        $info = $this->veinnisModel->info($makhachhang);
+        $this->view('menu',['loaisp' => $loaisp, 'info' => $info]);
         $this->view('veinnis/veinnis');
         $this->view('footer');
     }
 
     public function blog1(){
         $loaisp= $this->veinnisModel->Getloaisp(); 
-        $this->view('menu', ['loaisp' => $loaisp]);
+        $makhachhang =  $_SESSION['makhachhang'];
+        $info = $this->veinnisModel->info($makhachhang);
+        $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('veinnis/blog1');
-
         $this->view('footer');
     }
     public function blog2(){
         $loaisp= $this->veinnisModel->Getloaisp(); 
-        $this->view('menu', ['loaisp' => $loaisp]);
+        $makhachhang =  $_SESSION['makhachhang'];
+        $info = $this->veinnisModel->info($makhachhang);
+        $this->view('menu', ['loaisp' => $loaisp, 'info'=>$info]);
         $this->view('veinnis/blog2');
 
         $this->view('footer');

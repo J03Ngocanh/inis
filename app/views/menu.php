@@ -245,7 +245,8 @@
                 <span><strong><?= htmlspecialchars($_SESSION['tenkhachhang']); ?></strong></span>
                 <div class="points-container">
                 &#x1FA99;
-                    <span><?php echo $_SESSION['point']?> điểm</span>
+                <?php $row = $info->fetch_assoc() ?>
+                    <span><?php echo $row['point']?> điểm</span>
                 </div>
                 <p>|</p>
                 <a style="font-size:15px;" href="<?php echo WEBROOT; ?>taikhoan/logout" class="icon">Đăng xuất</a>

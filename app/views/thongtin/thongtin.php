@@ -87,7 +87,7 @@
         <!-- Thông tin cá nhân -->
         <div class="tab-pane fade show active" id="info" role="tabpanel">
             <h3>Thông tin cá nhân</h3>
-            <?php while($row = mysqli_fetch_array($info)) { ?>
+            <?php while($row = mysqli_fetch_array($info1)) { ?>
             <p><strong>Họ và tên:</strong><?php echo $row['tenkhachhang']?> </p>
             <p><strong>Email:</strong><?php echo $row['email']?></p>
             <p><strong>Số điện thoại:</strong> <?php echo $row['sdt']?></p>

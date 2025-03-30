@@ -262,6 +262,48 @@ button {
     display: block;
     animation: slide-in 0.5s ease-out forwards;
 }
+.popup {
+    display: none; /* Ẩn mặc định */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Làm tối nền */
+    
+    display: flex; /* Kích hoạt flexbox */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    
+    z-index: 9999; /* Đảm bảo hiển thị trên cùng */
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    position: relative;
+    animation: fadeIn 0.5s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Thêm đổ bóng */
+}
+
+        .close-btn {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .rank-icon {
+            width: 80px;
+            margin-top: 10px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
 
 @keyframes slide-in {
     0% {
@@ -539,10 +581,32 @@ button {
         </div>
         </section> 
 </div>
-    
+<?php if (isset($rank_up)): ?>
+    <div id="rankUpPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <h2>🎉 Chúc mừng! 🎉</h2>
+            <p>Bạn đã thăng hạng lên <strong><?= getRankName($rank_up); ?></strong>!</p>
+            <img style = "width: 100px;"src="<?php echo WEBROOT; ?>public/img/rank_<?php echo $rank_up; ?>.png" alt="Rank mới" class="rank-icon">
+            </div>
+    </div>
+<?php endif; ?>
+<?php
+// Hàm lấy tên rank
+function getRankName($rank_id) {
+    $ranks = [
+        1 => "Member",
+        2 => "Silver",
+        3 => "Gold",
+        4 => "Diamond"
+    ];
+    return $ranks[$rank_id] ?? "Member";
+}
+?>
     <script src="<?php echo WEBROOT; ?>java/script.js"></script>
  
 </body>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
@@ -555,7 +619,16 @@ $(document).ready(function() {
             $('#flash-message').fadeOut(500); // Dần dần ẩn thanh thông báo
         }, 5000); // Thời gian hiển thị 5 giây
     }
+
+    // Hiển thị popup thăng hạng khi trang tải xong
+    $("#rankUpPopup").show();
+
+    // Đóng popup khi nhấn nút
+    $(".close-btn").click(function() {
+        $("#rankUpPopup").hide();
+    });
 });
 </script>
+
 
 </html>

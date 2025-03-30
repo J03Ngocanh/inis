@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2025 at 11:39 AM
+-- Generation Time: Mar 30, 2025 at 05:44 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -39,7 +39,18 @@ CREATE TABLE `chitiethoadon` (
 --
 
 INSERT INTO `chitiethoadon` (`mahoadon`, `masanpham`, `soluong`, `dongia`) VALUES
-('HD0001', 'SP004', 1, 300000);
+('HD0001', 'SP004', 1, 300000),
+('HD0002', 'SP003', 1, 280000),
+('HD0003', 'SP004', 1, 300000),
+('HD0003', 'SP005', 1, 306000),
+('HD0003', 'SP033', 1, 340000),
+('HD0004', 'SP003', 1, 280000),
+('HD0005', 'SP002', 1, 400000),
+('HD0005', 'SP003', 1, 280000),
+('HD0005', 'SP004', 1, 300000),
+('HD0006', 'SP004', 12, 300000),
+('HD0007', 'SP003', 3, 280000),
+('HD0007', 'SP005', 5, 306000);
 
 -- --------------------------------------------------------
 
@@ -96,7 +107,7 @@ CREATE TABLE `hoadon` (
   `giamgia` int(10) NOT NULL DEFAULT 0,
   `tongtiensaugiam` decimal(10,0) NOT NULL,
   `pttt` varchar(200) NOT NULL,
-  `trangthai` varchar(10) DEFAULT 'new'
+  `trangthai` varchar(20) DEFAULT 'new'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -104,7 +115,13 @@ CREATE TABLE `hoadon` (
 --
 
 INSERT INTO `hoadon` (`id`, `mahoadon`, `makhachhang`, `hoten_nhan`, `sdt_nhan`, `diachi_nhan`, `ngaytao`, `tongtientruocgiam`, `giamgia`, `tongtiensaugiam`, `pttt`, `trangthai`) VALUES
-(14, 'HD0001', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'aaaaaaaa', '2025-03-30 11:18:59', 300000, 0, 330000, 'tien_mat', 'Đã thanh t');
+(14, 'HD0001', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'aaaaaaaa', '2025-03-30 11:18:59', 300000, 0, 330000, 'tien_mat', 'Đã thanh t'),
+(15, 'HD0002', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'aaaaa', '2025-03-30 16:20:42', 280000, 0, 310000, 'tien_mat', 'Đã thanh t'),
+(16, 'HD0003', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'qaqqqqq', '2025-03-30 16:55:46', 946000, 0, 976000, 'tien_mat', 'Đã thanh t'),
+(17, 'HD0004', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'aaaaaaaaaaaaaa', '2025-03-30 16:56:57', 280000, 0, 310000, 'tien_mat', 'Đã thanh t'),
+(18, 'HD0005', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'rrrrrrrrrrrr', '2025-03-30 17:03:12', 980000, 0, 1010000, 'tien_mat', 'Đã thanh t'),
+(19, 'HD0006', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'uuuuuuuu', '2025-03-30 17:16:29', 3600000, 5, 3450000, 'tien_mat', 'Đã thanh t'),
+(20, 'HD0007', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'aaaaaaaaaaa', '2025-03-30 17:31:36', 2370000, 10, 2163000, 'tien_mat', 'Đã thanh t');
 
 --
 -- Triggers `hoadon`
@@ -169,7 +186,7 @@ CREATE TABLE `khachhang` (
 --
 
 INSERT INTO `khachhang` (`id`, `tenkhachhang`, `email`, `sdt`, `password`, `ngaysinh`, `id_rank`, `point`, `verification_code`) VALUES
-('KH0002', 'Ngô Ngọc Á', 'ngoanh2345@gmail.com', '0987654321', '$2y$10$.wPymwBoKVq6nAldWBHL1uERSjfH9nQkwuZ5IWHcMxFdpT.e.eg/e', '2003-11-25', 1, 650, NULL),
+('KH0002', 'Ngô Ngọc Á', 'ngoanh2345@gmail.com', '0987654321', '$2y$10$.wPymwBoKVq6nAldWBHL1uERSjfH9nQkwuZ5IWHcMxFdpT.e.eg/e', '2003-11-25', 2, 2420, NULL),
 ('KH0003', 'Vũ Nguyên Hương', 'ngongocanh15072311@gmail.com', '0000000000', '$2y$10$d50RdGxa9wo5oSbTKzt0/.NAX0NgmkRrOw66WeNcmoulaC7613s5i', '2003-11-25', 1, 50, 576270),
 ('KH0004', 'UUUUUUUUUU', 'ngoanh2311@gmail.com', '1111111111', '$2y$10$J3UQWi0ziIHmVRoIx6HKReiwUaEydo4RxDmwcK8rEXiXAi4aWufFS', '2003-11-25', 1, 50, NULL),
 ('KH0005', 'aaaa', 'sfsgg@gmail.com', '123456', '$2y$10$.Nfl21z/wAXXXa9tII35KeTmZt6xffMk88OiJQRjdZ/ThfeNqH8FG', '2003-11-23', 1, 50, NULL),
@@ -515,7 +532,7 @@ ALTER TABLE `danhmucsp`
 -- AUTO_INCREMENT for table `hoadon`
 --
 ALTER TABLE `hoadon`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `loaisp`

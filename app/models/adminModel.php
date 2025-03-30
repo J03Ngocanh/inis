@@ -97,10 +97,9 @@ public function getinfocus($mahoadon){
     return $result;
 }
 
-public function updatePointsAndRank($makhachhang, $tongtien)
-{
-    // Lấy thông tin khách hàng
-    $sql = "SELECT point FROM $this->tblkhachhang WHERE id = ?";
+public function updatePointsAndRank($makhachhang, $tongtien) {
+    // Lấy điểm hiện tại của khách hàng
+    $sql = "SELECT point, id_rank FROM khachhang WHERE id = ?";
     $stmt = $this->con->prepare($sql);
     $stmt->bind_param("s", $makhachhang);
     $stmt->execute();
@@ -109,28 +108,34 @@ public function updatePointsAndRank($makhachhang, $tongtien)
     $stmt->close();
 
     if ($khachhang) {
-        // Cộng điểm từ hóa đơn (1/1000 tổng tiền)
-        $newPoints = $khachhang['point'] + floor($tongtien / 1000);
-
-        // Xác định cấp bậc mới
+        $old_rank = $khachhang['id_rank']; // Rank trước khi cập nhật
+        $newPoints = $khachhang['point'] + floor($tongtien / 1000); // Cộng điểm
+       
+        // Xác định rank mới
         if ($newPoints >= 7500) {
-            $id_rank = 4; // Diamond
+            $new_rank = 4; // Diamond
         } elseif ($newPoints >= 4000) {
-            $id_rank = 3; // Gold
+            $new_rank = 3; // Gold
         } elseif ($newPoints >= 2000) {
-            $id_rank = 2; // Silver
+            $new_rank = 2; // Silver
         } else {
-            $id_rank = 1; // Member
+            $new_rank = 1; // Member
         }
 
-        // Cập nhật điểm và rank
-        $sqlUpdate = "UPDATE $this->tblkhachhang SET point = ?, id_rank = ? WHERE id = ?";
+        // Cập nhật điểm & rank vào database
+        $sqlUpdate = "UPDATE khachhang SET point = ?, id_rank = ? WHERE id = ?";
         $stmtUpdate = $this->con->prepare($sqlUpdate);
-        $stmtUpdate->bind_param("iis", $newPoints, $id_rank, $makhachhang);
+        $stmtUpdate->bind_param("iis", $newPoints, $new_rank, $makhachhang);
         $stmtUpdate->execute();
         $stmtUpdate->close();
+
+        // Kiểm tra nếu rank thay đổi => Lưu session để hiển thị popup
+        if ($new_rank > $old_rank) {
+            $_SESSION['rank_up'] = $new_rank;
+        }
     }
 }
+
 
 public function chitietdonhang(){
    $sql = "SELECT $this->tblchitietdonhang.*, $this->tblsanpham.hinhanh, $this->tblsanpham.tensanpham FROM $this->tblchitietdonhang INNER JOIN $this->tblsanpham

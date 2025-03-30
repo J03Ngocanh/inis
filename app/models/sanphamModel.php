@@ -4,6 +4,8 @@ class sanphamModel extends Model {
    protected $tblsanpham="sanpham";
    protected $tbldanhmucsp = "danhmucsp";
    protected $tblloaisp='loaisp';
+   protected $tblkhachhang='khachhang';
+
 
 
    public function Getloaisp(){
@@ -18,7 +20,11 @@ class sanphamModel extends Model {
     $result=$this->con->query($sql);
     return $result;
    }
-   
+   public function info($makhachhang){
+    $sql = "SELECT * FROM $this->tblkhachhang kh WHERE id = '$makhachhang'";
+    $result = $this->con->query($sql);
+    return $result;
+}
     public function getAll() {
         $sql = "SELECT * FROM $this->tblsanpham ";
         $result=$this->con->query($sql);

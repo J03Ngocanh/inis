@@ -20,43 +20,8 @@
         </ul>
         
         <h2>Phí Vận Chuyển</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Khu vực</th>
-                    <th>Phí nội thành</th>
-                    <th>Phí ngoại thành</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>TP.HCM</td>
-                    <td>19,000 VND</td>
-                    <td>23,000 VND</td>
-                </tr>
-                <tr>
-                    <td>Miền Nam</td>
-                    <td>30,000 VND</td>
-                    <td>30,000 VND</td>
-                </tr>
-                <tr>
-                    <td>Miền Trung</td>
-                    <td>30,000 VND</td>
-                    <td>30,000 VND</td>
-                </tr>
-                <tr>
-                    <td>Hà Nội</td>
-                    <td>25,000 VND</td>
-                    <td>25,000 VND</td>
-                </tr>
-                <tr>
-                    <td>Các tỉnh khác</td>
-                    <td>30,000 VND</td>
-                    <td>30,000 VND</td>
-                </tr>
-            </tbody>
-        </table>
-        
+        <p>Phí vận chuyển sẽ được áp dụng toàn quốc: 30.000 VNĐ</p>
+     
         <h2>Lưu Ý</h2>
         <p>innisfree không giao hàng đến các địa chỉ quốc tế và hộp thư công cộng.</p>
     </div>

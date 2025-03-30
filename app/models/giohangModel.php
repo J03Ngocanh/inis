@@ -20,8 +20,12 @@ class giohangModel extends Model {
         $sql = "SELECT * FROM $this->tblloaisp ";
         $result=$this->con->query($sql);
         return $result;
-       }
-
+    }
+    public function info($makhachhang){
+        $sql = "SELECT * FROM $this->tblkhachhang kh WHERE id = '$makhachhang'";
+        $result = $this->con->query($sql);
+        return $result;
+    }
     // Lấy giỏ hàng của người dùng dựa vào số điện thoại
     public function layGioHang($sdt) {
         $sql = "SELECT 

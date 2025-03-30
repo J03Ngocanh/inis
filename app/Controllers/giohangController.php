@@ -9,11 +9,13 @@ class giohangController extends Controller {
     }
 
 
-    public function trangchu() {
+    public function giohang() {
      // Lấy dữ liệu loại sản phẩm
      $loaisp = $this->giohangModel->Getloaisp(); 
      // Truyền loại sản phẩm vào view 'menu'
-     $this->view('menu', ['loaisp' => $loaisp]);
+     $makhachhang =  $_SESSION['makhachhang'];
+     $info = $this->giohangModel->info($makhachhang);
+     $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
      // Kiểm tra xem người dùng đã đăng nhập chưa
      if (isset($_SESSION['sdt'])) {
          $sdt = $_SESSION['sdt']; // Lấy số điện thoại từ session
@@ -95,14 +97,11 @@ class giohangController extends Controller {
 
     public function checkout(){
         $thanhtoan = isset($_SESSION['giohang']) ? $_SESSION['giohang'] : [];
-        if (empty($thanhtoan)) {
-            echo "Giỏ hàng trống!";
-            return;
-        }
         $makhachhang = $_SESSION['makhachhang'];
         $coupon = $this->giohangModel->Getcoupon($makhachhang);
         $loaisp= $this->giohangModel->Getloaisp(); 
-        $this->view('menu', ['loaisp' => $loaisp]);
+        $info = $this->giohangModel->info($makhachhang);
+        $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         // Truyền giỏ hàng vào view 'thanhtoan'
         $this->view('thanhtoan/thanhtoan', ['thanhtoan' => $thanhtoan, 'coupon'=> $coupon]);
     }
@@ -233,7 +232,9 @@ class giohangController extends Controller {
     }
     public function hoanthanhthanhtoan($mahoadon){
         $loaisp= $this->giohangModel->Getloaisp();  
-        $this->view('menu',['loaisp' => $loaisp]);
+        $makhachhang =  $_SESSION['makhachhang'];
+        $info = $this->giohangModel->info($makhachhang);
+        $this->view('menu',['loaisp' => $loaisp, 'info'=> $info]);
         $ttindonhang = $this->giohangModel->Getttinchitietdonhang($mahoadon);
         $ttinnguoimua = $this->giohangModel->Getttindonhang($mahoadon);
         $this->view('giohang/chitiethoadon' , ['ttindonhang' => $ttindonhang, 'ttinnguoimua' => $ttinnguoimua ]);
