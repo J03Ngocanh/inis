@@ -124,9 +124,7 @@ class giohangController extends Controller {
         }else{
             header('Location: ' . WEBROOT . 'taikhoan/login');
             exit();
-        }
-       
-
+        }    
     }
 
 
@@ -177,14 +175,16 @@ class giohangController extends Controller {
             $hoten_nhan = $_POST['hoten_nhan'] ?? '';
             $diachi_nhan = $_POST['diachi_nhan'] ?? '';
             $phuong_thuc = $_POST['phuong_thuc'] ?? '';
-            $tongTien = $_POST['tongTien'] ?? 0;
+            $tongtien = $_POST['tongtien'];
+            $giamgia = $_POST['giamgia'] ;
+            $tong_thanhtoan = $_POST['tong_thanhtoan'] ;
             $ngay_tao = date('Y-m-d H:i:s');
     
             // Lấy mã khách hàng từ session (phải có đăng nhập)
             $makhachhang = $_SESSION['makhachhang'] ?? 'KH0000';
     
             // Thêm đơn hàng và lấy mã hóa đơn vừa tạo
-            $mahoadon = $this->giohangModel->addOrder($makhachhang, $tongTien, $hoten_nhan, $sdt, $diachi_nhan, $phuong_thuc, $ngay_tao);
+            $mahoadon = $this->giohangModel->addOrder($makhachhang, $tongtien, $giamgia, $tong_thanhtoan, $hoten_nhan, $sdt, $diachi_nhan, $phuong_thuc, $ngay_tao);
     
             if ($mahoadon) {
                 echo $mahoadon;
@@ -193,14 +193,13 @@ class giohangController extends Controller {
                         $soluong = $sanpham['soluong'];
                         $giagoc = $sanpham['giagoc'];
                         $this->giohangModel->addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc);
-                           // 🎯 Cập nhật điểm và xếp hạng khách hàng
-                        $this->giohangModel->updatePointsAndRank($makhachhang, $tongTien);
+                        
                         unset($_SESSION['giohang']);
                     }
                 }
     
                 // Điều hướng đến trang xác nhận đơn hàng
-                //header("Location: " . WEBROOT . "giohang/hoanthanhthanhtoan/$mahoadon");
+                header("Location: " . WEBROOT . "giohang/hoanthanhthanhtoan/$mahoadon");
                 exit();
             } else {
                 die("Lỗi: Không thể tạo đơn hàng.");

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2025 at 03:35 PM
+-- Generation Time: Mar 30, 2025 at 11:39 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -31,21 +31,15 @@ CREATE TABLE `chitiethoadon` (
   `mahoadon` varchar(10) NOT NULL,
   `masanpham` varchar(10) NOT NULL,
   `soluong` int(11) NOT NULL,
-  `dongia` decimal(10,2) NOT NULL,
-  `thanhtien` decimal(10,2) NOT NULL
+  `dongia` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `chitiethoadon`
 --
 
-INSERT INTO `chitiethoadon` (`mahoadon`, `masanpham`, `soluong`, `dongia`, `thanhtien`) VALUES
-('HD0002', 'SP004', 1, 300000.00, 0.00),
-('HD0004', 'SP003', 1, 280000.00, 0.00),
-('HD0005', 'SP004', 1, 300000.00, 0.00),
-('HD0006', 'SP003', 1, 280000.00, 0.00),
-('HD0007', 'SP004', 1, 300000.00, 0.00),
-('HD0008', 'SP004', 1, 300000.00, 0.00);
+INSERT INTO `chitiethoadon` (`mahoadon`, `masanpham`, `soluong`, `dongia`) VALUES
+('HD0001', 'SP004', 1, 300000);
 
 -- --------------------------------------------------------
 
@@ -98,11 +92,11 @@ CREATE TABLE `hoadon` (
   `sdt_nhan` varchar(10) NOT NULL,
   `diachi_nhan` varchar(500) NOT NULL,
   `ngaytao` datetime NOT NULL DEFAULT current_timestamp(),
-  `tongtientruocgiam` decimal(10,2) NOT NULL,
+  `tongtientruocgiam` decimal(10,0) NOT NULL,
   `giamgia` int(10) NOT NULL DEFAULT 0,
-  `tongtiensaugiam` decimal(10,2) NOT NULL,
+  `tongtiensaugiam` decimal(10,0) NOT NULL,
   `pttt` varchar(200) NOT NULL,
-  `trangthai` varchar(10) NOT NULL
+  `trangthai` varchar(10) DEFAULT 'new'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -110,13 +104,7 @@ CREATE TABLE `hoadon` (
 --
 
 INSERT INTO `hoadon` (`id`, `mahoadon`, `makhachhang`, `hoten_nhan`, `sdt_nhan`, `diachi_nhan`, `ngaytao`, `tongtientruocgiam`, `giamgia`, `tongtiensaugiam`, `pttt`, `trangthai`) VALUES
-(2, 'HD0002', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'sdds', '2025-03-29 12:40:26', 0.00, 0, 0.00, 'tien_mat', ''),
-(3, 'HD0003', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'sdds', '2025-03-29 12:42:43', 0.00, 0, 0.00, 'tien_mat', ''),
-(4, 'HD0004', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'dddddđ', '2025-03-29 12:42:57', 0.00, 0, 0.00, 'tien_mat', ''),
-(5, 'HD0005', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'dddđ', '2025-03-29 12:45:14', 0.00, 0, 0.00, 'tien_mat', ''),
-(6, 'HD0006', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'assssssssss', '2025-03-29 12:46:18', 0.00, 0, 0.00, 'tien_mat', ''),
-(7, 'HD0007', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'aaaaaaaaaaa', '2025-03-29 12:46:48', 0.00, 0, 0.00, 'tien_mat', ''),
-(8, 'HD0008', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'ưdwd', '2025-03-29 12:58:00', 0.00, 0, 0.00, 'tien_mat', '');
+(14, 'HD0001', 'KH0002', 'Ngô Ngọc Á', '0987654321', 'aaaaaaaa', '2025-03-30 11:18:59', 300000, 0, 330000, 'tien_mat', 'Đã thanh t');
 
 --
 -- Triggers `hoadon`
@@ -181,7 +169,7 @@ CREATE TABLE `khachhang` (
 --
 
 INSERT INTO `khachhang` (`id`, `tenkhachhang`, `email`, `sdt`, `password`, `ngaysinh`, `id_rank`, `point`, `verification_code`) VALUES
-('KH0002', 'Ngô Ngọc Á', 'ngoanh2345@gmail.com', '0987654321', '$2y$10$.wPymwBoKVq6nAldWBHL1uERSjfH9nQkwuZ5IWHcMxFdpT.e.eg/e', '2003-11-25', 1, 50, NULL),
+('KH0002', 'Ngô Ngọc Á', 'ngoanh2345@gmail.com', '0987654321', '$2y$10$.wPymwBoKVq6nAldWBHL1uERSjfH9nQkwuZ5IWHcMxFdpT.e.eg/e', '2003-11-25', 1, 650, NULL),
 ('KH0003', 'Vũ Nguyên Hương', 'ngongocanh15072311@gmail.com', '0000000000', '$2y$10$d50RdGxa9wo5oSbTKzt0/.NAX0NgmkRrOw66WeNcmoulaC7613s5i', '2003-11-25', 1, 50, 576270),
 ('KH0004', 'UUUUUUUUUU', 'ngoanh2311@gmail.com', '1111111111', '$2y$10$J3UQWi0ziIHmVRoIx6HKReiwUaEydo4RxDmwcK8rEXiXAi4aWufFS', '2003-11-25', 1, 50, NULL),
 ('KH0005', 'aaaa', 'sfsgg@gmail.com', '123456', '$2y$10$.Nfl21z/wAXXXa9tII35KeTmZt6xffMk88OiJQRjdZ/ThfeNqH8FG', '2003-11-23', 1, 50, NULL),
@@ -288,7 +276,7 @@ CREATE TABLE `rank` (
   `id_rank` int(3) NOT NULL,
   `name` varchar(50) NOT NULL,
   `Min_point` int(10) NOT NULL,
-  `discount` varchar(10) NOT NULL
+  `discount` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -296,10 +284,10 @@ CREATE TABLE `rank` (
 --
 
 INSERT INTO `rank` (`id_rank`, `name`, `Min_point`, `discount`) VALUES
-(1, 'Member', 0, '0%'),
-(2, 'Silver', 2000, '5%'),
-(3, 'Gold', 4000, '10%'),
-(4, 'Diamond', 8000, '15%');
+(1, 'Member', 0, 0),
+(2, 'Silver', 2000, 5),
+(3, 'Gold', 4000, 10),
+(4, 'Diamond', 8000, 15);
 
 -- --------------------------------------------------------
 
@@ -331,7 +319,7 @@ CREATE TABLE `sanpham` (
   `id_danhmuc` int(11) NOT NULL,
   `tensanpham` varchar(500) NOT NULL,
   `mota` text DEFAULT NULL,
-  `giagoc` int(10) DEFAULT NULL,
+  `giagoc` decimal(10,0) DEFAULT NULL,
   `rate` int(5) DEFAULT NULL,
   `hinhanh` varchar(255) DEFAULT NULL,
   `hinhanh1` varchar(100) DEFAULT NULL,
@@ -459,6 +447,12 @@ DELIMITER ;
 --
 
 --
+-- Indexes for table `chitiethoadon`
+--
+ALTER TABLE `chitiethoadon`
+  ADD PRIMARY KEY (`mahoadon`,`masanpham`);
+
+--
 -- Indexes for table `danhmucsp`
 --
 ALTER TABLE `danhmucsp`
@@ -521,7 +515,7 @@ ALTER TABLE `danhmucsp`
 -- AUTO_INCREMENT for table `hoadon`
 --
 ALTER TABLE `hoadon`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `loaisp`

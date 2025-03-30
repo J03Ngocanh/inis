@@ -86,11 +86,52 @@ public fUNCTION getddh(){
    return $result;
 }
 
-public fUNCTION xacnhan($id_giohang){
-   $sql = " UPDATE $this->tblgiohang  SET trangthai='Đã thanh toán' WHERE id_giohang=  $id_giohang ";
+public fUNCTION xacnhan($mahoadon){
+   $sql = " UPDATE $this->tbldonhang SET trangthai='Đã thanh toán' WHERE mahoadon=  '$mahoadon'";
    $result = $this->con->query($sql);
    return $result;
 }
+public function getinfocus($mahoadon){
+    $sql = "SELECT makhachhang, tongtientruocgiam FROM $this->tbldonhang WHERE mahoadon = '$mahoadon'";
+    $result = $this->con->query($sql);
+    return $result;
+}
+
+public function updatePointsAndRank($makhachhang, $tongtien)
+{
+    // Lấy thông tin khách hàng
+    $sql = "SELECT point FROM $this->tblkhachhang WHERE id = ?";
+    $stmt = $this->con->prepare($sql);
+    $stmt->bind_param("s", $makhachhang);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $khachhang = $result->fetch_assoc();
+    $stmt->close();
+
+    if ($khachhang) {
+        // Cộng điểm từ hóa đơn (1/1000 tổng tiền)
+        $newPoints = $khachhang['point'] + floor($tongtien / 1000);
+
+        // Xác định cấp bậc mới
+        if ($newPoints >= 7500) {
+            $id_rank = 4; // Diamond
+        } elseif ($newPoints >= 4000) {
+            $id_rank = 3; // Gold
+        } elseif ($newPoints >= 2000) {
+            $id_rank = 2; // Silver
+        } else {
+            $id_rank = 1; // Member
+        }
+
+        // Cập nhật điểm và rank
+        $sqlUpdate = "UPDATE $this->tblkhachhang SET point = ?, id_rank = ? WHERE id = ?";
+        $stmtUpdate = $this->con->prepare($sqlUpdate);
+        $stmtUpdate->bind_param("iis", $newPoints, $id_rank, $makhachhang);
+        $stmtUpdate->execute();
+        $stmtUpdate->close();
+    }
+}
+
 public function chitietdonhang(){
    $sql = "SELECT $this->tblchitietdonhang.*, $this->tblsanpham.hinhanh, $this->tblsanpham.tensanpham FROM $this->tblchitietdonhang INNER JOIN $this->tblsanpham
    ON $this->tblchitietdonhang.masanpham = $this->tblsanpham.masanpham";

@@ -249,24 +249,48 @@ th, td {
         <?php endforeach; ?>
     </tbody>
     <tfoot>
-        <tr>
-            <td colspan="4"><strong>Tạm tính:</strong></td>
-            <td><strong><?php echo number_format($tongtien, 0, ',', '.'); ?> VND</strong></td>
-        </tr>
-        <tr>
-        <?php while ($row = $coupon->fetch_assoc()): ?>
-        <td colspan="4">Mã giảm giá: </td>
-        <td colspan="4"><?php echo $row['discount']?></td>
-        </tr>
-        <tr>
-        <td colspan="4">Phí vận chuyển: </td>
-        <td colspan="4"></td>
-        </tr>
-        <tr>
+    <tr>
+        <td colspan="4"><strong>Tạm tính:</strong></td>
+        <td><strong><?php echo number_format($tongtien, 0, ',', '.'); ?> VND</strong></td>
+    </tr>
+
+    <?php 
+    $giamgia = 0; // Mặc định không có giảm giá
+    while ($row = $coupon->fetch_assoc()): 
+        $giamgia = $row['discount']; // Lưu giảm giá theo phần trăm
+    ?>
+    <tr>
+        <td colspan="4">Mức giảm giá:</td>
+        <td><?php echo $giamgia; ?>%</td>
+    </tr>
+    <?php endwhile; ?>
+
+    <?php
+    $tien_giam = ($tongtien * $giamgia) / 100; // Tính số tiền được giảm
+    $phi_van_chuyen = 30000; // Phí vận chuyển cố định
+    $tong_thanhtoan = max(($tongtien - $tien_giam) + $phi_van_chuyen, 0); // Đảm bảo tổng tiền không âm
+    ?>
+
+    <tr>
+        <td colspan="4">Số tiền được giảm:</td>
+        <td>-<?php echo number_format($tien_giam, 0, ',', '.'); ?> VND</td>
+    </tr>
+
+    <tr>
+        <td colspan="4">Phí vận chuyển:</td>
+        <td><?php echo number_format($phi_van_chuyen, 0, ',', '.'); ?> VND</td>
+    </tr>
+
+    <tr>
         <td colspan="4"><strong>Tổng tiền:</strong></td>
-        <td colspan="4"></td>
-        </tr>
-    </tfoot>
+        <td><strong><?php echo number_format($tong_thanhtoan, 0, ',', '.'); ?> VND</strong></td>
+    </tr>
+    <input type="hidden" name="tongtien" value="<?php echo $tongtien; ?>">
+    <input type="hidden" name="giamgia" value="<?php echo $giamgia; ?>">
+    <input type="hidden" name="tong_thanhtoan" value="<?php echo $tong_thanhtoan; ?>">
+
+</tfoot>
+
 </table>
 
 </div>
@@ -283,8 +307,6 @@ th, td {
             <input type="text" id="hoten_nhan" name="hoten_nhan" placeholder="Họ tên người nhận"
        value="<?php echo isset($_SESSION['tenkhachhang']) ? $_SESSION['tenkhachhang'] : ''; ?>" required>
         </div>
-
-       
 
         <div class="form-group">
             <label for="diachi_nhan">Địa chỉ giao hàng:</label>

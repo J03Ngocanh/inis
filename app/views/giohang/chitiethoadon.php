@@ -126,7 +126,7 @@
                 <tr>
                 <td><?php echo $data['tensanpham'];   ?></td>
                 <td><?php echo $data['soluong'];   ?></td>
-                <td><?php echo number_format($data['giagoc'], 0, ',', '.'); ?>đ</td>
+                <td><?php echo number_format($data['giagoc'], 0, ',', '.'); ?> VNĐ</td>
               </tr> 
               <?php }?>
             </tbody>
@@ -135,7 +135,7 @@
           <div class="order-info">
           <?php while($row=mysqli_fetch_array($ttinnguoimua)){?>
             <div>Phương thức thanh toán: <strong><?php if($row['pttt']=="tien_mat"){echo "Tiền mặt " ;} else{ echo "Chuyển khoản" ;} ?></strong></div>
-            <div>Tổng tiền thu: <strong class="total"><?php echo number_format($row['tongtiensaugiam'], 0, ',', '.'); ?>đ</strong></div>
+            <div>Tổng tiền thu: <strong class="total"><?php echo number_format($row['tongtiensaugiam'], 0, ',', '.'); ?> VNĐ</strong></div>
           </div>
 
           <div class="order-info">

@@ -331,6 +331,7 @@ input:checked + .slider:before {
                 <th>Email</th>
                 <th>Ngày sinh</th>
                 <th>Rank</th>
+                <th>Điểm tích lũy</th>
             </tr>
         </thead>
         <tbody>
@@ -342,6 +343,7 @@ input:checked + .slider:before {
                 <td><?= $row['email']; ?></td>
                 <td><?= $row['ngaysinh']; ?></td>
                 <td><?= $row['name']; ?></td>       
+                <td><?= $row['point']; ?></td>       
             </tr>
         <?php } ?>
         </tbody>

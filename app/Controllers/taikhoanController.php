@@ -122,7 +122,7 @@ class taikhoanController extends Controller {
 
 
 
-    public function xulydangnhap() {
+    public function xulydangnhap(){
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $_SESSION['loidangnhap'] = "Phương thức không hợp lệ.";
             $this->view('taikhoan/login');
@@ -131,23 +131,19 @@ class taikhoanController extends Controller {
 
         $sdt = $_POST['sdt'] ?? '';
         $password = $_POST['password'] ?? '';
-
-        if (empty($sdt) || empty($password)) {
+        if (empty($sdt) || empty($password)){
             $_SESSION['loidangnhap'] = "Vui lòng nhập số điện thoại hoặc email và mật khẩu.";
             $this->view('taikhoan/login');
             return;
         }
-
-        // Kiểm tra khách hàng (sdt hoặc email)
+         // Kiểm tra khách hàng (sdt hoặc email)
         $check_kh = $this->taikhoanModel->check_kh($sdt);
         if ($check_kh && $row = mysqli_fetch_assoc($check_kh)) {
             if (password_verify($password, $row['password'])) {
                 $_SESSION['tenkhachhang'] = $row['tenkhachhang'];
                 $_SESSION['sdt'] = $row['sdt']; // Lưu sdt thực tế từ database
                 $_SESSION['makhachhang'] = $row['id'];
-                $_SESSION['point'] = $row['point'];
-           
-
+                
                 if (!empty($_POST['rememberMe'])) {
                     setcookie('login_sdt', $sdt, time() + (7 * 24 * 60 * 60), "/");
                     setcookie('login_password', $password, time() + (7 * 24 * 60 * 60), "/");
@@ -160,7 +156,7 @@ class taikhoanController extends Controller {
                 $_SESSION['loidangnhap'] = "Mật khẩu không đúng cho khách hàng.";
             }
         }
-        // Kiểm tra nhân viên (chỉ sdt)
+
         else {
             $check_nv = $this->taikhoanModel->check_nv($sdt);
             if ($check_nv && $row = mysqli_fetch_assoc($check_nv)) {
@@ -187,9 +183,9 @@ class taikhoanController extends Controller {
         $this->view('taikhoan/login');
     }
     
-public function signup() {
-    $this->view('taikhoan/signup1');
-}
+    public function signup() {
+        $this->view('taikhoan/signup1');
+    }
 
 
 public function xulydangky(){

@@ -67,10 +67,18 @@ class adminController extends Controller
     }
 
 
-    public function xulyxacnhan($id_giohang)
+    public function xulyxacnhan($mahoadon)
     {
-        $this->adminModel->xacnhan($id_giohang);
-        header("location: /inis/admin/listddh");
+        $this->adminModel->xacnhan($mahoadon);
+        $result = $this->adminModel->getinfocus($mahoadon);
+        if ($row = $result->fetch_assoc()) {  // Sử dụng fetch_assoc() nếu trả về mysqli_result
+            $makhachhang = $row['makhachhang'];
+            $tongtien = $row['tongtientruocgiam'];
+        } else {
+            echo 1111;
+        }
+        $this->adminModel->updatePointsAndRank($makhachhang, $tongtien);
+        header("location: /inis/admin/donhang");
 
     }
 
