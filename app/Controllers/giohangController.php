@@ -108,17 +108,19 @@ class giohangController extends Controller {
 
     public function muangay($masp){
         if(isset($_SESSION['sdt'])){
-
             $masanpham= $masp;
             $loaisp= $this->giohangModel->Getloaisp();  
             $soluong=$_POST['soluong'];
             $_SESSION['slmuangay']= $soluong;
-            $sanphammuangay = $this->giohangModel->layspmuangay($masanpham);
-            if (!$sanphammuangay) {
+            $thanhtoan = $this->giohangModel->layspmuangay($masanpham);
+            if (!$thanhtoan) {
                 die("Không tìm thấy sản phẩm với mã: $masanpham");
             }
-           $this->view('menu',['loaisp' => $loaisp]);
-            $this->view('thanhtoan/thanhtoan',['sanphammuangay' => $sanphammuangay ,  'soluong' => $soluong, 'masp' => $masp ]);
+            $makhachhang = $_SESSION['makhachhang'];
+            $coupon = $this->giohangModel->Getcoupon($makhachhang);
+            $info = $this->giohangModel->info($makhachhang);
+            $this->view('menu',['loaisp' => $loaisp, 'info' => $info]);
+            $this->view('thanhtoan/muangay',['thanhtoan' => $thanhtoan ,  'soluong' => $soluong, 'masp' => $masp, 'coupon' => $coupon ]);
             $this->view('footer');
         }else{
             header('Location: ' . WEBROOT . 'taikhoan/login');

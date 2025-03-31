@@ -8,8 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         main {
-            margin: 50px;
-            font-family: "Nunito", sans-serif;
+           font-family: "Nunito", sans-serif;
         }
         .danhmuc {
     display: flex;
