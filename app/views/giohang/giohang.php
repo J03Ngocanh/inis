@@ -331,13 +331,12 @@ $cartEmpty = empty($_SESSION['giohang']); // Kiểm tra giỏ hàng có trống 
                 $('#confirmModal').hide(); // Ẩn modal
             }
 
-            // Nút tăng số lượng
             $('.btn-increase').click(function () {
                 var input = $(this).siblings('.quantity-input');
                 var masanpham = $(this).data('masanpham');
                 var currentValue = parseInt(input.val());
                 var newValue = currentValue + 1;
-                updateQuantity(masanpham, newValue, input);
+                checkAndUpdateQuantity(masanpham, newValue, input);
             });
 
             // Nút giảm số lượng
@@ -347,9 +346,33 @@ $cartEmpty = empty($_SESSION['giohang']); // Kiểm tra giỏ hàng có trống 
                 var currentValue = parseInt(input.val());
                 if (currentValue > 1) {
                     var newValue = currentValue - 1;
-                    updateQuantity(masanpham, newValue, input);
+                    checkAndUpdateQuantity(masanpham, newValue, input);
                 }
             });
+
+            function checkAndUpdateQuantity(masanpham, newQuantity, inputElement) {
+                $.ajax({
+                    url: '<?php echo WEBROOT; ?>giohang/checkQuantity',
+                    type: 'POST',
+                    data: {
+                        masanpham: masanpham,
+                        soluong: newQuantity
+                    },
+                    success: function (response) {
+                        var data = JSON.parse(response);
+                        if (data.status === 'success') {
+                            // Nếu số lượng hợp lệ, cập nhật giỏ hàng
+                            updateQuantity(masanpham, newQuantity, inputElement);
+                        } else {
+                            // Nếu vượt quá tồn kho, hiển thị thông báo
+                            alert('Số lượng yêu cầu vượt quá tồn kho! Còn lại: ' + data.available + ' sản phẩm');
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra khi kiểm tra số lượng!');
+                    }
+                });
+            }
 
             // Hàm gửi yêu cầu AJAX để cập nhật số lượng
             function updateQuantity(masanpham, newQuantity, inputElement) {
