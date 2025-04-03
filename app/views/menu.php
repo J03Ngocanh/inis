@@ -53,7 +53,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 25px; 
+    gap: 5%; 
 }
 
 .icon-menu span {

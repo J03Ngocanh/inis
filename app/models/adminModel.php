@@ -22,6 +22,11 @@ class adminModel extends Model {
                 LEFT JOIN role r ON nv.id_role = r.id_role";
         return $this->con->query($sql);
     }
+    public function checksdt($sdt){
+        $sql = "SELECT * FROM $this->tblnhanvien WHERE sdt='$sdt'";
+        $result=$this->con->query($sql);
+        return $result;
+       }
 
     public function getRoles() {
         $sql = "SELECT * FROM role";
@@ -147,36 +152,33 @@ public function chitietdonhang(){
     public function getnhanvien($manhanvien) {
         $sql = "SELECT nv.*, r.ten FROM nhanvien nv 
                 LEFT JOIN role r ON nv.id_role = r.id_role 
-                WHERE nv.Manhanvien = '$manhanvien'";
+                WHERE nv.manhanvien = '$manhanvien'";
         return $this->con->query($sql);
     }
 
-    public function getLastNhanvien() {
-        $sql = "SELECT Manhanvien FROM nhanvien ORDER BY Manhanvien DESC LIMIT 1";
-        $result = $this->con->query($sql);
-        return $result->fetch_assoc();
+
+    public function themnhanvien($tennhanvien, $sdt, $password, $id_role) {
+        $sql = "INSERT INTO nhanvien (tennhanvien, sdt, password, id_role, trangthai) 
+                VALUES ('$tennhanvien', '$sdt', '$password', '$id_role', 1)";
+        return $this->con->query($sql);
+
     }
 
-    public function themnhanvien($manhanvien, $tennhanvien, $sdt, $password, $id_role) {
-        $sql = "INSERT INTO nhanvien (Manhanvien, Tennhanvien, sdt, password, id_role, trangthai) 
-                VALUES ('$manhanvien', '$tennhanvien', '$sdt', '$password', '$id_role', 1)";
-        return $this->con->query($sql);
-    }
 
     public function suanhanvien($manhanvien, $tennhanvien, $sdt, $password, $id_role) {
         $sql = "UPDATE nhanvien SET 
-                Tennhanvien = '$tennhanvien', 
+                tennhanvien = '$tennhanvien', 
                 sdt = '$sdt', 
                 id_role = '$id_role'";
         if ($password) {
             $sql .= ", password = '$password'";
         }
-        $sql .= " WHERE Manhanvien = '$manhanvien'";
+        $sql .= " WHERE manhanvien = '$manhanvien'";
         return $this->con->query($sql);
     }
 
     public function updatetrangthai($manhanvien, $trangthai) {
-        $sql = "UPDATE nhanvien SET trangthai = '$trangthai' WHERE Manhanvien = '$manhanvien'";
+        $sql = "UPDATE nhanvien SET trangthai = '$trangthai' WHERE manhanvien = '$manhanvien'";
         return $this->con->query($sql);
     }
 

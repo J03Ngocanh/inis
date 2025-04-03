@@ -417,6 +417,13 @@ a .submit-btn:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ để nổi bật */
 }
 
+th:nth-child(7), /* Chọn tiêu đề "Tên Sản Phẩm" */
+td:nth-child(7) { /* Chọn ô dữ liệu của cột này */
+    width: 100px; /* Giảm độ rộng */
+    max-width: 100px;; /* Giới hạn độ rộng tối đa */
+}
+
+
   </style>
   </head>
 <body>
@@ -480,32 +487,39 @@ a .submit-btn:hover {
                 <th>Ảnh</th>
                 <th>Giá</th>
                 <th>Số Lượng</th>
+                <th>Tình trạng</th>
                 <th>Thao tác</th>
               </tr>
             </thead>
             <tbody>
-                <?php
-                
-                while($row=mysqli_fetch_array($listsp)){?>
-              <tr>
-                
-                <td><?php echo $row['masanpham']  ?></td>
-                <td><?php echo $row['tensanpham']  ?></td>
-                <td><img style="width:100px" src="<?php echo WEBROOT . 'public/img/' . $row['hinhanh']; ?>" alt=""></td>
-                <td><?php echo number_format($row['giagoc'], 0, ',', '.'); ?> VNĐ</td>
-                <td><?php echo $row['soluong']  ?></td>
-                <td>
-                    <!-- Nút sửa -->
-                    <a href="/inis/admin/edit/<?php echo $row['masanpham']; ?>">
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
-                    </a>
-            <a href="/inis/admin/xoasp/<?php echo $row['masanpham']; ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xóa sản phẩm mã: <?php echo $row['masanpham']; ?> - Tên: <?php echo $row['tensanpham']; ?>?')">
-                <i class="fa-solid fa-trash delete-icon"></i>
-            </a>
-                </td>
-              </tr>
-              <?php }?>
-            </tbody>
+            <tbody>
+    <?php while($row = mysqli_fetch_array($listsp)): ?>
+        <tr>
+            <td><?php echo $row['masanpham']; ?></td>
+            <td><?php echo $row['tensanpham']; ?></td>
+            <td><img style="width:100px" src="<?php echo WEBROOT . 'public/img/' . $row['hinhanh']; ?>" alt=""></td>
+            <td><?php echo number_format($row['giagoc'], 0, ',', '.'); ?> VNĐ</td>
+            
+            <!-- Bôi đỏ nếu số lượng dưới 20 -->
+            <td class="<?= ($row['soluong'] < 20) ? 'low-stock' : ''; ?>">
+                <?php echo $row['soluong']; ?>
+            <td>    <?php if ($row['soluong'] < 20): ?>
+                    <span class="warning-text">⚠️ Sắp hết hàng!</span>
+                <?php endif; ?> 
+            </td>
+
+            <td>
+                <a href="/inis/admin/edit/<?php echo $row['masanpham']; ?>">
+                    <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                </a>
+                <a href="/inis/admin/xoasp/<?php echo $row['masanpham']; ?>" onclick="return confirmCustom('Bạn chắc chắn muốn xóa sản phẩm này?')">
+                    <i class="fa-solid fa-trash delete-icon"></i>
+                </a>
+            </td>
+        </tr>
+    <?php endwhile; ?>
+</tbody>
+
           </table>
  <!-- Modal (Popup) sửa sản phẩm -->
    

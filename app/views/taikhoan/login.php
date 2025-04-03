@@ -63,6 +63,40 @@ if (isset($_SESSION['dangky_thanhcong'])) {
             margin: 10px 0;
             font-size: 15px;
         }
+        /* Hiển thị lỗi đăng nhập */
+.error-message {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #ffe5e5;
+    border: 1px solid red;
+    border-radius: 5px;
+}
+
+/* Ô nhập số điện thoại */
+#sdt {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Khi ô nhập được focus */
+#sdt:focus {
+    border-color: #79c66e;
+    box-shadow: 0 0 5px rgba(121, 198, 110, 0.5);
+}
+
+/* Nếu có lỗi nhập số điện thoại */
+.input-error {
+    border: 2px solid red !important;
+    background-color: #ffe5e5;
+}
+
 
         @keyframes fadeIn {
             from {
@@ -81,9 +115,6 @@ if (isset($_SESSION['dangky_thanhcong'])) {
 ?>
 
 <body>
-        <?php 
-         if(isset( $_SESSION['loidangnhap'])){echo  $_SESSION['loidangnhap'];}
-        ?>
  
 <script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.validationEngine.js?v=19"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.validationEngine-vi.js?v=19"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/tp/T0299/js/user.js?v=2"></script><link rel="stylesheet" href="https://web.nvnstatic.net/css/validationEngine.jquery.css?v=3" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/css/appLib.css" type="text/css"><input type="hidden" id="redirect" value=""><main class="main-site main-childs">
     <div class="user-wrapper">
@@ -94,14 +125,21 @@ if (isset($_SESSION['dangky_thanhcong'])) {
         </div>
         <form accept-charset="UTF-8" id="loginForm" class="validate" onsubmit="return validateForm()" action="<?php echo WEBROOT . 'taikhoan/xulydangnhap'?>" method="post">
             <div class="form-group">
-                <input type="text" name="sdt" id="sdt" class="validate[required]" value="<?php if(isset($_SESSION['hienthisdt'])){
-                                echo $_SESSION['hienthisdt'] ; 
-                            }
-                            if(isset($_COOKIE['login_sdt'])){
-                               echo $_COOKIE['login_sdt'];
-                            }
-                            ?>"
-                       placeholder="Nhập tên đăng nhập">
+            <?php 
+if (isset($_SESSION['loidangnhap'])) { 
+    echo '<div class="error-message">' . $_SESSION['loidangnhap'] . '</div>'; 
+}
+?>
+<input type="text" name="sdt" id="sdt" class="validate[required] <?php echo isset($_SESSION['loidangnhap']) ? 'input-error' : ''; ?>" 
+       value="<?php 
+           if (isset($_SESSION['hienthisdt'])) { 
+               echo $_SESSION['hienthisdt']; 
+           } 
+           if (isset($_COOKIE['login_sdt'])) { 
+               echo $_COOKIE['login_sdt']; 
+           } 
+       ?>" 
+       placeholder="Nhập tên đăng nhập">
             </div>
             <div id="suggestions" class="suggestions"></div>
             

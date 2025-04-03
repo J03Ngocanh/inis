@@ -153,7 +153,7 @@ class taikhoanController extends Controller {
                 header('Location: /inis/trangchu/');
                 exit();
             } else {
-                $_SESSION['loidangnhap'] = "Mật khẩu không đúng cho khách hàng.";
+                $_SESSION['loidangnhap'] = "Mật khẩu không đúng";
             }
         }
 
@@ -161,9 +161,9 @@ class taikhoanController extends Controller {
             $check_nv = $this->taikhoanModel->check_nv($sdt);
             if ($check_nv && $row = mysqli_fetch_assoc($check_nv)) {
                 if (password_verify($password, $row['password'])) {
-                    $_SESSION['tennhanvien'] = $row['Tennhanvien']; // Đồng bộ với bảng nhanvien
+                    $_SESSION['tennhanvien'] = $row['tennhanvien']; // Đồng bộ với bảng nhanvien
                     $_SESSION['sdt'] = $row['sdt'];
-                    $_SESSION['manhanvien'] = $row['Manhanvien']; // Thêm mã nhân viên
+                    $_SESSION['manhanvien'] = $row['manhanvien']; // Thêm mã nhân viên
 
                     if (!empty($_POST['rememberMe'])) {
                         setcookie('login_sdt', $sdt, time() + (7 * 24 * 60 * 60), "/");
@@ -174,10 +174,10 @@ class taikhoanController extends Controller {
                     header('Location: /inis/admin/sanpham');
                     exit();
                 } else {
-                    $_SESSION['loidangnhap'] = "Mật khẩu không đúng cho nhân viên.";
+                    $_SESSION['loidangnhap'] = "Mật khẩu không đúng ";
                 }
             } else {
-                $_SESSION['loidangnhap'] = "Không tồn tại tài khoản với số điện thoại hoặc email này.";
+                $_SESSION['loidangnhap'] = "Không tồn tại tài khoản với số điện thoại này.";
             }
         }
         $this->view('taikhoan/login');
@@ -275,23 +275,7 @@ public function xulydangkynv(){
         header('Location: /inis/taikhoan/login/');
     }
 
-    public function checksdt() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['sdt'])) {
-                $sdt = $_POST['sdt'];
-                $result = $this->taikhoanModel->checksdt($sdt);
-        
-                if ($result && $result->num_rows > 0) {
-                    echo 'exists'; // Tên đăng nhập đã tồn tại
-                } else {
-                    echo 'available'; // Tên đăng nhập có sẵn
-                }
-            } else {
-                echo 'error'; // Không nhận được 
-            }
-        }
-        
-    }
+
 
 }
 ?>

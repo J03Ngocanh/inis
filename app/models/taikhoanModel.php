@@ -35,7 +35,7 @@ class taikhoanModel extends Model {
 
 
     public function checkEmailExists($email) {
-        $sql = "SELECT * FROM khachhang WHERE email = '$email'";
+        $sql = "SELECT * FROM $this->tblkh WHERE email = '$email'";
         $result = $this->con->query($sql);
 
         if ($result->num_rows > 0) {
@@ -75,12 +75,6 @@ class taikhoanModel extends Model {
     public function themtaikhoan($tenkhachhang,$email,$sdt,$ngaysinh,$password,$id_rank) {
         $sql = "INSERT INTO $this->tblkh (tenkhachhang, email, sdt, ngaysinh, password, id_rank) 
         VALUES ('$tenkhachhang', '$email', '$sdt', '$ngaysinh', '$password', '$id_rank')";
-        return $this->con->query($sql);
-    }
-
-    public function themtaikhoannv($tennhanvien, $sdt, $password, $id_role){
-        $sql = "INSERT INTO $this->tblnv (tennhanvien,sdt, password, id_role) 
-        VALUES ('$tenkhachhang', '$sdt', '$password', '$id_role')";
         return $this->con->query($sql);
     }
 

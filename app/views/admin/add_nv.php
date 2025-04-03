@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thêm Nhân Viên</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         
         body { font-family: 'Roboto', sans-serif; background-color: #f4f7fa; margin: 0; padding: 0; color: #333; }
@@ -25,12 +26,12 @@
     <div class="detail">
 <div class="main-content">
     <h2>Thêm Nhân Viên</h2>
-    <form action="/inis/admin/xulythemnv" method="POST" onsubmit="return validateForm()">
+    <form action="/inis/admin/xulythemnv" method="POST">
         <div class="form-item">
             <input type="text" name="tennhanvien" id="tennhanvien" placeholder="Nhập họ tên" required>
         </div>
         <div class="form-item">
-            <input type="text" name="sdt" id="sdt" placeholder="Số điện thoại" onkeypress="return isNumberKey(event)" required>
+            <input type="text" name="sdt" id="sdt" placeholder="Số điện thoại"  required>
         </div>
         <div class="form-item">
             <input type="password" name="password" id="password" placeholder="Mật khẩu" required>
@@ -52,39 +53,71 @@
         </div>
     </form>
 
-    <?php
-    if (isset($_SESSION['thanhcong'])) {
-        echo "<script>alert('" . addslashes($_SESSION['thanhcong']) . "');</script>";
-        unset($_SESSION['thanhcong']);
-    }
-    if (isset($_SESSION['error'])) {
-        echo "<script>alert('" . addslashes($_SESSION['error']) . "');</script>";
-        unset($_SESSION['error']);
-    }
-    ?>
+    <?php if (isset($_SESSION['thanhcong'])): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: "Thành công!",
+                text: "<?= addslashes($_SESSION['thanhcong']) ?>",
+                icon: "success",
+                confirmButtonText: "OK"
+            });
+        });
+    </script>
+    <?php unset($_SESSION['thanhcong']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: "Lỗi!",
+                text: "<?= addslashes($_SESSION['error']) ?>",
+                icon: "error",
+                confirmButtonText: "Thử lại"
+            });
+        });
+    </script>
+    <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+
+
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function validateForm() {
-        var password = document.getElementById("password").value;
-        var mat_khau_2 = document.getElementById("mat_khau_2").value;
-        var sdt = document.getElementById("sdt").value;
+document.querySelector("form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Ngăn trang reload
+    let formData = new FormData(this);
 
-        if (mat_khau_2 !== password) {
-            alert("Mật khẩu không khớp.");
-            return false;
+    fetch("/inis/admin/xulythemnv", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                title: "Thành công!",
+                text: data.message,
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then(() => {
+                window.location.href = data.redirect; // Chuyển trang sau khi người dùng bấm OK
+            });
+        } else {
+            Swal.fire({
+                title: "Lỗi!",
+                text: data.message,
+                icon: "error",
+                confirmButtonText: "Thử lại"
+            });
         }
-        if (!/^0[0-9]{9,10}$/.test(sdt)) {
-            alert("Số điện thoại không hợp lệ.");
-            return false;
-        }
-        return true;
-    }
+    })
+    .catch(error => console.error("Lỗi:", error));
+});
 
-    function isNumberKey(evt) {
-        var charCode = evt.which ? evt.which : evt.keyCode;
-        return !(charCode > 31 && (charCode < 48 || charCode > 57));
-    }
 </script>
+
 </body>
 </html>

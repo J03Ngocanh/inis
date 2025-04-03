@@ -35,55 +35,6 @@ class giohangController extends Controller
         }
     }
 
-//    public function themgh($masanpham)
-//    {
-//        // Truy vấn thông tin sản phẩm từ database
-//        $sanpham = $this->giohangModel->Getttinsanpham($masanpham);
-//        if ($row = mysqli_fetch_assoc($sanpham)) {
-//            // Bắt đầu session nếu chưa bắt đầu
-//            if (session_status() == PHP_SESSION_NONE) {
-//                session_start();
-//            }
-//
-//            // Lấy thông tin sản phẩm từ kết quả truy vấn
-//            $tensanpham = $row['tensanpham'];
-//            $giagoc = $row['giagoc'];
-//            $hinhanh = $row['hinhanh']; // Đảm bảo bạn có cột 'hinhanh' trong DB
-//            $soluong = isset($_POST['soluong']) ? $_POST['soluong'] : 1;  // Nếu không có số lượng trong POST, mặc định là 1
-//
-//            // Kiểm tra xem giỏ hàng đã có trong session chưa
-//            if (!isset($_SESSION['giohang'])) {
-//                $_SESSION['giohang'] = [];
-//            }
-//
-//            // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
-//            if (isset($_SESSION['giohang'][$masanpham])) {
-//                $_SESSION['giohang'][$masanpham]['soluong'] += $soluong;
-//            } else {
-//                // Nếu chưa có sản phẩm trong giỏ hàng, thêm mới
-//                $_SESSION['giohang'][$masanpham] = [
-//                    'masanpham' => $masanpham,
-//                    'tensanpham' => $tensanpham,
-//                    'giagoc' => $giagoc,
-//                    'hinhanh' => $hinhanh,
-//                    'soluong' => $soluong,
-//                ];
-//            }
-//            // Lưu thông báo vào session
-//            $_SESSION['flash_message'] = "Sản phẩm đã được thêm vào giỏ hàng.";
-//
-//            // Điều hướng về trang trước đó
-//            $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : WEBROOT . 'trangchu/trangchu';
-//
-//            header("Location: $redirectUrl");
-//            exit();
-//        }
-//
-//        // Nếu không tìm thấy sản phẩm, quay lại trang chủ
-//        header("Location: " . WEBROOT . "trangchu/trangchu");
-//        exit();
-//    }
-
 
     public function removeItem()
     {
@@ -213,29 +164,7 @@ class giohangController extends Controller
             die("Lỗi: Phương thức không hợp lệ.");
         }
     }
-//
-//        public function updateQuantity() {
-//            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//                $masanpham = $_POST['masanpham'];
-//                $soluong = (int)$_POST['soluong'];
-//
-//                // Cập nhật số lượng trong session
-//                if (isset($_SESSION['giohang'])) {
-//                    foreach ($_SESSION['giohang'] as &$item) {
-//                        if ($item['masanpham'] === $masanpham) {
-//                            $item['soluong'] = $soluong;
-//                            break;
-//                        }
-//                    }
-//                }
-//
-//                // Trả về phản hồi JSON (có thể tùy chỉnh)
-//                echo json_encode(['status' => 'success']);
-//            } else {
-//                echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
-//            }
-//            exit;
-//        }
+
     public function hoanthanhthanhtoan($mahoadon)
     {
         $loaisp = $this->giohangModel->Getloaisp();

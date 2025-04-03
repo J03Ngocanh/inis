@@ -231,52 +231,65 @@ class adminController extends Controller
     public function addnv()
     {
         $role = $this->adminModel->getRoles();
-        $this->view('header');
+      //  $this->view('header');
         $this->view('admin/add_nv', ['role' => $role]);
     }
 
     public function xulythemnv() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $_SESSION['error'] = "Phương thức không hợp lệ!";
-            header("location: /inis/admin/nhanvien");
+            echo json_encode(["success" => false, "message" => "Phương thức không hợp lệ!"]);
             return;
         }
-
-        $tennhanvien = $_POST['tennhanvien'] ?? '';
-        $sdt = $_POST['sdt'] ?? '';
+    
+        // Lấy dữ liệu từ POST
+        $tennhanvien = trim($_POST['tennhanvien'] ?? '');
+        $sdt = trim($_POST['sdt'] ?? '');
         $password = $_POST['password'] ?? '';
         $mat_khau_2 = $_POST['mat_khau_2'] ?? '';
         $id_role = $_POST['id_role'] ?? '';
-
+    
+        // Kiểm tra dữ liệu đầu vào
         if (empty($tennhanvien) || empty($sdt) || empty($password) || empty($id_role)) {
-            $_SESSION['error'] = "Vui lòng điền đầy đủ thông tin bắt buộc!";
-            header("location: /inis/admin/addnv");
+            echo json_encode(["success" => false, "message" => "Vui lòng điền đầy đủ thông tin bắt buộc!"]);
             return;
         }
-
+    
         if ($password !== $mat_khau_2) {
-            $_SESSION['error'] = "Mật khẩu không khớp!";
-            header("location: /inis/admin/addnv");
+            echo json_encode(["success" => false, "message" => "Mật khẩu không khớp!"]);
             return;
         }
-
+    
         if (!preg_match("/^0[0-9]{9,10}$/", $sdt)) {
-            $_SESSION['error'] = "Số điện thoại không hợp lệ!";
-            header("location: /inis/admin/addnv");
+            echo json_encode(["success" => false, "message" => "Số điện thoại không hợp lệ!"]);
             return;
         }
-
-        // Sinh mã nhân viên tự động (ví dụ: NV002)
-        $last_nv = $this->adminModel->getLastNhanvien();
-        $last_id = $last_nv ? (int)substr($last_nv['Manhanvien'], 2) : 0;
-        $manhanvien = 'NV' . str_pad($last_id + 1, 3, '0', STR_PAD_LEFT);
-
+    
+        // Kiểm tra số điện thoại đã tồn tại chưa
+        if (mysqli_num_rows($this->adminModel->checksdt($sdt)) > 0) {
+            echo json_encode(["success" => false, "message" => "Số điện thoại này đã được sử dụng!"]);
+            return;
+        }
+    
+        // Hash mật khẩu
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $this->adminModel->themnhanvien($manhanvien, $tennhanvien, $sdt, $hashed_password, $id_role);
-
-        $_SESSION['thanhcong'] = "Thêm nhân viên $tennhanvien thành công!";
-        header("location: /inis/admin/nhanvien");
+    
+        // Thêm tài khoản vào database
+        $this->adminModel->themnhanvien($tennhanvien, $sdt, $hashed_password, $id_role);
+    
+        // Xóa session không cần thiết
+        unset($_SESSION['hienthitennhanvien'], $_SESSION['trungsdt'], $_SESSION['hienthisdt'], 
+              $_SESSION['trungemail'], $_SESSION['hienthiemail'], $_SESSION['hienthipass']);
+    
+        // Trả về JSON để hiển thị popup
+        echo json_encode([
+            "success" => true,
+            "message" => "Thêm nhân viên $tennhanvien thành công!",
+            "redirect" => "/inis/admin/nhanvien"
+        ]);
+        exit;
     }
+    
+    
 
     public function editnv($manhanvien = '') {
         if (empty($manhanvien)) {
@@ -344,7 +357,7 @@ class adminController extends Controller
             return;
         }
 
-        $manhanvien = $_POST['Manhanvien'] ?? '';
+        $manhanvien = $_POST['manhanvien'] ?? '';
         $trangthai = $_POST['trangthai'] ?? '';
 
         if (empty($manhanvien) || !in_array($trangthai, ['0', '1'])) {

@@ -312,9 +312,6 @@ input:checked + .slider:before {
 #orderDetailsPopup {
     z-index: 10000 !important;
 }
-
-
-
     </style>
 </head>
 <body>
@@ -322,7 +319,22 @@ input:checked + .slider:before {
 <div class="detail">
     <h2>Danh Sách Tài Khoản</h2>
     <a href="/inis/admin/addnv" class="btn-add">Thêm Tài khoản</a>
+    <div class="filter-container">
+    <select id="filter-role">
+        <option value="">Tất cả quyền</option>
+        <?php while ($row = $role->fetch_assoc()): ?>
+            <option value="<?= $row['id_role'] ?>"><?= $row['ten'] ?></option>
+        <?php endwhile; ?>
+    </select>
 
+    <select id="filter-status">
+        <option value="">Tất cả trạng thái</option>
+        <option value="1">Hoạt động</option>
+        <option value="0">Bị khóa</option>
+    </select>
+
+    <button onclick="filterNhanVien()">Lọc</button>
+</div>
     <table>
         <thead>
         <tr>
@@ -337,18 +349,18 @@ input:checked + .slider:before {
         <tbody>
         <?php while ($row = mysqli_fetch_array($listnv)) { ?>
             <tr>
-                <td><?= htmlspecialchars($row['Manhanvien']); ?></td>
-                <td><?= htmlspecialchars($row['Tennhanvien']); ?></td>
+                <td><?= htmlspecialchars($row['manhanvien']); ?></td>
+                <td><?= htmlspecialchars($row['tennhanvien']); ?></td>
                 <td><?= htmlspecialchars($row['sdt']); ?></td>
                 <td><?= htmlspecialchars($row['ten']); ?></td>
                 <td>
                     <label class="switch">
-                        <input type="checkbox" onchange="toggleStatus(this, '<?= $row['Manhanvien']; ?>')" <?= $row['trangthai'] == 1 ? 'checked' : ''; ?>>
+                        <input type="checkbox" onchange="toggleStatus(this, '<?= $row['manhanvien']; ?>')" <?= $row['trangthai'] == 1 ? 'checked' : ''; ?>>
                         <span class="slider round"></span>
                     </label>
                 </td>
                 <td>
-                    <a href="/inis/admin/editnv/<?= $row['Manhanvien']; ?>" class="btn btn-edit">
+                    <a href="/inis/admin/editnv/<?= $row['manhanvien']; ?>" class="btn btn-edit">
                         <i class="fas fa-edit"></i>
                     </a>
                 </td>
@@ -357,24 +369,58 @@ input:checked + .slider:before {
         </tbody>
     </table>
 </div>
+<!-- Thêm vào phần <head> hoặc trước </body> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function toggleStatus(checkbox, Manhanvien) {
+    function toggleStatus(checkbox, manhanvien) {
         var trangthai = checkbox.checked ? 1 : 0;
-        fetch('/inis/admin/updatetrangthai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'Manhanvien=' + Manhanvien + '&trangthai=' + trangthai
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Trạng thái tài khoản đã được cập nhật.');
-                } else {
-                    alert('Có lỗi xảy ra.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        var message = trangthai 
+            ? "Bạn có chắc chắn muốn <b>MỞ KHÓA</b> tài khoản này không?" 
+            : "Bạn có chắc chắn muốn <b>KHÓA</b> tài khoản này không?";
+
+        Swal.fire({
+            title: "Xác nhận thay đổi",
+            html: message,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Có",
+            cancelButtonText: "Hủy",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/inis/admin/updatetrangthai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'manhanvien=' + manhanvien + '&trangthai=' + trangthai
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Thành công!",
+                            text: "Trạng thái tài khoản đã được cập nhật.",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire("Lỗi!", "Có lỗi xảy ra, vui lòng thử lại.", "error");
+                        checkbox.checked = !checkbox.checked; // Hoàn tác nếu lỗi
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire("Lỗi!", "Không thể kết nối đến server.", "error");
+                    checkbox.checked = !checkbox.checked; // Hoàn tác nếu lỗi
+                });
+            } else {
+                checkbox.checked = !checkbox.checked; // Hoàn tác nếu nhấn Hủy
+            }
+        });
     }
 </script>
+
+
+
 </body>
 </html>

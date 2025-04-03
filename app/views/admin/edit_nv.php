@@ -26,7 +26,7 @@
 <div class="main-content">
     <h2>Sửa Nhân Viên</h2>
     <form action="/inis/admin/xulysuanv" method="POST" onsubmit="return validateForm()">
-        <input type="hidden" name="manhanvien" value="<?= htmlspecialchars($nhanvien['Manhanvien']) ?>">
+        <input type="hidden" name="manhanvien" value="<?= htmlspecialchars($nhanvien['manhanvien']) ?>">
         <div class="form-item">
             <input type="text" name="tennhanvien" id="tennhanvien" value="<?= htmlspecialchars($nhanvien['Tennhanvien']) ?>" required>
         </div>
