@@ -11,7 +11,6 @@ class giohangController extends Controller
         $this->giohangModel = $this->model('giohangModel');
     }
 
-
     public function giohang()
     {
         // Lấy dữ liệu loại sản phẩm
@@ -34,7 +33,6 @@ class giohangController extends Controller
             $this->view('taikhoan/login');
         }
     }
-
 
     public function removeItem()
     {
