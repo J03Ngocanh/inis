@@ -7,340 +7,347 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
 
-body {
-    font-family: "Nunito", sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f7f7f7;
-}
+        body {
+            font-family: "Nunito", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
 
-.container {
-    display: flex;
-    justify-content: space-between;
-    gap: 8%;
-    margin: 0 auto;
-    max-width: 90%;
-}
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 8%;
+            margin: 0 auto;
+            max-width: 90%;
+        }
 
-.left-section{
+        .left-section {
 
-}
+        }
 
- .right-section {
-    width: 48%;
-    background-color:rgb(194, 221, 188) ;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+        .right-section {
+            width: 48%;
+            background-color: rgb(194, 221, 188);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-h2 {
-    text-align: center;
-    color: #333;
-}
+        h2 {
+            text-align: center;
+            color: #333;
+        }
 
-/* Order Details */
-.order-details {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-top: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-}
+        /* Order Details */
+        .order-details {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
 
-.order-item {
-    display: flex;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-}
+        .order-item {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
 
-.order-item img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    margin-right: 15px;
-    border-radius: 5px;
-}
+        .order-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
 
-.order-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+        .order-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-.order-summary {
-    margin-top: 20px;
-}
+        .order-summary {
+            margin-top: 20px;
+        }
 
-.order-summary p {
-    font-size: 16px;
-    color: #555;
-}
+        .order-summary p {
+            font-size: 16px;
+            color: #555;
+        }
 
-.order-summary strong {
-    font-size: 18px;
-    color: #e60012;
-}
+        .order-summary strong {
+            font-size: 18px;
+            color: #e60012;
+        }
 
-/* Form Styling */
-.form-group {
-    margin-bottom: 20px;
-}
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-.form-group label {
-    font-size: 16px;
-    color: #333;
-    display: block;
-    margin-bottom: 8px;
-}
+        .form-group label {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+        }
 
-.form-group input, .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    background-color: #fafafa;
-}
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #fafafa;
+        }
 
-.form-group input:focus, .form-group textarea:focus {
-    outline: none;
-    border-color: #6c63ff;
-    background-color: #fff;
-}
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #6c63ff;
+            background-color: #fff;
+        }
 
-textarea {
-    resize: vertical;
-    height: 120px;
-}
-/* Sử dụng flexbox để căn chỉnh radio button và label trong cùng một dòng */
-.radio-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px; /* Khoảng cách giữa các nhóm */
-}
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
 
-.radio-group input[type="radio"] {
-    margin-right: 10px; /* Khoảng cách giữa radio button và label */
-}
+        /* Sử dụng flexbox để căn chỉnh radio button và label trong cùng một dòng */
+        .radio-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px; /* Khoảng cách giữa các nhóm */
+        }
 
-.radio-group label {
-    font-size: 16px;
-    margin-right: 20px;  /* Khoảng cách giữa các phương thức thanh toán */
-}
-.form-group input#tien_mat,input#chuyen_khoan{
-    width: 30%;
-}
+        .radio-group input[type="radio"] {
+            margin-right: 10px; /* Khoảng cách giữa radio button và label */
+        }
+
+        .radio-group label {
+            font-size: 16px;
+            margin-right: 20px; /* Khoảng cách giữa các phương thức thanh toán */
+        }
+
+        .form-group input#tien_mat, input#chuyen_khoan {
+            width: 30%;
+        }
 
 
-/* Button Styling */
-button {
-    padding: 12px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+        /* Button Styling */
+        button {
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
 
-}
+        }
 
-button:hover {
-    background-color: #218838;
-}
+        button:hover {
+            background-color: #218838;
+        }
 
-/* Popup Styling */
-#qr-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    width: 100%;
-    height: 100%;
-    display: none;
-}
+        /* Popup Styling */
+        #qr-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
 
-.popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
 
-.popup-content button {
-    background-color: #f6a5ae;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    margin-top: 20px;
-    border-radius: 5px;
-    font-size: 16px;
-}
+        .popup-content button {
+            background-color: #f6a5ae;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
 
-.popup-content button:hover {
-    background-color: #e60012;
-}
+        .popup-content button:hover {
+            background-color: #e60012;
+        }
 
-#qrcode img {
-    object-fit: contain;
-    width: 100%;
-    height: auto;
-}
-th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd; 
-    }
+        #qrcode img {
+            object-fit: contain;
+            width: 100%;
+            height: auto;
+        }
 
-    th {
-        background-color: #f2f2f2; 
-        border-top: 2px solid #000;
-    }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
-    tr:last-child td {
-        border-bottom: 2px solid #000; 
-    }
+        th {
+            background-color: #f2f2f2;
+            border-top: 2px solid #000;
+        }
 
-    tr:hover {
-        background-color: #f5f5f5; 
-    }
+        tr:last-child td {
+            border-bottom: 2px solid #000;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
 
     </style>
 </head>
 <body>
-   
+
 
 <form id="thanhtoan" action="<?= WEBROOT ?>giohang/tienhanhthanhtoangiohang/" method="POST">
-<div class="container">
-<div class="left-section">
-<h2>Thông tin sản phẩm</h2>
-<table cellspacing="0" cellpadding="8">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Sản phẩm</th>
-            <th>Giá gốc</th>
-            <th>Số lượng</th>
-            <th>Thành tiền</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php $tongtien = 0; ?>
-        <?php foreach ($thanhtoan as $row): ?>
-            <tr>
-                <td><img style="width: 40px;"src="<?php echo WEBROOT; ?>public/img/<?php echo $row['hinhanh'] ?>" alt="product"></td>
-                <td><?php echo $row['tensanpham']; ?></td>
-                <td><?php echo number_format($row['giagoc'], 0, ',', '.'); ?></td>
-                <td><?php echo $row['soluong']; ?></td>
-                <td><?php echo number_format($row['giagoc'] * $row['soluong'], 0, ',', '.'); ?></td>
-            </tr>
-            <?php $tongtien += $row['giagoc'] * $row['soluong']; ?>
-        <?php endforeach; ?>
-    </tbody>
-    <tfoot>
-    <tr>
-        <td colspan="4"><strong>Tạm tính:</strong></td>
-        <td><strong><?php echo number_format($tongtien, 0, ',', '.'); ?> VND</strong></td>
-    </tr>
+    <div class="container">
+        <div class="left-section">
+            <h2>Thông tin sản phẩm</h2>
+            <table cellspacing="0" cellpadding="8">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Sản phẩm</th>
+                    <th>Giá gốc</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $tongtien = 0; ?>
+                <?php foreach ($thanhtoan as $row): ?>
+                    <tr>
+                        <td><img style="width: 40px;"
+                                 src="<?php echo WEBROOT; ?>public/img/<?php echo $row['hinhanh'] ?>" alt="product">
+                        </td>
+                        <td><?php echo $row['tensanpham']; ?></td>
+                        <td><?php echo number_format($row['giagoc'], 0, ',', '.'); ?></td>
+                        <td><?php echo $row['soluong']; ?></td>
+                        <td><?php echo number_format($row['giagoc'] * $row['soluong'], 0, ',', '.'); ?></td>
+                    </tr>
+                    <?php $tongtien += $row['giagoc'] * $row['soluong']; ?>
+                <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="4"><strong>Tạm tính:</strong></td>
+                    <td><strong><?php echo number_format($tongtien, 0, ',', '.'); ?> VND</strong></td>
+                </tr>
 
-    <?php 
-    $giamgia = 0; // Mặc định không có giảm giá
-    while ($row = $coupon->fetch_assoc()): 
-        $giamgia = $row['discount']; // Lưu giảm giá theo phần trăm
-    ?>
-    <tr>
-        <td colspan="4">Mức giảm giá:</td>
-        <td><?php echo $giamgia; ?>%</td>
-    </tr>
-    <?php endwhile; ?>
+                <?php
+                $giamgia = 0; // Mặc định không có giảm giá
+                while ($row = $coupon->fetch_assoc()):
+                    $giamgia = $row['discount']; // Lưu giảm giá theo phần trăm
+                    ?>
+                    <tr>
+                        <td colspan="4">Mức giảm giá:</td>
+                        <td><?php echo $giamgia; ?>%</td>
+                    </tr>
+                <?php endwhile; ?>
 
-    <?php
-    $tien_giam = ($tongtien * $giamgia) / 100; // Tính số tiền được giảm
-    $phi_van_chuyen = 30000; // Phí vận chuyển cố định
-    $tong_thanhtoan = max(($tongtien - $tien_giam) + $phi_van_chuyen, 0); // Đảm bảo tổng tiền không âm
-    ?>
+                <?php
+                $tien_giam = ($tongtien * $giamgia) / 100; // Tính số tiền được giảm
+                $phi_van_chuyen = 30000; // Phí vận chuyển cố định
+                $tong_thanhtoan = max(($tongtien - $tien_giam) + $phi_van_chuyen, 0); // Đảm bảo tổng tiền không âm
+                ?>
 
-    <tr>
-        <td colspan="4">Số tiền được giảm:</td>
-        <td>-<?php echo number_format($tien_giam, 0, ',', '.'); ?> VND</td>
-    </tr>
+                <tr>
+                    <td colspan="4">Số tiền được giảm:</td>
+                    <td>-<?php echo number_format($tien_giam, 0, ',', '.'); ?> VND</td>
+                </tr>
 
-    <tr>
-        <td colspan="4">Phí vận chuyển:</td>
-        <td><?php echo number_format($phi_van_chuyen, 0, ',', '.'); ?> VND</td>
-    </tr>
+                <tr>
+                    <td colspan="4">Phí vận chuyển:</td>
+                    <td><?php echo number_format($phi_van_chuyen, 0, ',', '.'); ?> VND</td>
+                </tr>
 
-    <tr>
-        <td colspan="4"><strong>Tổng tiền:</strong></td>
-        <td><strong><?php echo number_format($tong_thanhtoan, 0, ',', '.'); ?> VND</strong></td>
-    </tr>
-    <input type="hidden" name="tongtien" value="<?php echo $tongtien; ?>">
-    <input type="hidden" name="giamgia" value="<?php echo $giamgia; ?>">
-    <input type="hidden" name="tong_thanhtoan" value="<?php echo $tong_thanhtoan; ?>">
+                <tr>
+                    <td colspan="4"><strong>Tổng tiền:</strong></td>
+                    <td><strong><?php echo number_format($tong_thanhtoan, 0, ',', '.'); ?> VND</strong></td>
+                </tr>
+                <input type="hidden" name="tongtien" value="<?php echo $tongtien; ?>">
+                <input type="hidden" name="giamgia" value="<?php echo $giamgia; ?>">
+                <input type="hidden" name="tong_thanhtoan" value="<?php echo $tong_thanhtoan; ?>">
 
-</tfoot>
+                </tfoot>
 
-</table>
+            </table>
 
-</div>
-    <div class="right-section">
-        <h2>Thông tin mua hàng</h2>
-        <div class="form-group">
-            <label for="sdt">Số điện thoại của bạn:</label>
-            <input type="text" id="sdt" name="sdt" placeholder="Số điện thoại của bạn"
-       value="<?php echo isset($_SESSION['sdt']) ? $_SESSION['sdt'] : ''; ?>" readonly>
         </div>
-
-        <div class="form-group">
-            <label for="hoten_nhan">Họ và tên người nhận:</label>
-            <input type="text" id="hoten_nhan" name="hoten_nhan" placeholder="Họ tên người nhận"
-       value="<?php echo isset($_SESSION['tenkhachhang']) ? $_SESSION['tenkhachhang'] : ''; ?>" required>
-        </div>
-
-        <div class="form-group">
-            <label for="diachi_nhan">Địa chỉ giao hàng:</label>
-            <textarea id="diachi_nhan" name="diachi_nhan" rows="4" placeholder="Nhập địa chỉ giao hàng" required></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="phuong_thuc">Phương thức thanh toán:</label><br>
-            <div class="radio-group">
-                <input type="radio" id="tien_mat" name="phuong_thuc" value="tien_mat" checked>
-                <label for="tien_mat">Thanh toán khi nhận hàng</label><br>
+        <div class="right-section">
+            <h2>Thông tin mua hàng</h2>
+            <div class="form-group">
+                <label for="sdt">Số điện thoại của bạn:</label>
+                <input type="text" id="sdt" name="sdt" placeholder="Số điện thoại của bạn"
+                       value="<?php echo isset($_SESSION['sdt']) ? $_SESSION['sdt'] : ''; ?>" readonly>
             </div>
 
-            <div class="radio-group">
-                <input type="radio" id="chuyen_khoan" name="phuong_thuc" value="chuyen_khoan">
-                <label for="chuyen_khoan">Chuyển khoản ngân hàng</label><br>
+            <div class="form-group">
+                <label for="hoten_nhan">Họ và tên người nhận:</label>
+                <input type="text" id="hoten_nhan" name="hoten_nhan" placeholder="Họ tên người nhận"
+                       value="<?php echo isset($_SESSION['tenkhachhang']) ? $_SESSION['tenkhachhang'] : ''; ?>"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="diachi_nhan">Địa chỉ giao hàng:</label>
+                <textarea id="diachi_nhan" name="diachi_nhan" rows="4" placeholder="Nhập địa chỉ giao hàng"
+                          required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="phuong_thuc">Phương thức thanh toán:</label><br>
+                <div class="radio-group">
+                    <input type="radio" id="tien_mat" name="phuong_thuc" value="tien_mat" checked>
+                    <label for="tien_mat">Thanh toán khi nhận hàng</label><br>
+                </div>
+
+                <div class="radio-group">
+                    <input type="radio" id="chuyen_khoan" name="phuong_thuc" value="chuyen_khoan">
+                    <label for="chuyen_khoan">Chuyển khoản ngân hàng</label><br>
+                </div>
+            </div>
+
+            <div class="form-group" id="btn">
+                <button type="submit" id="submit-btn">Xác nhận thanh toán</button>
             </div>
         </div>
-
-        <div class="form-group" id="btn">
-            <button type="submit" id="submit-btn">Xác nhận thanh toán</button>
+    </div>
+    </div>
+    <!-- Popup mã QR -->
+    <div id="qr-popup" style="display: none;">
+        <div class="popup-content">
+            <h3>Quét mã QR để thanh toán</h3>
+            <div id="qrcode"></div>
+            <button type="button" class="close-btn">Đóng</button>
+            <button type="button" class="submit">Hoàn thành thanh toán</button>
         </div>
     </div>
-</div>
-</div>
-<!-- Popup mã QR -->
-<div id="qr-popup" style="display: none;">
-    <div class="popup-content">
-        <h3>Quét mã QR để thanh toán</h3>
-        <div id="qrcode"></div>
-        <button type="button" class="close-btn">Đóng</button>
-        <button type="button" class="submit">Hoàn thành thanh toán</button>
-    </div>
-</div>
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>

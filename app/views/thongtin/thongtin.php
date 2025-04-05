@@ -69,16 +69,20 @@
     </style>
 </head>
 <body>
-  
+
 
 <div class="container mt-5">
     <!-- Tabs -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">Thông tin cá nhân</button>
+            <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
+                    role="tab">Thông tin cá nhân
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">Lịch sử đơn hàng</button>
+            <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button"
+                    role="tab">Lịch sử đơn hàng
+            </button>
         </li>
     </ul>
 
@@ -87,47 +91,47 @@
         <!-- Thông tin cá nhân -->
         <div class="tab-pane fade show active" id="info" role="tabpanel">
             <h3>Thông tin cá nhân</h3>
-            <?php while($row = mysqli_fetch_array($info1)) { ?>
-            <p><strong>Họ và tên:</strong><?php echo $row['tenkhachhang']?> </p>
-            <p><strong>Email:</strong><?php echo $row['email']?></p>
-            <p><strong>Số điện thoại:</strong> <?php echo $row['sdt']?></p>
-            <p><strong>Ngày sinh:</strong> <?php echo $row['ngaysinh']?></p>
-            <p><strong>Điểm tích lũy:</strong> <?php echo $row['point']?></p>
-            <p><strong>Hạng thành viên:</strong> <?php echo $row['name']?></p>
+            <?php while ($row = mysqli_fetch_array($info1)) { ?>
+                <p><strong>Họ và tên:</strong><?php echo $row['tenkhachhang'] ?> </p>
+                <p><strong>Email:</strong><?php echo $row['email'] ?></p>
+                <p><strong>Số điện thoại:</strong> <?php echo $row['sdt'] ?></p>
+                <p><strong>Ngày sinh:</strong> <?php echo $row['ngaysinh'] ?></p>
+                <p><strong>Điểm tích lũy:</strong> <?php echo $row['point'] ?></p>
+                <p><strong>Hạng thành viên:</strong> <?php echo $row['name'] ?></p>
             <?php } ?>
         </div>
 
         <!-- Lịch sử đơn hàng -->
         <div class="tab-pane fade" id="history" role="tabpanel">
-        <h3>Lịch sử đơn hàng</h3>
-<?php if (!empty($data['history'])) { ?>
-    <?php foreach ($data['history'] as $mahoadon => $order) { ?>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Mã đơn</th>
-                    <th>Ngày đặt</th>
-                    <th>Sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Tổng tiền</th>
-                    <th>Trạng thái</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($order['sanphams'] as $sp) { ?>
-                    <tr>
-                        <td><?php echo $mahoadon; ?></td>
-                        <td><?php echo $order['ngaytao']; ?></td>
-                        <td><?php echo $sp['sanpham']; ?></td>
-                        <td><?php echo $sp['soluong']; ?></td>
-                        <td><?php echo $order['tongtiensaugiam']; ?></td>
-                        <td><?php echo $order['trangthai']; ?></td>
-                    </tr>
+            <h3>Lịch sử đơn hàng</h3>
+            <?php if (!empty($data['history'])) { ?>
+                <?php foreach ($data['history'] as $mahoadon => $order) { ?>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Ngày đặt</th>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($order['sanphams'] as $sp) { ?>
+                            <tr>
+                                <td><?php echo $mahoadon; ?></td>
+                                <td><?php echo $order['ngaytao']; ?></td>
+                                <td><?php echo $sp['sanpham']; ?></td>
+                                <td><?php echo $sp['soluong']; ?></td>
+                                <td><?php echo $order['tongtiensaugiam']; ?></td>
+                                <td><?php echo $order['trangthai']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
                 <?php } ?>
-            </tbody>
-        </table>
-    <?php } ?>
-<?php } ?>
+            <?php } ?>
         </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 <?php
-require_once './core/model.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/core/model.php';
 
 class giohangModel extends Model
 {
@@ -13,7 +13,8 @@ class giohangModel extends Model
     protected $tblchitietdonhang = "chitiethoadon";
 
 
-    public function Getttinsanpham($masanpham) {
+    public function Getttinsanpham($masanpham)
+    {
         $sql = "SELECT masanpham, tensanpham, giagoc, hinhanh, soluong AS soluongtonkho 
                 FROM $this->tblsanpham 
                 WHERE masanpham = '$masanpham'";
@@ -194,7 +195,8 @@ class giohangModel extends Model
         return $result;
     }
 
-    public function updateStock($masanpham, $soluong) {
+    public function updateStock($masanpham, $soluong)
+    {
         $sql = "UPDATE $this->tblsanpham 
                 SET soluong = soluong - $soluong 
                 WHERE masanpham = '$masanpham' 
@@ -203,7 +205,8 @@ class giohangModel extends Model
     }
 
     // Kiểm tra số lượng tồn kho
-    public function checkStock($masanpham, $soluong) {
+    public function checkStock($masanpham, $soluong)
+    {
         $sql = "SELECT soluong AS soluongtonkho 
                 FROM $this->tblsanpham 
                 WHERE masanpham = '$masanpham'";
@@ -214,7 +217,8 @@ class giohangModel extends Model
         return false;
     }
 
-    public function themchitietmuangay($id_giohang, $masanpham, $tensanpham, $soluong, $don_gia) {
+    public function themchitietmuangay($id_giohang, $masanpham, $tensanpham, $soluong, $don_gia)
+    {
         if ($this->checkStock($masanpham, $soluong)) {
             $sql = "INSERT INTO $this->tblchitietgiohang (id_giohang, masanpham, tensanpham, soluong, giagoc) 
                     VALUES ($id_giohang, '$masanpham', '$tensanpham', $soluong, $don_gia)";
@@ -227,7 +231,8 @@ class giohangModel extends Model
         return false;
     }
 
-    public function addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc) {
+    public function addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc)
+    {
         if ($this->checkStock($masanpham, $soluong)) {
             $sql = "INSERT INTO $this->tblchitietdonhang (mahoadon, masanpham, soluong, dongia) 
                     VALUES ('$mahoadon', '$masanpham', $soluong, $giagoc)";
@@ -240,7 +245,8 @@ class giohangModel extends Model
         return false;
     }
 
-    public function updatesolgmuangay($masanpham, $soluong) {
+    public function updatesolgmuangay($masanpham, $soluong)
+    {
         if ($this->checkStock($masanpham, $soluong)) {
             $sql = "UPDATE $this->tblsanpham 
                     SET soluong = soluong - $soluong 

@@ -19,7 +19,8 @@
             min-height: 100vh;
             background-color: #f9f9f9;
         }
-        .detail{
+
+        .detail {
             margin-left: 250px;
             margin-top: 80px;
 
@@ -27,7 +28,7 @@
 
         .header {
             display: flex;
-         
+
             justify-content: space-between;
             align-items: center;
             background-color: #fff;
@@ -39,10 +40,12 @@
             top: 0;
             z-index: 1000;
         }
-        .icon-menu{
+
+        .icon-menu {
             display: flex;
-            gap:10px;
+            gap: 10px;
         }
+
         .logo img {
             width: 200px;
             height: auto;
@@ -125,7 +128,8 @@
         <div class="icon-menu">
             <?php if (isset($_SESSION['tennhanvien'])): ?>
                 Xin chào, <strong><?= htmlspecialchars($_SESSION['tennhanvien']); ?></strong>
-                <a href="<?php echo WEBROOT; ?>taikhoan/logout" style="text-decoration:none; color:black">| Đăng xuất</a>
+                <a href="<?php echo WEBROOT; ?>taikhoan/logout" style="text-decoration:none; color:black">| Đăng
+                    xuất</a>
             <?php else: ?>
                 <a href="<?php echo WEBROOT; ?>taikhoan/login" class="icon"><i class="fas fa-user"></i></a>
             <?php endif; ?>
@@ -136,12 +140,12 @@
     <ul class="menu">
         <li><a href="<?php echo WEBROOT . 'admin/tongquan' ?>"><i class="fas fa-house"></i>Tổng quan</a></li>
         <li><a href="<?php echo WEBROOT . 'admin/nhanvien' ?>"><i class="fas fa-building"></i>Nhân viên</a></li>
-        <li><a href="<?php echo WEBROOT . 'admin/khachhang' ?>"><i class="fa-solid fa-boxes-stacked"></i>Khách hàng</a></li>
+        <li><a href="<?php echo WEBROOT . 'admin/khachhang' ?>"><i class="fa-solid fa-boxes-stacked"></i>Khách hàng</a>
+        </li>
         <li><a href="<?php echo WEBROOT . 'admin/sanpham' ?>"><i class="fa-brands fa-product-hunt"></i>Sản phẩm</a></li>
         <li><a href="<?php echo WEBROOT . 'admin/donhang' ?>"><i class="fa-solid fa-file-import"></i>Đơn hàng</a></li>
-       
-       
-    
+
+
     </ul>
 </div>
 

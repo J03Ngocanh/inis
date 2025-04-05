@@ -1,46 +1,47 @@
 <?php
 
-    class Router {
-        protected $controller = 'homcontroller';
-        protected $action = 'trangchu';
-        protected $params = [];
-        
-        private function parseUrl($uri) {
-            //echo "Chuỗi URI:";
-            //var_dump(explode('/', filter_var(rtrim($uri, '/'), FILTER_SANITIZE_URL)));
-            return explode('/', filter_var(rtrim($uri, '/'), FILTER_SANITIZE_URL));
-        }
-        public function dispatch($uri) {
-            $url = $this->parseUrl($uri);
-            if(file_exists('app/Controllers/' . $url[2] . 'Controller.php')) {
-                $this->controller = ucfirst($url[2]) . 'Controller';
-                //echo  "$this->controller:".$this->controller;
-                unset($url[2]);
-            }
-            
-          //  echo "Controller:".$this->controller."<br>";
-            require_once 'app/Controllers/' . $this->controller . '.php';
-            
-            $this->controller = new $this->controller;
-            
-            if(isset($url[3])) {
-                if(method_exists($this->controller, $url[3])) {
-                    $this->action = $url[3];
-                    unset($url[3]);
-                }
-            }
-           // echo "Action:".$this->action."<br>";;
-            unset($url[0]);
-            unset($url[1]);
-            //echo "parameters:";
-            $this->params = $url ? array_values($url) : [];
-            //var_dump($this->params);
+class Router {
+    protected $controller = 'trangchuController';
+    protected $action = 'trangchu';
+    protected $params = [];
 
-           call_user_func_array([$this->controller, $this->action], $this->params); 
-           
-        } 
-        
-
-        
+    private function parseUrl($uri) {
+        $uri = str_replace(WEBROOT, '', $uri); // Loại bỏ WEBROOT (ví dụ: /inis/)
+        return explode('/', filter_var(rtrim($uri, '/'), FILTER_SANITIZE_URL));
     }
+
+    public function dispatch($uri) {
+        $url = $this->parseUrl($uri);
+
+        // Kiểm tra controller
+        if (isset($url[0]) && !empty($url[0])) {
+            $controllerName = strtolower($url[0]) . 'Controller';
+            $controllerPath = 'app/Controllers/' . $controllerName . '.php';
+            if (file_exists($controllerPath)) {
+                $this->controller = $controllerName;
+                unset($url[0]);
+            }
+        }
+
+        // Tải controller
+        $controllerPath = 'app/Controllers/' . $this->controller . '.php';
+        if (!file_exists($controllerPath)) {
+            die("Không tìm thấy controller: $controllerPath");
+        }
+
+        require_once $controllerPath;
+        $this->controller = new $this->controller;
+
+        // Kiểm tra action
+        if (isset($url[1]) && method_exists($this->controller, $url[1])) {
+            $this->action = $url[1];
+            unset($url[1]);
+        }
+
+        // Gán params
+        $this->params = $url ? array_values($url) : [];
+
+        call_user_func_array([$this->controller, $this->action], $this->params);
+    }
+}
 ?>

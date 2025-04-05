@@ -1,5 +1,6 @@
-<?php 
-require_once 'core/Controller.php';
+<?php
+require_once dirname(dirname(dirname(__FILE__))) . '/core/Controller.php';
+
 // require_once 'app/models/sanpham.php';
 
 class adminController extends Controller
@@ -34,7 +35,7 @@ class adminController extends Controller
 
     public function donhang()
     {
-       $this->view('header');
+        $this->view('header');
         $listddh = $this->adminModel->getddh();
         $chitietddh = $this->adminModel->chitietdonhang();
         $this->view('admin/listddh', ['listddh' => $listddh, 'ctddh' => $chitietddh]);
@@ -84,13 +85,21 @@ class adminController extends Controller
 
     public function dashboard()
     {
-        $doanhthu = $this->adminModel->doanhthu();
+        $year = date('Y'); // Năm hiện tại
+        $month = date('m'); // Tháng hiện tại
+        $doanhthu = $this->adminModel->getDoanhThuTheoNam($year);
+        $topsp = $this->adminModel->getTopSanPham($month, $year);
         $sanphamsaphet = $this->adminModel->sanphamsaphet();
 
-        $this->view('admin/dashboard', ['doanhthu' => $doanhthu, 'sanphamsaphet' => $sanphamsaphet]);
-
+        $this->view('header');
+        $this->view('admin/dashboard', [
+            'doanhthu' => $doanhthu,
+            'topsp' => $topsp,
+            'sanphamsaphet' => $sanphamsaphet,
+            'currentYear' => $year, // Đảm bảo truyền biến này
+            'currentMonth' => $month // Đảm bảo truyền biến này
+        ]);
     }
-
     public function getDoanhThuJSON()
     {
         $month = isset($_POST['month']) ? $_POST['month'] : null; // Get the selected month from POST
@@ -231,55 +240,56 @@ class adminController extends Controller
     public function addnv()
     {
         $role = $this->adminModel->getRoles();
-      //  $this->view('header');
+        //  $this->view('header');
         $this->view('admin/add_nv', ['role' => $role]);
     }
 
-    public function xulythemnv() {
+    public function xulythemnv()
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             echo json_encode(["success" => false, "message" => "Phương thức không hợp lệ!"]);
             return;
         }
-    
+
         // Lấy dữ liệu từ POST
         $tennhanvien = trim($_POST['tennhanvien'] ?? '');
         $sdt = trim($_POST['sdt'] ?? '');
         $password = $_POST['password'] ?? '';
         $mat_khau_2 = $_POST['mat_khau_2'] ?? '';
         $id_role = $_POST['id_role'] ?? '';
-    
+
         // Kiểm tra dữ liệu đầu vào
         if (empty($tennhanvien) || empty($sdt) || empty($password) || empty($id_role)) {
             echo json_encode(["success" => false, "message" => "Vui lòng điền đầy đủ thông tin bắt buộc!"]);
             return;
         }
-    
+
         if ($password !== $mat_khau_2) {
             echo json_encode(["success" => false, "message" => "Mật khẩu không khớp!"]);
             return;
         }
-    
+
         if (!preg_match("/^0[0-9]{9,10}$/", $sdt)) {
             echo json_encode(["success" => false, "message" => "Số điện thoại không hợp lệ!"]);
             return;
         }
-    
+
         // Kiểm tra số điện thoại đã tồn tại chưa
         if (mysqli_num_rows($this->adminModel->checksdt($sdt)) > 0) {
             echo json_encode(["success" => false, "message" => "Số điện thoại này đã được sử dụng!"]);
             return;
         }
-    
+
         // Hash mật khẩu
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    
+
         // Thêm tài khoản vào database
         $this->adminModel->themnhanvien($tennhanvien, $sdt, $hashed_password, $id_role);
-    
+
         // Xóa session không cần thiết
-        unset($_SESSION['hienthitennhanvien'], $_SESSION['trungsdt'], $_SESSION['hienthisdt'], 
-              $_SESSION['trungemail'], $_SESSION['hienthiemail'], $_SESSION['hienthipass']);
-    
+        unset($_SESSION['hienthitennhanvien'], $_SESSION['trungsdt'], $_SESSION['hienthisdt'],
+            $_SESSION['trungemail'], $_SESSION['hienthiemail'], $_SESSION['hienthipass']);
+
         // Trả về JSON để hiển thị popup
         echo json_encode([
             "success" => true,
@@ -288,10 +298,10 @@ class adminController extends Controller
         ]);
         exit;
     }
-    
-    
 
-    public function editnv($manhanvien = '') {
+
+    public function editnv($manhanvien = '')
+    {
         if (empty($manhanvien)) {
             $_SESSION['error'] = "Không tìm thấy mã nhân viên!";
             header("location: /inis/admin/nhanvien");
@@ -312,7 +322,8 @@ class adminController extends Controller
         $this->view('admin/edit_nv', ['nhanvien' => $nvData, 'role' => $role]);
     }
 
-    public function xulysuanv() {
+    public function xulysuanv()
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $_SESSION['error'] = "Phương thức không hợp lệ!";
             header("location: /inis/admin/nhanvien");
@@ -351,7 +362,8 @@ class adminController extends Controller
         header("location: /inis/admin/nhanvien");
     }
 
-    public function updatetrangthai() {
+    public function updatetrangthai()
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             echo json_encode(['success' => false]);
             return;
@@ -367,5 +379,32 @@ class adminController extends Controller
 
         $this->adminModel->updatetrangthai($manhanvien, $trangthai);
         echo json_encode(['success' => true]);
+    }
+
+    // Trong adminController.php
+
+    public function getDoanhThuTheoNamJSON() {
+        // Đặt header để đảm bảo trả về JSON
+        header('Content-Type: application/json; charset=UTF-8');
+
+        $year = isset($_POST['year']) ? (int)$_POST['year'] : date('Y');
+        $doanhthu = $this->adminModel->getDoanhThuTheoNam($year);
+
+        // Trả về JSON và thoát
+        echo json_encode(['data' => array_values($doanhthu)]);
+        exit;
+    }
+
+    public function getTopSanPhamJSON() {
+        // Đặt header để đảm bảo trả về JSON
+        header('Content-Type: application/json; charset=UTF-8');
+
+        $month = isset($_POST['month']) ? (int)$_POST['month'] : date('m');
+        $year = isset($_POST['year']) ? (int)$_POST['year'] : date('Y');
+        $topsp = $this->adminModel->getTopSanPham($month, $year);
+
+        // Trả về JSON và thoát
+        echo json_encode($topsp);
+        exit;
     }
 }

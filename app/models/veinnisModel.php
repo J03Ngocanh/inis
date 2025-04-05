@@ -1,19 +1,23 @@
 <?php
-require_once './core/model.php';
-class veinnisModel extends Model {
+require_once dirname(dirname(dirname(__FILE__))) . '/core/model.php';
+
+class veinnisModel extends Model
+{
     protected $tblloaisp = "loaisp";
     protected $tblkhachhang = "khachhang";
 
 
-
-    public function Getloaisp(){
+    public function Getloaisp()
+    {
         $sql = "SELECT * FROM $this->tblloaisp ";
-        $result=$this->con->query($sql);
+        $result = $this->con->query($sql);
         return $result;
     }
-    public function info($makhachhang){
+
+    public function info($makhachhang)
+    {
         $sql = "SELECT * FROM $this->tblkhachhang kh WHERE id = '$makhachhang'";
         $result = $this->con->query($sql);
         return $result;
     }
-    }
+}
