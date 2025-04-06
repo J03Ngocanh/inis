@@ -27,8 +27,11 @@ class veinnisController extends Controller
     public function blog1()
     {
         $loaisp = $this->veinnisModel->Getloaisp();
-        $makhachhang = $_SESSION['makhachhang'];
-        $info = $this->veinnisModel->info($makhachhang);
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('veinnis/blog1');
         $this->view('footer');
@@ -37,8 +40,11 @@ class veinnisController extends Controller
     public function blog2()
     {
         $loaisp = $this->veinnisModel->Getloaisp();
-        $makhachhang = $_SESSION['makhachhang'];
-        $info = $this->veinnisModel->info($makhachhang);
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('veinnis/blog2');
 

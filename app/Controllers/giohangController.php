@@ -15,8 +15,11 @@ class giohangController extends Controller
         // Lấy dữ liệu loại sản phẩm
         $loaisp = $this->giohangModel->Getloaisp();
         // Truyền loại sản phẩm vào view 'menu'
-        $makhachhang = $_SESSION['makhachhang'];
-        $info = $this->giohangModel->info($makhachhang);
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         // Kiểm tra xem người dùng đã đăng nhập chưa
         if (isset($_SESSION['sdt'])) {

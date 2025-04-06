@@ -18,8 +18,11 @@ class sanphamController extends Controller
         $loaisp2 = $this->sanphamModel->Getloaisp();
         $danhmucsp = $this->sanphamModel->Getdanhmuc();
         $sanpham = $this->sanphamModel->getAll();
-        $makhachhang = $_SESSION['makhachhang'];
-        $info = $this->sanphamModel->info($makhachhang);
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('sanpham/sanpham1', ['loaisp' => $loaisp2, 'danhmucsp' => $danhmucsp, 'sanpham' => $sanpham]);
         $this->view('footer');
@@ -33,8 +36,11 @@ class sanphamController extends Controller
         $danhmucsp = $this->sanphamModel->Getdanhmuc();
         $sanpham = $this->sanphamModel->getAll_danhmuc($id);
         $tendanhmuc_loai = $this->sanphamModel->tendanhmuc_loai($id);
-        $makhachhang = $_SESSION['makhachhang'];
-        $info = $this->sanphamModel->info($makhachhang);
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('sanpham/sanpham1', ['loaisp' => $loaisp2, 'danhmucsp' => $danhmucsp, 'sanpham' => $sanpham, 'tendanhmuc_loai' => $tendanhmuc_loai]);
 
@@ -44,8 +50,11 @@ class sanphamController extends Controller
     {
         $loaisp = $this->sanphamModel->Getloaisp();
         $sanpham = $this->sanphamModel->getchitietsp($id);
-        $makhachhang = $_SESSION['makhachhang'];
-        $info = $this->sanphamModel->info($makhachhang);
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('sanpham/chitietsp', ['sanpham' => $sanpham]);
         $this->view('footer');
@@ -58,8 +67,11 @@ class sanphamController extends Controller
         $loaisp = $this->sanphamModel->Getloaisp();
         $loaisp2 = $this->sanphamModel->Getloaisp();
         $danhmucsp = $this->sanphamModel->Getdanhmuc();
-        $makhachhang = $_SESSION['makhachhang'];
-        $info = $this->sanphamModel->info($makhachhang);
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
         $tenloai = $this->sanphamModel->tenloai($id);
         $sanpham = $this->sanphamModel->getAll_loai($id);
 
@@ -93,8 +105,11 @@ class sanphamController extends Controller
         $loaisp2 = $this->sanphamModel->Getloaisp();
         $danhmucsp = $this->sanphamModel->Getdanhmuc();
         $sanpham = $this->sanphamModel->getsanpham_timkiem($nd);
-        $makhachhang = $_SESSION['makhachhang'];
-        $info = $this->sanphamModel->info($makhachhang);
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
 
         $this->view('sanpham/sanpham1', ['loaisp' => $loaisp2, 'danhmucsp' => $danhmucsp, 'sanpham' => $sanpham]);

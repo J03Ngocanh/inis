@@ -262,9 +262,6 @@ if (isset($_SESSION['dangky_thanhcong'])) {
         </form>
     </div>
     <script>
-        // Lắng nghe sự kiện mousedown và mouseup trên biểu tượng con mắt
-
-
         const togglePasswordButton = document.getElementById('togglePassword');
         const passwordField = document.getElementById('password');
         const eyeIcon = document.getElementById('eyeIcon');
@@ -292,35 +289,6 @@ if (isset($_SESSION['dangky_thanhcong'])) {
         });
 
 
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const usernameInput = document.getElementById('sdt');
-            const passwordInput = document.getElementById('password');
-            const suggestionsBox = document.getElementById('suggestions');
-
-            const savedUser = "<?php echo $saved_user; ?>";
-            const savedPassword = "<?php echo $saved_password; ?>";
-
-            usernameInput.addEventListener('focus', function () {
-                if (savedUser) {
-                    suggestionsBox.innerHTML = `<div>${savedUser}</div>`;
-                    suggestionsBox.style.display = 'block';
-                }
-            });
-
-            suggestionsBox.addEventListener('click', function () {
-                usernameInput.value = savedUser;
-                passwordInput.value = savedPassword;
-                suggestionsBox.style.display = 'none';
-            });
-
-            document.addEventListener('click', function (event) {
-                if (!usernameInput.contains(event.target) && !suggestionsBox.contains(event.target)) {
-                    suggestionsBox.style.display = 'none';
-                }
-            });
-        });
     </script>
 </main>
 
