@@ -32,7 +32,6 @@ class trangchuModel extends Model
     {
         $sql = "SELECT sp.masanpham, sp.tensanpham, sp.hinhanh, sp.giagoc FROM {$this->tblsanpham} AS sp
     ORDER BY sp.ngay_them DESC LIMIT 4";
-        echo $sql;
         $result = $this->con->query($sql);
         return $result;
     }
