@@ -125,6 +125,7 @@ class giohangController extends Controller
 
     public function tienhanhthanhtoangiohang()
     {
+        $mahoadon = $this->genUUIDv4();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Lấy thông tin từ form
             $sdt = $_POST['sdt'] ?? '';
@@ -140,21 +141,68 @@ class giohangController extends Controller
             $makhachhang = $_SESSION['makhachhang'] ?? 'KH0000';
 
             // Thêm đơn hàng và lấy mã hóa đơn vừa tạo
-            $mahoadon = $this->giohangModel->addOrder($makhachhang, $tongtien, $giamgia, $tong_thanhtoan, $hoten_nhan, $sdt, $diachi_nhan, $phuong_thuc, $ngay_tao);
+            $result = $this->giohangModel->addOrder($mahoadon, $makhachhang, $tongtien, $giamgia, $tong_thanhtoan, $hoten_nhan, $sdt, $diachi_nhan, $phuong_thuc, $ngay_tao);
 
-            if ($mahoadon) {
-                echo $mahoadon;
+            if ($result) {
                 if (!empty($_SESSION['giohang'])) {
                     foreach ($_SESSION['giohang'] as $masanpham => $sanpham) {
                         $soluong = $sanpham['soluong'];
                         $giagoc = $sanpham['giagoc'];
                         $this->giohangModel->addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc);
 
+                        if ($_POST['phuong_thuc'] === 'vnpay_qr') {
+                            $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+                            $vnp_Returnurl = WEBROOT . "vnpay/return";
+                            $vnp_TmnCode = "Z0O9T9AJ"; // Mã TMN từ VNPAY
+                            $vnp_HashSecret = "NBWOGA7BHPKQ4IF59MXMPRJOFX1W9QQ5"; // Chuỗi bí mật từ VNPAY
+                            $vnp_TxnRef = $mahoadon; // Mã đơn hàng duy nhất
+                            $vnp_OrderInfo = "Thanh toan don hang #" . $vnp_TxnRef;
+                            $vnp_Amount = $_POST['tong_thanhtoan'] * 100; // Nhân 100 vì VNPAY dùng đơn vị VNĐ * 100
+                            $vnp_Locale = 'vn';
+                            $vnp_BankCode = '';
+                            $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+
+                            $inputData = array(
+                                "vnp_Version" => "2.1.0",
+                                "vnp_TmnCode" => $vnp_TmnCode,
+                                "vnp_Amount" => $vnp_Amount,
+                                "vnp_Command" => "pay",
+                                "vnp_CreateDate" => date('YmdHis'),
+                                "vnp_CurrCode" => "VND",
+                                "vnp_IpAddr" => $vnp_IpAddr,
+                                "vnp_Locale" => $vnp_Locale,
+                                "vnp_OrderInfo" => $vnp_OrderInfo,
+                                "vnp_OrderType" => "other",
+                                "vnp_ReturnUrl" => $vnp_Returnurl,
+                                "vnp_TxnRef" => $vnp_TxnRef
+                            );
+
+                            ksort($inputData);
+                            $query = "";
+                            $i = 0;
+                            $hashdata = "";
+                            foreach ($inputData as $key => $value) {
+                                if ($i == 1) {
+                                    $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+                                } else {
+                                    $hashdata .= urlencode($key) . "=" . urlencode($value);
+                                    $i = 1;
+                                }
+                                $query .= urlencode($key) . "=" . urlencode($value) . '&';
+                            }
+
+                            $vnp_Url .= "?" . $query;
+                            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+                            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+
+                            header('Location: ' . $vnp_Url);
+                            exit();
+                        }
+
                         unset($_SESSION['giohang']);
                     }
                 }
 
-                // Điều hướng đến trang xác nhận đơn hàng
                 header("Location: " . WEBROOT . "giohang/hoanthanhthanhtoan/$mahoadon");
                 exit();
             } else {
@@ -163,18 +211,6 @@ class giohangController extends Controller
         } else {
             die("Lỗi: Phương thức không hợp lệ.");
         }
-    }
-
-    public function hoanthanhthanhtoan($mahoadon)
-    {
-        $loaisp = $this->giohangModel->Getloaisp();
-        $makhachhang = $_SESSION['makhachhang'];
-        $info = $this->giohangModel->info($makhachhang);
-        $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
-        $ttindonhang = $this->giohangModel->Getttinchitietdonhang($mahoadon);
-        $ttinnguoimua = $this->giohangModel->Getttindonhang($mahoadon);
-        $this->view('giohang/chitiethoadon', ['ttindonhang' => $ttindonhang, 'ttinnguoimua' => $ttinnguoimua]);
-        $this->view('footer');
     }
 
     public function getCartCount()
@@ -301,5 +337,15 @@ class giohangController extends Controller
         }
         header("Location: " . WEBROOT . "trangchu/trangchu");
         exit();
+    }
+
+    function genUUIDv4() {
+        $data = random_bytes(16);
+
+        $data[6] = chr((ord($data[6]) & 0x0f) | 0x40);
+        // Đặt variant thành 10xx
+        $data[8] = chr((ord($data[8]) & 0x3f) | 0x80);
+
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 }

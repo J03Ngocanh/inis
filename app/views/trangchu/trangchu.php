@@ -180,6 +180,24 @@
         transform: scale(1.2);
     }
 
+    .flash-sale {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        margin: 20px;
+    }
+
+    .flash-sale h2 {
+        color: #e60000;
+        font-size: 24px;
+    }
+
+    .countdown-timer {
+        margin: 20px 0;
+        font-size: 18px;
+    }
+
     .product-list {
         display: flex;
         justify-content: space-around;
@@ -389,7 +407,35 @@
         vertical-align: middle;
         margin-right: 10px;
     }
-
+    #chatbox {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+    #messages {
+        height: 80%;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+    #input {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+    }
+    #messages p {
+        margin: 5px 0;
+    }
+    #messages p b {
+        color: #12b560; /* Màu xanh của Innisfree */
+    }
 
 </style>
 <div class="noi-dung">
@@ -431,6 +477,10 @@
 
         </div>
         <div class='right'></div>
+    </div>
+    <div id="chatbox">
+        <div id="messages"></div>
+        <input type="text" id="input" placeholder="Hỏi mình nha!" onkeypress="if(event.keyCode==13) sendMessage();">
     </div>
 </div>
 
@@ -621,6 +671,31 @@ function getRankName($rank_id)
             $("#rankUpPopup").hide();
         });
     });
+
+    function sendMessage() {
+        let input = document.getElementById('input');
+        let message = input.value;
+        if (message.trim() === '') return;
+
+        let messages = document.getElementById('messages');
+        messages.innerHTML += '<p><b>Bạn:</b> ' + message + '</p>';
+        input.value = '';
+
+        fetch('<?php echo WEBROOT; ?>trangchu/chatbot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'message=' + encodeURIComponent(message)
+        })
+            .then(response => response.text())
+            .then(data => {
+                messages.innerHTML += '<p><b>Bot:</b> ' + data + '</p>';
+                messages.scrollTop = messages.scrollHeight;
+            })
+            .catch(error => {
+                messages.innerHTML += '<p><b>Bot:</b> Oops, có lỗi rồi, thử lại nha!</p>';
+                messages.scrollTop = messages.scrollHeight;
+            });
+    }
 </script>
 
 

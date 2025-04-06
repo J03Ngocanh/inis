@@ -153,25 +153,14 @@ class giohangModel extends Model
 
     }
 
-    public function addOrder($makhachhang, $tongtien, $giamgia, $tong_thanhtoan, $hoten_nhan, $sdt, $diachi_nhan, $phuong_thuc, $ngay_tao)
+    public function addOrder($mahoadon, $makhachhang, $tongtien, $giamgia, $tong_thanhtoan, $hoten_nhan, $sdt, $diachi_nhan, $phuong_thuc, $ngay_tao)
     {
-        $sql = "INSERT INTO $this->tbldonhang (makhachhang, tongtientruocgiam,giamgia, tongtiensaugiam, hoten_nhan, sdt_nhan, diachi_nhan, pttt, ngaytao) 
-            VALUES ('$makhachhang', '$tongtien', $giamgia, $tong_thanhtoan, '$hoten_nhan','$sdt', '$diachi_nhan', '$phuong_thuc', '$ngay_tao')";
-        $this->con->query($sql);
-
-        if ($this->con->affected_rows > 0) {
-            // Lấy mã hóa đơn mới nhất của khách hàng đang đặt
-            $sql_get = "SELECT mahoadon FROM $this->tbldonhang 
-                    WHERE makhachhang = '$makhachhang' 
-                      AND ngaytao = '$ngay_tao'
-                    ORDER BY ngaytao DESC LIMIT 1";
-
-            $result = $this->con->query($sql_get);
-            $row = $result->fetch_assoc();
-
-            return $row['mahoadon'] ?? false;
+        $sql = "INSERT INTO $this->tbldonhang (mahoadon, makhachhang, tongtientruocgiam,giamgia, tongtiensaugiam, hoten_nhan, sdt_nhan, diachi_nhan, pttt, ngaytao) 
+            VALUES ('$mahoadon','$makhachhang', '$tongtien', $giamgia, $tong_thanhtoan, '$hoten_nhan','$sdt', '$diachi_nhan', '$phuong_thuc', '$ngay_tao')";
+        if ($this->con->query($sql)) {
+            return true; // Thành công
         } else {
-            return false;
+            return false; // Lỗi
         }
     }
 

@@ -8,7 +8,83 @@ class trangchuController extends Controller
     {
         $this->trangchuModel = $this->model('trangchuModel');
     }
+    public function chatbot()
+    {
+        header('Content-Type: text/plain');
 
+        $message = $_POST['message'] ?? '';
+        if (empty($message)) {
+            echo "Hỏi gì đi nha, mình đợi bạn á!";
+            exit;
+        }
+
+        try {
+            // Đường dẫn đến file JSON Service Account
+            $credentialsFile = dirname(dirname(dirname(__FILE__))) . '/beauty-wbee-3c0c842e188f.json'; // Điều chỉnh đường dẫn nếu cần
+
+            // Kiểm tra file JSON có tồn tại không
+            if (!file_exists($credentialsFile)) {
+                echo "Lỗi: File JSON không tồn tại tại đường dẫn: " . $credentialsFile;
+                exit;
+            }
+
+            // Khởi tạo Google Client
+//            require_once dirname(__FILE__) . '/../../../vendor/autoload.php'; // Đường dẫn đến autoload.php
+            $client = new Google_Client();
+            $client->setAuthConfig($credentialsFile);
+            $client->addScope('https://www.googleapis.com/auth/cloud-platform');
+            $client->addScope('https://www.googleapis.com/auth/dialogflow');
+
+            // Lấy Access Token
+            $accessTokenResult = $client->fetchAccessTokenWithAssertion();
+            if (isset($accessTokenResult['access_token'])) {
+                $accessToken = $accessTokenResult['access_token'];
+            } else {
+                echo "Lỗi: Không thể lấy Access Token. Chi tiết: " . json_encode($accessTokenResult);
+                exit;
+            }
+
+            // Thông tin Dialogflow
+            $projectId = 'beauty-wbee';
+            $url = "https://dialogflow.googleapis.com/v2/projects/{$projectId}/agent/sessions/123456789:detectIntent";
+
+            $data = [
+                'queryInput' => [
+                    'text' => [
+                        'text' => $message,
+                        'languageCode' => 'vi'
+                    ]
+                ]
+            ];
+
+            $options = [
+                'http' => [
+                    'header'  => "Content-Type: application/json\r\n" .
+                        "Authorization: Bearer $accessToken\r\n",
+                    'method'  => 'POST',
+                    'content' => json_encode($data),
+                ]
+            ];
+
+            $context = stream_context_create($options);
+            $response = file_get_contents($url, false, $context);
+
+            // Kiểm tra lỗi
+            if ($response === false) {
+                $error = error_get_last();
+                echo "Lỗi: " . $error['message'];
+                exit;
+            }
+
+            $result = json_decode($response, true);
+            $reply = $result['queryResult']['fulfillmentText'] ?? "Mình chưa hiểu lắm, bạn hỏi lại nha!";
+            echo $reply;
+
+        } catch (Exception $e) {
+            echo "Lỗi: " . $e->getMessage();
+            exit;
+        }
+    }
     public function trangchu()
     {
         if (session_status() === PHP_SESSION_NONE) {
