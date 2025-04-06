@@ -180,24 +180,6 @@
         transform: scale(1.2);
     }
 
-    .flash-sale {
-        background-color: #f5f5f5;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        margin: 20px;
-    }
-
-    .flash-sale h2 {
-        color: #e60000;
-        font-size: 24px;
-    }
-
-    .countdown-timer {
-        margin: 20px 0;
-        font-size: 18px;
-    }
-
     .product-list {
         display: flex;
         justify-content: space-around;
@@ -449,29 +431,6 @@
 
         </div>
         <div class='right'></div>
-    </div>
-</div>
-<div class="flash-sale">
-    <h2>Flash Sale</h2>
-    <div class="countdown-timer">
-        <p>Còn lại: <span id="timer"></span></p>
-    </div>
-    <div class="product-list">
-        <div class="product">
-            <img src="product1.jpg" alt="Sản phẩm 1">
-            <p class="product-name">Sản phẩm 1</p>
-            <p class="product-price">Giá gốc: 100.000 VND</p>
-            <p class="flash-sale-price">Giảm còn: 50.000 VND</p>
-            <button>Mua ngay</button>
-        </div>
-        <div class="product">
-            <img src="product2.jpg" alt="Sản phẩm 2">
-            <p class="product-name">Sản phẩm 2</p>
-            <p class="product-price">Giá gốc: 200.000 VND</p>
-            <p class="flash-sale-price">Giảm còn: 100.000 VND</p>
-            <button>Mua ngay</button>
-        </div>
-
     </div>
 </div>
 

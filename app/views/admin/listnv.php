@@ -324,22 +324,7 @@
 <div class="detail">
     <h2>Danh Sách Tài Khoản</h2>
     <a href="/inis/admin/addnv" class="btn-add">Thêm Tài khoản</a>
-    <div class="filter-container">
-        <select id="filter-role">
-            <option value="">Tất cả quyền</option>
-            <?php while ($row = $role->fetch_assoc()): ?>
-                <option value="<?= $row['id_role'] ?>"><?= $row['ten'] ?></option>
-            <?php endwhile; ?>
-        </select>
 
-        <select id="filter-status">
-            <option value="">Tất cả trạng thái</option>
-            <option value="1">Hoạt động</option>
-            <option value="0">Bị khóa</option>
-        </select>
-
-        <button onclick="filterNhanVien()">Lọc</button>
-    </div>
     <table>
         <thead>
         <tr>

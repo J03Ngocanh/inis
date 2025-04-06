@@ -21,6 +21,14 @@ class taikhoanController extends Controller
 
     public function login()
     {
+        if(isset($_SESSION['tenkhachhang'])){
+            header('Location: /inis/trangchu/trangchu');
+            return;
+        }
+        elseif(isset($_SESSION['tennhanvien'])){
+            header('Location: /inis/admin/dashboard');
+            return;
+        } 
         $this->view('taikhoan/login');
     }
 
@@ -134,6 +142,7 @@ class taikhoanController extends Controller
 
     public function xulydangnhap()
     {
+        
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $_SESSION['loidangnhap'] = "Phương thức không hợp lệ.";
             $this->view('taikhoan/login');

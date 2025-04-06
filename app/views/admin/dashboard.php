@@ -18,6 +18,7 @@
             display: flex;
             justify-content: space-between;
             gap: 20px;
+            flex-wrap: wrap;
         }
         .chart-box {
             width: 48%;
@@ -25,7 +26,20 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
+        .chart-box1 {
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+        #productChart1 {
+              width: 100% !important;
+              height: 400px; /* Điều chỉnh chiều cao của biểu đồ */
+}
         select {
             padding: 8px;
             margin: 0 10px;
@@ -41,8 +55,11 @@
     </style>
 </head>
 <body>
+    <div class="detail">
 <div class="container">
     <div class="chart-container">
+
+        <!-- Biểu đồ doanh thu -->
         <div class="chart-box">
             <div class="filter-group">
                 <label for="yearFilter">Lọc doanh thu theo năm:</label>
@@ -60,10 +77,11 @@
             <canvas id="revenueChart"></canvas>
         </div>
 
+        <!-- Biểu đồ top bán chạy -->
         <div class="chart-box">
             <div class="filter-group">
-                <label for="monthFilter">Lọc sản phẩm theo tháng:</label>
-                <select id="monthFilter">
+                <label for="monthFilterTop">Lọc sản phẩm theo tháng:</label>
+                <select id="monthFilterTop">
                     <?php
                     $currentMonth = isset($currentMonth) ? $currentMonth : date('m');
                     for ($i = 1; $i <= 12; $i++): ?>
@@ -76,16 +94,27 @@
             <h3>Top Sản Phẩm Bán Chạy</h3>
             <canvas id="productChart"></canvas>
         </div>
-    </div>
+
+        <!-- Biểu đồ sản phẩm sắp hết -->
+       <!-- Biểu đồ sản phẩm sắp hết -->
+<div class="chart-box1">
+    <h3>Top Sản Phẩm Sắp Hết Hàng</h3>
+    <canvas id="productChart1"></canvas>
 </div>
 
+    </div>
+</div>
+</div>
+<!-- Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         $('#yearFilter').trigger('change');
-        $('#monthFilter').trigger('change');
+        $('#monthFilterTop').trigger('change');
+        $('#monthFilterStock').trigger('change');
     });
+
     // Biểu đồ doanh thu
     const revenueChart = new Chart(document.getElementById('revenueChart'), {
         type: 'bar',
@@ -94,7 +123,7 @@
                 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             datasets: [{
                 label: 'Doanh Thu (triệu VNĐ)',
-                data: <?php echo json_encode(array_values($doanhthu ?? array_fill(1, 12, 0))); ?>,
+                data: <?php echo json_encode(array_values($doanhthu ?? array_fill(0, 12, 0))); ?>,
                 backgroundColor: 'rgba(54, 162, 235, 0.6)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1
@@ -107,7 +136,7 @@
         }
     });
 
-    // Biểu đồ top sản phẩm
+    // Biểu đồ top bán chạy
     const productChart = new Chart(document.getElementById('productChart'), {
         type: 'pie',
         data: {
@@ -124,33 +153,68 @@
             }]
         }
     });
-    // Ajax cho doanh thu
-    $('#yearFilter').change(function() {
+
+
+// Biểu đồ top sắp hết hàng (thay vì biểu đồ tròn, chuyển sang biểu đồ thanh ngang)
+const productChart1 = new Chart(document.getElementById('productChart1'), {
+    type: 'bar',
+    data: {
+        labels: <?php echo json_encode($topspstock['labels'] ?? []); ?>,
+        datasets: [{
+            data: <?php echo json_encode($topspstock['data'] ?? []); ?>,
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: 'Sản phẩm sắp hết (số lượng dưới 20)'
+            }
+        },
+        scales: {
+            x: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Số lượng còn lại'
+                }
+            }
+        }
+    }
+});
+
+
+    // AJAX doanh thu
+    $('#yearFilter').change(function () {
         $.ajax({
             url: '/inis/admin/getDoanhThuTheoNamJSON',
             method: 'POST',
             data: { year: $(this).val() },
-            success: function(response) {
+            success: function (response) {
                 try {
-                    const data = response
+                    const data = response;
                     if (data && Array.isArray(data.data)) {
                         revenueChart.data.datasets[0].data = data.data;
                         revenueChart.update();
-                    } else {
-                        console.error('Dữ liệu doanh thu không hợp lệ:', data);
                     }
                 } catch (e) {
                     console.error('Lỗi parse JSON doanh thu:', e);
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('Lỗi khi lấy dữ liệu doanh thu:', error);
+            error: function () {
+                console.error('Lỗi khi lấy dữ liệu doanh thu');
             }
         });
     });
 
-    // Ajax cho top sản phẩm
-    $('#monthFilter').change(function() {
+    // AJAX top sản phẩm bán chạy
+    $('#monthFilterTop').change(function () {
         $.ajax({
             url: '/inis/admin/getTopSanPhamJSON',
             method: 'POST',
@@ -158,25 +222,42 @@
                 month: $(this).val(),
                 year: $('#yearFilter').val()
             },
-            success: function(response) {
+            success: function (response) {
                 try {
                     const data = response;
                     if (data && Array.isArray(data.labels) && Array.isArray(data.data)) {
                         productChart.data.labels = data.labels;
                         productChart.data.datasets[0].data = data.data;
                         productChart.update();
-                    } else {
-                        console.error('Dữ liệu top sản phẩm không hợp lệ:', data);
                     }
                 } catch (e) {
                     console.error('Lỗi parse JSON top sản phẩm:', e);
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('Lỗi khi lấy dữ liệu top sản phẩm:', error);
+            error: function () {
+                console.error('Lỗi khi lấy dữ liệu top sản phẩm');
             }
         });
     });
+
+// Gọi dữ liệu sản phẩm sắp hết khi vào trang
+$.ajax({
+    url: '/inis/admin/getTopSanPhamStock',
+    method: 'POST',
+    dataType: 'json',
+    success: function (data) {
+        if (data && Array.isArray(data.labels) && Array.isArray(data.data)) {
+            productChart1.data.labels = data.labels;
+            productChart1.data.datasets[0].data = data.data;
+            productChart1.update();
+        }
+    },
+    error: function () {
+        console.error('Lỗi khi lấy dữ liệu sản phẩm sắp hết');
+    }
+});
+
+
 </script>
 </body>
 </html>

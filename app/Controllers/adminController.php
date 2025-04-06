@@ -14,40 +14,65 @@ class adminController extends Controller
 
     public function tongquan()
     {
+        if (isset($_SESSION['tennhanvien'])){
         $this->view('header');
         $this->view('admin/dashboard');
+        }
+        else {
+            header("location: /inis/taikhoan/login");
+        }
     }
 
     public function nhanvien()
     {
+        if (isset($_SESSION['tennhanvien'])){
         $listnv = $this->adminModel->getlistnv();
         $role = $this->adminModel->getRoles();
         $this->view('header');
         $this->view('admin/listnv', ['listnv' => $listnv, 'role' => $role]);
     }
+    else {
+        header("location: /inis/taikhoan/login");
+    }
+    }
 
     public function khachhang()
     {
+        if (isset($_SESSION['tennhanvien'])){
         $listkh = $this->adminModel->getlistkh();
         $this->view('header');
         $this->view('admin/listkh', ['listkh' => $listkh]);
     }
+    else {
+        header("location: /inis/taikhoan/login");
+    }
+    }
 
     public function donhang()
     {
+        if (isset($_SESSION['tennhanvien'])){
         $this->view('header');
         $listddh = $this->adminModel->getddh();
         $chitietddh = $this->adminModel->chitietdonhang();
         $this->view('admin/listddh', ['listddh' => $listddh, 'ctddh' => $chitietddh]);
     }
+    else {
+        header("location: /inis/taikhoan/login");
+    }
+    }
 
     public function sanpham()
     {
+        if (isset($_SESSION['tennhanvien'])){
         $listsp = $this->adminModel->getlistsanpham();
         $danhmucsp = $this->adminModel->getdanhmuc();
 
         $this->view('header');
         $this->view('admin/listsp', ['listsp' => $listsp, 'danhmucsp' => $danhmucsp, 'laysp' => $laysp]);
+    }
+    else {
+        header("location: /inis/taikhoan/login");
+    }
     }
 
     public function getProductInfo($masanpham)
@@ -90,6 +115,7 @@ class adminController extends Controller
         $doanhthu = $this->adminModel->getDoanhThuTheoNam($year);
         $topsp = $this->adminModel->getTopSanPham($month, $year);
         $sanphamsaphet = $this->adminModel->sanphamsaphet();
+
 
         $this->view('header');
         $this->view('admin/dashboard', [
@@ -406,5 +432,12 @@ class adminController extends Controller
         // Trả về JSON và thoát
         echo json_encode($topsp);
         exit;
+    }
+    public function getTopSanPhamStock(){       
+        $topspstock = $this->adminModel->getTopSanPhamSH();
+        // Trả về JSON và thoát
+        echo json_encode($topspstock);
+        exit;
+
     }
 }

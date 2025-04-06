@@ -314,25 +314,24 @@ class adminModel extends Model
         return ['labels' => $labels, 'data' => $data];
     }
 
-    public function sanphamsaphet()
-    {
-        $sql = "SELECT masanpham, soluong
-FROM $this->tblsanpham
-WHERE soluong < 15
-ORDER BY soluong ASC;
-";
-        $result = $this->con->query($sql);
-        $data = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+        public function getTopSanPhamSH() {
+            $query = "SELECT masanpham, tensanpham, soluong 
+                      FROM $this->tblsanpham 
+                      WHERE soluong < 20";
+        
+            $stmt = $this->con->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            $labels = [];
+            $data = [];
+            while ($row = $result->fetch_assoc()) {
+                $labels[] = $row['tensanpham'];
+                $data[] = $row['soluong'];
+            }
+        
+            return ['labels' => $labels, 'data' => $data];
         }
-
-        return $data;
-
-
-    }
-
 
 }
 
