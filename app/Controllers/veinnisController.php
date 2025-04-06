@@ -13,9 +13,12 @@ class veinnisController extends Controller
 
     public function veinnis()
     {
-        $makhachhang = $_SESSION['makhachhang'];
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
         $loaisp = $this->veinnisModel->Getloaisp();
-        $info = $this->veinnisModel->info($makhachhang);
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('veinnis/veinnis');
         $this->view('footer');
