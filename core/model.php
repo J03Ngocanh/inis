@@ -13,6 +13,7 @@ class Model
             $_ENV['DATABASE_PASS'],
             $_ENV['DATABASE_NAME']
         );
+        $this->con->set_charset("utf8mb4");
 
         if ($this->con->connect_error) {
             die("Connection failed: " . $this->con->connect_error);
