@@ -16,7 +16,7 @@ class veinnisController extends Controller
         $info = null; // Khởi tạo mặc định
         if (isset($_SESSION['makhachhang'])) {
             $makhachhang = $_SESSION['makhachhang'];
-            $info = $this->trangchuModel->info($makhachhang);
+            $info = $this->veinnisModel->info($makhachhang);
         }
         $loaisp = $this->veinnisModel->Getloaisp();
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
@@ -30,7 +30,7 @@ class veinnisController extends Controller
         $info = null; // Khởi tạo mặc định
         if (isset($_SESSION['makhachhang'])) {
             $makhachhang = $_SESSION['makhachhang'];
-            $info = $this->trangchuModel->info($makhachhang);
+            $info = $this->veinnisModel->info($makhachhang);
         }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('veinnis/blog1');
@@ -43,7 +43,7 @@ class veinnisController extends Controller
         $info = null; // Khởi tạo mặc định
         if (isset($_SESSION['makhachhang'])) {
             $makhachhang = $_SESSION['makhachhang'];
-            $info = $this->trangchuModel->info($makhachhang);
+            $info = $this->veinnisModel->info($makhachhang);
         }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('veinnis/blog2');

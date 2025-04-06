@@ -21,7 +21,7 @@ class sanphamController extends Controller
         $info = null; // Khởi tạo mặc định
         if (isset($_SESSION['makhachhang'])) {
             $makhachhang = $_SESSION['makhachhang'];
-            $info = $this->trangchuModel->info($makhachhang);
+            $info = $this->sanphamModel->info($makhachhang);
         }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('sanpham/sanpham1', ['loaisp' => $loaisp2, 'danhmucsp' => $danhmucsp, 'sanpham' => $sanpham]);
@@ -39,7 +39,7 @@ class sanphamController extends Controller
         $info = null; // Khởi tạo mặc định
         if (isset($_SESSION['makhachhang'])) {
             $makhachhang = $_SESSION['makhachhang'];
-            $info = $this->trangchuModel->info($makhachhang);
+            $info = $this->sanphamModel->info($makhachhang);
         }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('sanpham/sanpham1', ['loaisp' => $loaisp2, 'danhmucsp' => $danhmucsp, 'sanpham' => $sanpham, 'tendanhmuc_loai' => $tendanhmuc_loai]);
@@ -53,7 +53,7 @@ class sanphamController extends Controller
         $info = null; // Khởi tạo mặc định
         if (isset($_SESSION['makhachhang'])) {
             $makhachhang = $_SESSION['makhachhang'];
-            $info = $this->trangchuModel->info($makhachhang);
+            $info = $this->sanphamModel->info($makhachhang);
         }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('sanpham/chitietsp', ['sanpham' => $sanpham]);
@@ -70,7 +70,7 @@ class sanphamController extends Controller
         $info = null; // Khởi tạo mặc định
         if (isset($_SESSION['makhachhang'])) {
             $makhachhang = $_SESSION['makhachhang'];
-            $info = $this->trangchuModel->info($makhachhang);
+            $info = $this->sanphamModel->info($makhachhang);
         }
         $tenloai = $this->sanphamModel->tenloai($id);
         $sanpham = $this->sanphamModel->getAll_loai($id);
@@ -108,7 +108,7 @@ class sanphamController extends Controller
         $info = null; // Khởi tạo mặc định
         if (isset($_SESSION['makhachhang'])) {
             $makhachhang = $_SESSION['makhachhang'];
-            $info = $this->trangchuModel->info($makhachhang);
+            $info = $this->sanphamModel->info($makhachhang);
         }
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
 
