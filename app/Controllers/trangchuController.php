@@ -36,13 +36,15 @@ class trangchuController extends Controller
     public function thongtin()
     {
         $history = null; // Khởi tạo mặc định
+        $info = null; // Khởi tạo mặc định
+        $info1 = null; // Khởi tạo mặc định
         if (isset($_SESSION['makhachhang'])) {
             $makhachhang = $_SESSION['makhachhang'];
             $history = $this->trangchuModel->getLichSuDonHang($makhachhang);
+            $info = $this->trangchuModel->info($makhachhang);
+            $info1 = $this->trangchuModel->info($makhachhang);
         }
         $loaisp = $this->trangchuModel->Getloaisp();
-        $info = $this->trangchuModel->info($makhachhang);
-        $info1 = $this->trangchuModel->info($makhachhang);
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('thongtin/thongtin', ['info1' => $info1, 'history' => $history]);
     }
