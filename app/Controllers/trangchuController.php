@@ -12,13 +12,22 @@ class trangchuController extends Controller
 
     public function trangchu()
     {
-        $makhachhang = $_SESSION['makhachhang'];
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $loaisp = $this->trangchuModel->Getloaisp();
         $best = $this->trangchuModel->laybestseller();
-        $info = $this->trangchuModel->info($makhachhang);
+        $new = $this->trangchuModel->laynewitem();
         $rank_up = $_SESSION['rank_up'] ?? null;
         unset($_SESSION['rank_up']);
-        $new = $this->trangchuModel->laynewitem();
+
+        $info = null; // Khởi tạo mặc định
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = $_SESSION['makhachhang'];
+            $info = $this->trangchuModel->info($makhachhang);
+        }
+
         $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
         $this->view('trangchu/trangchu', ['best' => $best, 'new' => $new, 'rank_up' => $rank_up]);
         $this->view('footer');

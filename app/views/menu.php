@@ -243,28 +243,28 @@
             ?>
 
             <!-- Hiển thị icon giỏ hàng với số lượng -->
-            <?php if (isset($_SESSION['tenkhachhang'])): ?>
-                <a href="<?php echo WEBROOT; ?>giohang/giohang" class="icon cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <?php if ($cartCount > 0): ?>
-                        <span class="cart-count"><?php echo $cartCount; ?></span>
-                    <?php endif; ?>
-                </a>
+            <a href="<?php echo WEBROOT; ?>giohang/giohang" class="icon cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <?php if ($cartCount > 0): ?>
+                    <span class="cart-count"><?php echo $cartCount; ?></span>
+                <?php endif; ?>
+            </a>
+
+            <?php if (isset($_SESSION['tenkhachhang']) && !empty($_SESSION['tenkhachhang'])): ?>
+                <!-- Hiển thị khi đã đăng nhập -->
                 <span><strong><?= htmlspecialchars($_SESSION['tenkhachhang']); ?></strong></span>
                 <div class="points-container">
-                    &#x1FA99;
-                    <?php $row = $info->fetch_assoc() ?>
-                    <span><?php echo $row['point'] ?> điểm</span>
+                    🪙
+                    <?php if (isset($info) && $row = $info->fetch_assoc()): ?>
+                        <span><?php echo $row['point'] ?? 0; ?> điểm</span>
+                    <?php else: ?>
+                        <span>0 điểm</span> <!-- Giá trị mặc định nếu không có dữ liệu -->
+                    <?php endif; ?>
                 </div>
                 <p>|</p>
                 <a style="font-size:15px;" href="<?php echo WEBROOT; ?>taikhoan/logout" class="icon">Đăng xuất</a>
             <?php else: ?>
-                <a href="<?php echo WEBROOT; ?>giohang/giohang" class="icon cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <?php if ($cartCount > 0): ?>
-                        <span class="cart-count"><?php echo $cartCount; ?></span>
-                    <?php endif; ?>
-                </a>
+                <!-- Hiển thị khi chưa đăng nhập -->
                 <a href="<?php echo WEBROOT; ?>taikhoan/login" class="icon"><i class="fas fa-user"></i></a>
             <?php endif; ?>
         </div>
