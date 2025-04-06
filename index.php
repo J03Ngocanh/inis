@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 define('WEBROOT', str_replace("index.php", "", $_SERVER["SCRIPT_NAME"]));
 require_once dirname(__FILE__) . '/core/routers.php';
@@ -9,4 +10,3 @@ $router = new Router();
 $router->dispatch($_SERVER['REQUEST_URI']);
 
 ?>
-
