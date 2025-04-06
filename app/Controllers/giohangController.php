@@ -1,5 +1,5 @@
 <?php
-require_once dirname(dirname(dirname(__FILE__))) . '/core/Controller.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/core/controller.php';
 
 class giohangController extends Controller
 {

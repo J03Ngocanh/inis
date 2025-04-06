@@ -1,5 +1,5 @@
 <?php
-require_once dirname(dirname(dirname(__FILE__))) . '/core/Controller.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/core/controller.php';
 
 //require_once 'app/models/giohangModel.php';
 class veinnisController extends Controller
