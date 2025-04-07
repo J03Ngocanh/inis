@@ -46,11 +46,15 @@ class Router {
         // Lấy query string params từ $_GET
         $queryParams = $_GET;
 
-        // Kết hợp path params và query params
-        $this->params = [$pathParams, $queryParams];
+        // Nếu có query params, gộp nó vào path params để truyền như một mảng phẳng
+        if (!empty($queryParams)) {
+            $this->params = array_merge($pathParams, [$queryParams]);
+        } else {
+            $this->params = $pathParams;
+        }
 
-        // Gọi action với cả path params và query params
-        call_user_func_array([$this->controller, $this->action], [$this->params]);
+        // Gọi action với params
+        call_user_func_array([$this->controller, $this->action], $this->params);
     }
 }
 ?>
