@@ -132,7 +132,7 @@
             margin-right: 20px; /* Khoảng cách giữa các phương thức thanh toán */
         }
 
-        .form-group input#tien_mat, input#chuyen_khoan {
+        .form-group input#tien_mat, input#chuyen_khoan, input#vnpay_qr {
             width: 30%;
         }
 

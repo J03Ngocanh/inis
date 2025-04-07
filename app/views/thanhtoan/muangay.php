@@ -132,10 +132,10 @@
             margin-right: 20px; /* Khoảng cách giữa các phương thức thanh toán */
         }
 
-        .form-group input#tien_mat, input#chuyen_khoan {
+       
+        .form-group input#tien_mat, input#chuyen_khoan, input#vnpay_qr {
             width: 30%;
         }
-
 
         /* Button Styling */
         button {
@@ -330,6 +330,10 @@
                 <div class="radio-group">
                     <input type="radio" id="chuyen_khoan" name="phuong_thuc" value="chuyen_khoan">
                     <label for="chuyen_khoan">Chuyển khoản ngân hàng</label><br>
+                </div>
+                <div class="radio-group">
+                    <input type="radio" id="vnpay_qr" name="phuong_thuc" value="vnpay_qr">
+                    <label for="vnpay_qr">Thanh toán qua VNPAY (QR)</label><br>
                 </div>
             </div>
 
