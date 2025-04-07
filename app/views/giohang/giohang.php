@@ -288,7 +288,7 @@
 
     <!-- Hiển thị tổng tiền -->
     <div class="tongTien" id="tongTien">
-        <p>Tổng tiền: <?php echo number_format($totalAmount, 0, '.', '.'); ?>VNĐ</p>
+        <p>Tổng tiền: VNĐ</p>
     </div>
 
 
