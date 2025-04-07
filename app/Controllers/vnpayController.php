@@ -1,7 +1,14 @@
 <?php
-require_once dirname(dirname(dirname(__FILE__))) . '/core/controller.php';//require_once 'app/models/product.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/core/controller.php';
 class vnpayController extends Controller
 {
+    private $adminModel;
+
+    public function __construct()
+    {
+        $this->adminModel = $this->model('adminModel');
+    }
+
     public function return()
     {
         $vnp_HashSecret = "NBWOGA7BHPKQ4IF59MXMPRJOFX1W9QQ5";
@@ -12,7 +19,6 @@ class vnpayController extends Controller
                 $inputData[$key] = $value;
             }
         }
-        var_dump($inputData);
         $vnp_SecureHash = $_GET['vnp_SecureHash'];
         unset($inputData['vnp_SecureHash']);
         ksort($inputData);
@@ -26,9 +32,12 @@ class vnpayController extends Controller
 
         if ($secureHash == $vnp_SecureHash) {
             if ($_GET['vnp_ResponseCode'] == '00') {
-                echo "Giao dịch thành công!";
-                echo $_GET();
-                // Xử lý đơn hàng ở đây
+                if ($_GET['$vnp_MaHoaDon'] != "") {
+                    $mahoadon = $_GET['$vnp_MaHoaDon'];
+                    $this->adminModel->xacnhan($_GET['$vnp_MaHoaDon']);
+                    header("Location: " . WEBROOT . "giohang/hoanthanhthanhtoan/$mahoadon");
+                    exit();
+                }
             } else {
                 echo "Giao dịch không thành công!";
             }

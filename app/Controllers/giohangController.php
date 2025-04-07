@@ -152,11 +152,12 @@ class giohangController extends Controller
 
                         if ($_POST['phuong_thuc'] === 'vnpay_qr') {
                             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                            $vnp_Returnurl = WEBROOT . "vnpay/return";
+                            $vnp_Returnurl = "inis-hvnh.site/inis/vnpay/return";
                             $vnp_TmnCode = "Z0O9T9AJ"; // Mã TMN từ VNPAY
                             $vnp_HashSecret = "NBWOGA7BHPKQ4IF59MXMPRJOFX1W9QQ5"; // Chuỗi bí mật từ VNPAY
                             $vnp_TxnRef = $mahoadon; // Mã đơn hàng duy nhất
                             $vnp_OrderInfo = "Thanh toan don hang #" . $vnp_TxnRef;
+                            $vnp_MaHoaDon = $vnp_TxnRef;
                             $vnp_Amount = $_POST['tong_thanhtoan'] * 100; // Nhân 100 vì VNPAY dùng đơn vị VNĐ * 100
                             $vnp_Locale = 'vn';
                             $vnp_BankCode = '';
@@ -172,6 +173,7 @@ class giohangController extends Controller
                                 "vnp_IpAddr" => $vnp_IpAddr,
                                 "vnp_Locale" => $vnp_Locale,
                                 "vnp_OrderInfo" => $vnp_OrderInfo,
+                                "vnp_MaHoaDon" => $vnp_MaHoaDon,
                                 "vnp_OrderType" => "other",
                                 "vnp_ReturnUrl" => $vnp_Returnurl,
                                 "vnp_TxnRef" => $vnp_TxnRef

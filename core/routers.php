@@ -7,7 +7,9 @@ class Router {
 
     private function parseUrl($uri) {
         $uri = str_replace(WEBROOT, '', $uri); // Loại bỏ WEBROOT (ví dụ: /inis/)
-        return explode('/', filter_var(rtrim($uri, '/'), FILTER_SANITIZE_URL));
+        // Chỉ lấy phần path, loại bỏ query string nếu có
+        $path = parse_url($uri, PHP_URL_PATH);
+        return explode('/', filter_var(rtrim($path, '/'), FILTER_SANITIZE_URL));
     }
 
     public function dispatch($uri) {
@@ -38,10 +40,17 @@ class Router {
             unset($url[1]);
         }
 
-        // Gán params
-        $this->params = $url ? array_values($url) : [];
+        // Gán params từ path
+        $pathParams = $url ? array_values($url) : [];
 
-        call_user_func_array([$this->controller, $this->action], $this->params);
+        // Lấy query string params từ $_GET
+        $queryParams = $_GET;
+
+        // Kết hợp path params và query params
+        $this->params = [$pathParams, $queryParams];
+
+        // Gọi action với cả path params và query params
+        call_user_func_array([$this->controller, $this->action], [$this->params]);
     }
 }
 ?>
