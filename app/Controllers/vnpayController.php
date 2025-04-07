@@ -32,9 +32,9 @@ class vnpayController extends Controller
 
         if ($secureHash == $vnp_SecureHash) {
             if ($_GET['vnp_ResponseCode'] == '00') {
-                if ($_GET['$vnp_MaHoaDon'] != "") {
-                    $mahoadon = $_GET['$vnp_MaHoaDon'];
-                    $this->adminModel->xacnhan($_GET['$vnp_MaHoaDon']);
+                if ($_GET['vnp_OrderInfo'] != "") {
+                    $mahoadon = $_GET['vnp_OrderInfo'];
+                    $this->adminModel->xacnhan($_GET['vnp_OrderInfo']);
                     header("Location: " . WEBROOT . "giohang/hoanthanhthanhtoan/$mahoadon");
                     exit();
                 }
