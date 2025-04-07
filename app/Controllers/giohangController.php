@@ -213,6 +213,18 @@ class giohangController extends Controller
         }
     }
 
+    public function hoanthanhthanhtoan()
+    {
+        $loaisp = $this->giohangModel->Getloaisp();
+        $makhachhang = $_SESSION['makhachhang'];
+        $info = $this->giohangModel->info($makhachhang);
+        $this->view('menu', ['loaisp' => $loaisp, 'info' => $info]);
+        $ttindonhang = $this->giohangModel->Getttinchitietdonhang($mahoadon);
+        $ttinnguoimua = $this->giohangModel->Getttindonhang($mahoadon);
+        $this->view('giohang/chitiethoadon', ['ttindonhang' => $ttindonhang, 'ttinnguoimua' => $ttinnguoimua]);
+        $this->view('footer');
+    }
+
     public function getCartCount()
     {
         $cartCount = 0;
