@@ -63,21 +63,16 @@ class adminController extends Controller
 
     public function sanpham()
     {
+        if (isset($_SESSION['tennhanvien'])){
         $listsp = $this->adminModel->getlistsanpham();
         $danhmucsp = $this->adminModel->getdanhmuc();
 
         $this->view('header');
         $this->view('admin/listsp', ['listsp' => $listsp, 'danhmucsp' => $danhmucsp, 'laysp' => $laysp]);
-//        if (isset($_SESSION['tennhanvien'])){
-//        $listsp = $this->adminModel->getlistsanpham();
-//        $danhmucsp = $this->adminModel->getdanhmuc();
-//
-//        $this->view('header');
-//        $this->view('admin/listsp', ['listsp' => $listsp, 'danhmucsp' => $danhmucsp, 'laysp' => $laysp]);
-//    }
-//    else {
-//        header("location: /inis/taikhoan/login");
-//    }
+    }
+    else {
+        header("location: /inis/taikhoan/login");
+    }
     }
 
     public function getProductInfo($masanpham)
