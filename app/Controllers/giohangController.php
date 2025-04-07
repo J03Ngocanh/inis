@@ -213,7 +213,7 @@ class giohangController extends Controller
         }
     }
 
-    public function hoanthanhthanhtoan()
+    public function hoanthanhthanhtoan($mahoadon)
     {
         $loaisp = $this->giohangModel->Getloaisp();
         $makhachhang = $_SESSION['makhachhang'];
