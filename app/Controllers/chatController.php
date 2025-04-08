@@ -15,8 +15,10 @@ class chatController extends Controller
         $rawData = file_get_contents("php://input");
         $data = json_decode($rawData, true);
         $message = $data['message'] ?? '';
+        $category = $data['category'] ?? '';
 
-        $productResult = $this->sanphamModel->getAll();
+        // Lấy sản phẩm theo danh mục
+        $productResult = $this->sanphamModel->getByCategory($category);
 
         $products = [];
         $i = 0;
@@ -62,5 +64,21 @@ class chatController extends Controller
         }
 
         echo $response['choices'][0]['message']['content'];
+    }
+
+    public function categories()
+    {
+        $danhmucsp = $this->sanphamModel->getDanhMuc(); // gọi đúng hàm
+        $categories = [];
+
+        while ($row = $danhmucsp->fetch_assoc()) {
+            $categories[] = [
+                'id' => $row['id_danhmuc'], // hoặc 'madanhmuc' tùy DB của bạn
+                'name' => $row['tendanhmuc']
+            ];
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($categories);
     }
 }

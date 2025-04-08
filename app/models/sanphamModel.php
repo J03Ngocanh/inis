@@ -94,7 +94,13 @@ class sanphamModel extends Model
         return $result;
     }
 
-
+    public function getByCategory($id_danhmuc)
+    {
+        $stmt = $this->con->prepare("SELECT * FROM $this->tblsanpham WHERE id_danhmuc = ?");
+        $stmt->bind_param("i", $id_danhmuc);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
 }
 
 ?>

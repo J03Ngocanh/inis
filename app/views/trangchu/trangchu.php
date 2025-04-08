@@ -25,7 +25,7 @@
             margin: 0 auto;
             width: 80%;
             text-align: center;
-            padding: 2%;
+            padding: 2%
             background-color: #f9f9f9;
         }
 
@@ -100,7 +100,6 @@
         }
 
         .item {
-            padding: 5%;
             background-color: #fff;
             border: 1px solid #ddd;
             border-radius: 10px;
@@ -246,11 +245,10 @@
         }
 
         .buy-now:hover {
-    background-color: rgb(255, 255, 255);
-    color: #28a745;
-    border: 1px solid #28a745; /* Đặt kích thước và kiểu viền */
-}
-
+            background-color: rgb(255, 255, 255);
+            color: #28a745;
+            border-color: #28a745;
+        }
 
         .flash-message {
             position: fixed;
@@ -426,87 +424,60 @@
         #messages p b {
             color: #12b560; /* Màu xanh của Innisfree */
         }
-        #chat-icon {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #28a745;
-    color: white;
-    font-size: 24px;
-    padding: 15px;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    z-index: 999;
-    transition: transform 0.3s ease;
-}
-#chat-icon:hover {
-    transform: scale(1.1);
-}
+        #chatbox {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            overflow: hidden;
+            z-index: 1000;
+            font-family: Arial, sans-serif;
+        }
 
-#chatbox {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 300px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-}
+        #chat-log {
+            height: 250px;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            font-size: 14px;
+        }
 
-#chatbox.hidden {
-    display: none;
-}
+        #chat-log div {
+            margin-bottom: 8px;
+        }
 
-#chat-header {
-    background: #28a745;
-    color: white;
-    padding: 10px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        #chat-log div b {
+            color: #2a9d8f;
+        }
 
-#chat-log {
-    height: 200px;
-    overflow-y: auto;
-    padding: 10px;
-    font-size: 14px;
-}
+        #chat-input {
+            width: calc(100% - 70px);
+            padding: 10px;
+            border: none;
+            border-top: 1px solid #eee;
+            outline: none;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
 
-.bot-message {
-    margin-bottom: 10px;
-    background: #f1f1f1;
-    padding: 8px;
-    border-radius: 8px;
-}
+        #chatbox button {
+            width: 60px;
+            border: none;
+            background-color: #2a9d8f;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 10px 0;
+            border-top: 1px solid #eee;
+        }
 
-#chat-input-area {
-    display: flex;
-    border-top: 1px solid #ccc;
-}
-
-#chat-input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    outline: none;
-}
-
-#chat-input-area button {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-}
-
+        #chatbox button:hover {
+            background-color: #21867a;
+        }
     </style>
 </head>
 <body>
@@ -537,7 +508,7 @@ if (isset($_SESSION['loidangnhap'])) {
                 <p style="text-transform: uppercase;font-weight:bolder; font-size:50px; margin-top: -30px; letter-spacing: 5px;">skincare </p>
                 <p style="margin-top:-60px">discovered from the island"</p>
                 <p style="font-size: 17px; font-style: italic;  text-align: justify; max-width: 100%">
-                    Innisfree, the pure island where clean nature and healthy beauty coexist in harmony. Innisfree is a natural brand that shares the benefits of nature from the pristine island of Jeju for healthy beauty and pursues an eco-friendly green life to preserve the balance of nature
+                    Innisfree, the pure island where clean nature and healthy beauty coexist in harmony...
                 </p>
             </div>
             <div id="shop-now">
@@ -549,25 +520,22 @@ if (isset($_SESSION['loidangnhap'])) {
         <div class='right'></div>
     </div>
 
-    <!-- Chat Icon -->
-<div id="chat-icon" onclick="toggleChatbox()">
-    💬
-</div>
+    <!-- Chatbox -->
+    <div id="chatbox">
+        <div id="chat-log"></div>
 
-<!-- Chatbox Popup -->
-<div id="chatbox" class="hidden">
-    <div id="chat-header">
-        <span>Chat hỗ trợ</span>
-        <button onclick="toggleChatbox()">×</button>
+        <!-- Bước chọn danh mục -->
+        <div id="category-step">
+            <p><b>Bạn muốn tư vấn về vấn đề gì?</b></p>
+            <div id="category-options"></div> <!-- Nút danh mục sẽ render vào đây -->
+        </div>
+
+        <!-- Bước nhập câu hỏi -->
+        <div id="chat-step" style="display:none;">
+            <input type="text" id="chat-input" placeholder="Nhập câu hỏi...">
+            <button onclick="sendMessage()">Gửi</button>
+        </div>
     </div>
-    <div id="chat-log">
-        <div class="bot-message">🤖 Xin chào! Tôi có thể giúp gì cho bạn?</div>
-    </div>
-    <div id="chat-input-area">
-        <input type="text" id="chat-input" placeholder="Nhập câu hỏi...">
-        <button onclick="sendMessage()">Gửi</button>
-    </div>
-</div>
 
 
     <!-- BEST SELLER -->
@@ -682,7 +650,6 @@ if (isset($_SESSION['loidangnhap'])) {
 <script src="<?= WEBROOT; ?>java/script.js"></script>
 <script>
     $(document).ready(function () {
-        // Flash message
         if ($('#flash-message').length > 0) {
             $('#flash-message').addClass('show');
             setTimeout(function () {
@@ -690,47 +657,68 @@ if (isset($_SESSION['loidangnhap'])) {
             }, 5000);
         }
 
-        // Rank Up Popup
         $("#rankUpPopup").show();
         $(".close-btn").click(function () {
             $("#rankUpPopup").hide();
         });
-
-        // Toggle chatbot when icon is clicked
-        $("#chat-icon").click(function () {
-            $("#chatbox").toggleClass("hidden");
-        });
-
-        // Send message on Enter
-        $("#chat-input").on("keyup", function (event) {
-            if (event.key === "Enter") {
-                sendMessage();
-            }
-        });
     });
 
-    // Gửi tin nhắn trong chatbot
+    let selectedCategory = "";
+
+    function renderCategories(categories) {
+        const container = document.getElementById("category-options");
+        container.innerHTML = "";
+
+        categories.forEach(cat => {
+            const btn = document.createElement("button");
+            btn.textContent = cat.name;
+            btn.onclick = () => selectCategory(cat.id, cat.name);
+            btn.style.margin = "5px";
+            container.appendChild(btn);
+        });
+    }
+
+    function selectCategory(id, name) {
+        selectedCategory = id;
+
+        const log = document.getElementById("chat-log");
+        log.innerHTML += `<div><b>Bot:</b> Bạn đã chọn tư vấn về <i>${name}</i>. Mời bạn đặt câu hỏi.</div>`;
+
+        document.getElementById("category-step").style.display = "none";
+        document.getElementById("chat-step").style.display = "block";
+    }
+
     function sendMessage() {
-    const input = document.getElementById("chat-input");
-    const msg = input.value.trim();
-    if (msg === '') return;
+        const msg = document.getElementById("chat-input").value.trim();
+        if (msg === '' || selectedCategory === '') return;
 
-    input.value = ""; // Clear ngay sau khi nhấn Enter
-    const log = document.getElementById("chat-log");
-    log.innerHTML += `<div><b>Bạn:</b> ${msg}</div>`;
+        const log = document.getElementById("chat-log");
+        log.innerHTML += `<div><b>Bạn:</b> ${msg}</div>`;
 
-    fetch('<?= WEBROOT; ?>chat/chat', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: msg })
-    })
-    .then(res => res.text())
-    .then(data => {
-        log.innerHTML += `<div><b>Bot:</b> ${data}</div>`;
-        log.scrollTop = log.scrollHeight;
+        fetch('<?php echo WEBROOT; ?>chat/chat', {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ message: msg, category: selectedCategory })
+        })
+            .then(res => res.text())
+            .then(data => {
+                log.innerHTML += `<div><b>Bot:</b> ${data}</div>`;
+                log.scrollTop = log.scrollHeight;
+                document.getElementById("chat-input").value = "";
+            });
+    }
+    document.getElementById("chat-input").addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            sendMessage();
+            document.getElementById("chat-input").value = ""; // Clear input
+        }
     });
-}
 
+    document.addEventListener("DOMContentLoaded", () => {
+        fetch('<?php echo WEBROOT; ?>chat/categories') // API trả về danh mục
+            .then(res => res.json())
+            .then(data => renderCategories(data));
+    });
 </script>
 
 <?php

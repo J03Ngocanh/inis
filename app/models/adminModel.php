@@ -55,13 +55,6 @@ class adminModel extends Model
         return $result;
     }
 
-    public function getdanhmuc()
-    {
-        $sql = "SELECT * FROM $this->tbldanhmucsp  ";
-        $result = $this->con->query($sql);
-        return $result;
-    }
-
     public function suasanpham($masanpham, $tensanpham, $id_danhmuc, $soluong, $giagoc, $mota, $hinhanh, $hinhanh1, $hinhanh2, $hinhanh3, $hinhanh4)
     {
         $sql = "UPDATE sanpham SET 
