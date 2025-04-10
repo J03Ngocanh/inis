@@ -430,7 +430,7 @@
             right: 24px;
             width: 60px;
             height: 60px;
-            background-color: #0d6efd;
+            background-color:rgb(33, 253, 13);
             color: white;
             border-radius: 50%;
             font-size: 28px;
@@ -482,8 +482,8 @@
 
         #category-options button {
             padding: 8px 14px;
-            background-color: #0d6efd;
-            color: white;
+            background-color:rgb(194, 234, 183);
+            color: black;
             border: none;
             border-radius: 18px;
             font-size: 14px;
@@ -492,7 +492,8 @@
         }
 
         #category-options button:hover {
-            background-color: #084298;
+            background-color:rgb(4, 49, 8);
+            color: white;
         }
 
         /* Khu vực trò chuyện */
@@ -566,6 +567,36 @@
         #chat-step button:hover {
             background-color: #146c43;
         }
+   
+
+/* Tooltip */
+#chat-toggle .chat-tooltip {
+    visibility: hidden;
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    border-radius: 10px;
+    padding: 6px 12px;
+    position: absolute;
+    bottom: 60px;
+    left: -220px; /* Di chuyển tooltip sang trái */
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+/* Hover để hiện tooltip + hiệu ứng phóng to */
+#chat-toggle:hover {
+    transform: scale(1.1);
+}
+
+#chat-toggle:hover .chat-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
     </style>
 </head>
 <body>
@@ -607,7 +638,11 @@ if (isset($_SESSION['loidangnhap'])) {
         </div>
         <div class='right'></div>
     </div>
-    <div id="chat-toggle">💬</div>
+    <div id="chat-toggle">
+    💬
+    <span class="chat-tooltip">Xin chào, tôi có thể giúp gì cho bạn?</span>
+</div>
+
 
     <!-- Hộp chat -->
     <div id="chatbox">
