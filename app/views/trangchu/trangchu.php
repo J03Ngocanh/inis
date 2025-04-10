@@ -424,59 +424,147 @@
         #messages p b {
             color: #12b560; /* Màu xanh của Innisfree */
         }
+        #chat-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background-color: #0d6efd;
+            color: white;
+            border-radius: 50%;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1001;
+        }
+
+        /* Tổng thể hộp chat */
         #chatbox {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            background: #fff;
+            bottom: 90px;
+            right: 24px;
+            width: 360px;
+            max-height: 500px;
             border: 1px solid #ccc;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            overflow: hidden;
-            z-index: 1000;
-            font-family: Arial, sans-serif;
-        }
-
-        #chat-log {
-            height: 250px;
-            padding: 10px;
-            overflow-y: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             background-color: #f9f9f9;
+            display: none;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        /* Khu vực chọn danh mục */
+        #category-step {
+            padding: 16px;
+            background-color: #fafafa;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            overflow-y: auto;
+        }
+
+        #category-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        #category-options button {
+            padding: 8px 14px;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 18px;
             font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        #chat-log div {
-            margin-bottom: 8px;
+        #category-options button:hover {
+            background-color: #084298;
         }
 
-        #chat-log div b {
-            color: #2a9d8f;
+        /* Khu vực trò chuyện */
+        #chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Lịch sử chat */
+        #chat-log {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Tin nhắn */
+        #chat-log p {
+            margin: 8px 0;
+            padding: 10px 14px;
+            border-radius: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        #chat-log .user {
+            background-color: #d1e7dd;
+            align-self: flex-end;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        #chat-log .bot {
+            background-color: #f8d7da;
+            align-self: flex-start;
+            text-align: left;
+            margin-right: auto;
+        }
+
+        /* Nhập nội dung */
+        #chat-step {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-top: 1px solid #eee;
+            background-color: #f9f9f9;
         }
 
         #chat-input {
-            width: calc(100% - 70px);
-            padding: 10px;
-            border: none;
-            border-top: 1px solid #eee;
-            outline: none;
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
             font-size: 14px;
-            box-sizing: border-box;
+            outline: none;
         }
 
-        #chatbox button {
-            width: 60px;
-            border: none;
-            background-color: #2a9d8f;
+        #chat-step button {
+            margin-left: 10px;
+            padding: 10px 18px;
+            background-color: #198754;
             color: white;
-            font-weight: bold;
+            border: none;
+            border-radius: 20px;
             cursor: pointer;
-            padding: 10px 0;
-            border-top: 1px solid #eee;
+            transition: background-color 0.3s;
         }
 
-        #chatbox button:hover {
-            background-color: #21867a;
+        #chat-step button:hover {
+            background-color: #146c43;
         }
     </style>
 </head>
@@ -519,25 +607,25 @@ if (isset($_SESSION['loidangnhap'])) {
         </div>
         <div class='right'></div>
     </div>
+    <div id="chat-toggle">💬</div>
 
-    <!-- Chatbox -->
+    <!-- Hộp chat -->
     <div id="chatbox">
-        <div id="chat-log"></div>
-
         <!-- Bước chọn danh mục -->
         <div id="category-step">
             <p><b>Bạn muốn tư vấn về vấn đề gì?</b></p>
-            <div id="category-options"></div> <!-- Nút danh mục sẽ render vào đây -->
+            <div id="category-options"></div>
         </div>
 
-        <!-- Bước nhập câu hỏi -->
-        <div id="chat-step" style="display:none;">
-            <input type="text" id="chat-input" placeholder="Nhập câu hỏi...">
-            <button onclick="sendMessage()">Gửi</button>
+        <!-- Bước trò chuyện -->
+        <div id="chat-area" style="display: none; flex: 1; flex-direction: column;">
+            <div id="chat-log"></div>
+            <div id="chat-step">
+                <input type="text" id="chat-input" placeholder="Nhập câu hỏi...">
+                <button onclick="sendMessage()">Gửi</button>
+            </div>
         </div>
     </div>
-
-
     <!-- BEST SELLER -->
     <section class="event-blog-section">
         <h2 class="section-title">BEST SELLER</h2>
@@ -685,7 +773,7 @@ if (isset($_SESSION['loidangnhap'])) {
         log.innerHTML += `<div><b>Bot:</b> Bạn đã chọn tư vấn về <i>${name}</i>. Mời bạn đặt câu hỏi.</div>`;
 
         document.getElementById("category-step").style.display = "none";
-        document.getElementById("chat-step").style.display = "block";
+        document.getElementById("chat-area").style.display = "flex";
     }
 
     function sendMessage() {
@@ -719,6 +807,14 @@ if (isset($_SESSION['loidangnhap'])) {
             .then(res => res.json())
             .then(data => renderCategories(data));
     });
+    document.getElementById("chat-toggle").addEventListener("click", () => {
+        const chatbox = document.getElementById("chatbox");
+        chatbox.style.display = chatbox.style.display === "flex" ? "none" : "flex";
+    });
+    // Mặc định ẩn chatbox
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('chatbox').style.display = 'none';
+    });
 </script>
 
 <?php
@@ -733,6 +829,5 @@ function getRankName($rank_id)
     return $ranks[$rank_id] ?? "Member";
 }
 ?>
-
 </body>
 </html>
