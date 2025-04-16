@@ -628,7 +628,7 @@ if (isset($_SESSION['loidangnhap'])) {
                 <p style="text-transform: uppercase;font-weight:bolder; font-size:50px; margin-top: -30px; letter-spacing: 5px;">skincare </p>
                 <p style="margin-top:-60px">discovered from the island"</p>
                 <p style="font-size: 17px; font-style: italic;  text-align: justify; max-width: 100%">
-                    Innisfree, the pure island where clean nature and healthy beauty coexist in harmony...
+                    Innisfree, the pure island where clean nature and healthy beauty coexist in harmony. Innisfree is a natural brand that shares the benefits of nature from the pristine island of Jeju allowing for vibrant beauty and pursues an eco-friendly green life to preserve the balance of nature
                 </p>
             </div>
             <div id="shop-now">
