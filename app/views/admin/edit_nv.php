@@ -73,6 +73,7 @@
         .reset-btn {
             background-color: #f44336;
             color: white;
+            text-decoration: none; 
         }
 
         .reset-btn:hover {
@@ -88,7 +89,7 @@
             <input type="hidden" name="manhanvien" value="<?= htmlspecialchars($nhanvien['manhanvien']) ?>">
             <div class="form-item">
                 <input type="text" name="tennhanvien" id="tennhanvien"
-                       value="<?= htmlspecialchars($nhanvien['Tennhanvien']) ?>" required>
+                       value="<?= htmlspecialchars($nhanvien['tennhanvien']) ?>" required>
             </div>
             <div class="form-item">
                 <input type="text" name="sdt" id="sdt" value="<?= htmlspecialchars($nhanvien['sdt']) ?>"

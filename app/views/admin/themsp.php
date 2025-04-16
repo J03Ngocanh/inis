@@ -99,6 +99,7 @@
         .reset-btn {
             background-color: #f44336;
             color: white;
+            text-decoration: none; 
         }
 
         .reset-btn:hover {

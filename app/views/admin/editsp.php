@@ -94,6 +94,7 @@
             gap: 20px;
             margin-top: 20px;
         }
+  
 
         .form-buttons .btn {
             min-width: 120px;
@@ -119,12 +120,13 @@
         .reset-btn {
             background-color: white;
             border: 1px solid #ccc;
-            color: black;
+            color: white;
+            text-decoration: none; 
+            background-color: #e74c3c;
         }
 
         .reset-btn:hover {
-            background-color: #e74c3c;
-            color: white;
+
             transform: scale(1.05);
         }
 
@@ -179,8 +181,6 @@
                     <label for="edit-product-price">Giá sản phẩm:</label>
                     <input type="number" id="edit-product-price" name="gia"
                            value="<?php echo htmlspecialchars($product['giagoc']); ?>" min="0" required>
-
-
                 </div>
 
                 <!-- Cột 2 -->
@@ -237,7 +237,7 @@
 
             <div class="form-buttons">
                 <button type="submit" class="btn submit-btn">Lưu thay đổi</button>
-                <a href="/inis/admin/sanpham" class="btn reset-btn">Hủy</a>
+                <a style ="text-decoration: none;" href="/inis/admin/sanpham" class="btn reset-btn">Hủy</a>
             </div>
         </form>
 

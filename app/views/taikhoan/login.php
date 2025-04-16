@@ -98,7 +98,7 @@ if (isset($_SESSION['dangky_thanhcong'])) {
             document.getElementById("popupSuccess").style.display = "flex";
             setTimeout(function () {
                 window.location.href = "<?php echo WEBROOT . 'taikhoan/login'; ?>";
-            }, 3000); // Chuyển hướng sau 3 giây
+            }, 2000); // Chuyển hướng sau 3 giây
         });
     </script>
 

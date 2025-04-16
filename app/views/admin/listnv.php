@@ -224,6 +224,7 @@
             border: solid white;
             z-index: 1000; /* Đảm bảo nút hiển thị trên các phần tử khác */
             cursor: pointer;
+            text-decoration: none;
         }
 
         button:hover {

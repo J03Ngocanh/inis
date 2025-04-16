@@ -253,6 +253,7 @@
             background-color: white;
             border: 1px solid #ccc;
             color: black;
+            text-decoration: none; 
 
         }
 

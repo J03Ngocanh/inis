@@ -142,6 +142,10 @@
         border-color: #79c66e;
         border-radius: .35rem;
     }
+    .error-message{
+        color: red;
+        font-style: italic;
+    }
 </style>
 <body>
 <!-- <script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.validationEngine.js?v=19"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.validationEngine-vi.js?v=19"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/tp/T0299/js/user.js?v=2"></script><link rel="stylesheet" href="https://web.nvnstatic.net/css/validationEngine.jquery.css?v=3" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/css/appLib.css" type="text/css"><main class="main-site main-childs"> -->
@@ -182,20 +186,23 @@
         </div>
 
         <div class="form-group">
-            <?php if (isset($_SESSION['trungemail'])) {
-                echo $_SESSION['trungemail'];
-            } ?>
-            <input type="email" name="email" id="email" class="validate[required,custom[email]] form-control"
-                   placeholder="Email (*) " value="<?php
-            if (isset($_SESSION['trungemail']) && isset($_SESSION['hienthiemail'])) {
-                echo "";
-            }
-            if (isset($_SESSION['hienthiemail']) && !isset($_SESSION['trungemail'])) {
-                echo $_SESSION['hienthiemail'];
-            }
+        <?php if (isset($_SESSION['trungemail'])): ?>
+    <div class="error-message">
+        <?php echo $_SESSION['trungemail']; ?>
+    </div>
+<?php endif; ?>
 
-            ?>">
-        </div>
+    <input type="email" name="email" id="email" class="validate[required,custom[email]] form-control"
+           placeholder="Email (*)" required value="<?php
+    if (isset($_SESSION['trungemail']) && isset($_SESSION['hienthiemail'])) {
+        echo "";
+    }
+    if (isset($_SESSION['hienthiemail']) && !isset($_SESSION['trungemail'])) {
+        echo $_SESSION['hienthiemail'];
+    }
+    ?>">
+</div>
+
         <div class="form-group">
             <input type="date" id="ngaysinh" name="ngaysinh" value=""
                    placeholder="Ngày sinh" class="validate[required] form-control input-sm">

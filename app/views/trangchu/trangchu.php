@@ -163,7 +163,8 @@
             font-size: 16px;
             border: none;
             border-radius: 5px;
-            cursor: pointer
+            cursor: pointer;
+           margin: 10px;
         }
 
         #shop-now button:hover {
