@@ -145,6 +145,12 @@ class giohangController extends Controller
 
             if ($result) {
                 if (!empty($_SESSION['giohang'])) {
+                    foreach ($_SESSION['giohang'] as $masanpham => $sanpham) {
+                        $soluong = $sanpham['soluong'];
+                        $giagoc = $sanpham['giagoc'];
+                        $this->giohangModel->addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc);
+                        unset($_SESSION['giohang']);
+                    }
                     if ($_POST['phuong_thuc'] === 'vnpay_qr') {
                         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
                         $vnp_Returnurl = "https://inis-hvnh.site/inis/vnpay/return";
@@ -192,12 +198,6 @@ class giohangController extends Controller
 
                         header('Location: ' . $vnp_Url);
                         exit();
-                    }
-                    foreach ($_SESSION['giohang'] as $masanpham => $sanpham) {
-                        $soluong = $sanpham['soluong'];
-                        $giagoc = $sanpham['giagoc'];
-                        $this->giohangModel->addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc);
-                        unset($_SESSION['giohang']);
                     }
                 }
 
