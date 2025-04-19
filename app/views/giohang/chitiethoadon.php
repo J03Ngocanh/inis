@@ -136,8 +136,10 @@
         <?php while ($row = mysqli_fetch_array($ttinnguoimua)){ ?>
         <div>Phương thức thanh toán: <strong><?php if ($row['pttt'] == "tien_mat") {
                     echo "Tiền mặt ";
-                } else {
+                } elseif ($row['pttt'] == "chuyen_khoan") {
                     echo "Chuyển khoản";
+                } else {
+                    echo "vnpay_qr";
                 } ?></strong></div>
         <div>Tổng tiền thu: <strong class="total"><?php echo number_format($row['tongtiensaugiam'], 0, ',', '.'); ?>
                 VNĐ</strong></div>

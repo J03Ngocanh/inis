@@ -222,8 +222,10 @@
                     <td><?php echo $row['diachi_nhan'] ?></td>
                     <td><?php if ($row['pttt'] == "tien_mat") {
                             echo "Tiền mặt";
-                        } else {
+                        } elseif ($row['pttt'] == "chuyen_khoan") {
                             echo "Chuyển khoản";
+                        } else {
+                            echo "vnpay_qr";
                         } ?></td>
 
                     <td><?php echo number_format($row['tongtiensaugiam'], 0, ',', '.'); ?> VNĐ</td>
