@@ -138,8 +138,10 @@
 </div>
 <div class="sidebar">
     <ul class="menu">
-        <li><a href="<?php echo WEBROOT . 'admin/tongquan' ?>"><i class="fas fa-house"></i>Tổng quan</a></li>
-        <li><a href="<?php echo WEBROOT . 'admin/nhanvien' ?>"><i class="fas fa-building"></i>Nhân viên</a></li>
+        <?php if (isset($_SESSION["role"]) && $_SESSION["role"] == "1") { ?>
+            <li><a href="<?php echo WEBROOT . 'admin/tongquan' ?>"><i class="fas fa-house"></i>Tổng quan</a></li>
+            <li><a href="<?php echo WEBROOT . 'admin/nhanvien' ?>"><i class="fas fa-building"></i>Nhân viên</a></li>
+        <?php } ?>
         <li><a href="<?php echo WEBROOT . 'admin/khachhang' ?>"><i class="fa-solid fa-boxes-stacked"></i>Khách hàng</a>
         </li>
         <li><a href="<?php echo WEBROOT . 'admin/sanpham' ?>"><i class="fa-brands fa-product-hunt"></i>Sản phẩm</a></li>

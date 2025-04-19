@@ -290,9 +290,9 @@
                     <td colspan="4"><strong>Tổng tiền:</strong></td>
                     <td><strong><?php echo number_format($tong_thanhtoan, 0, ',', '.'); ?> VND</strong></td>
                 </tr>
-                <input type="hidden" name="tongtien" value="<?php echo $tongtien; ?>">
-                <input type="hidden" name="giamgia" value="<?php echo $giamgia; ?>">
-                <input type="hidden" name="tong_thanhtoan" value="<?php echo $tong_thanhtoan; ?>">
+                <input id="tongtien" type="hidden" name="tongtien" value="<?php echo $tongtien; ?>">
+                <input id="giamgia" type="hidden" name="giamgia" value="<?php echo $giamgia; ?>">
+                <input id="tong_thanhtoan" type="hidden" name="tong_thanhtoan" value="<?php echo $tong_thanhtoan; ?>">
 
                 </tfoot>
 
@@ -364,10 +364,53 @@
         let isPopupConfirmed = false;
 
         // Hiển thị mã QR
-        function showQRCode() {
-            const qrImageUrl = `https://img.vietqr.io/image/970422-0923736453-compact2.png?amount=<?php echo $tongtien; ?>&addInfo=Thanh%20toán%20đơn%20hàng&accountName=Vu%20Nguyen%20Huong`;
+        //function showQRCode() {
+        //    const qrImageUrl = `https://img.vietqr.io/image/970422-0923736453-compact2.png?amount=<?php //echo $tongtien; ?>//&addInfo=Thanh%20toán%20đơn%20hàng&accountName=Vu%20Nguyen%20Huong`;
+        //    document.getElementById("qrcode").innerHTML = `<img src="${qrImageUrl}" alt="QR Ngân hàng MB Bank" />`;
+        //    qrPopup.style.display = "flex";
+        //}
+
+        function showQRCode(orderId, amount) {
+            const qrImageUrl = `https://img.vietqr.io/image/970422-0923736453-compact2.png?amount=${amount}&addInfo=Thanh%20toán%20ĐH%20${orderId}&accountName=Vu%20Nguyen%20Huong`;
             document.getElementById("qrcode").innerHTML = `<img src="${qrImageUrl}" alt="QR Ngân hàng MB Bank" />`;
             qrPopup.style.display = "flex";
+        }
+
+        function createOrder(data) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: '<?= WEBROOT ?>giohang/createorder',
+                    type: 'POST',
+                    data: data,
+                    success: function (response) {
+                        let json = {};
+                        try {
+                            json = typeof response === "string" ? JSON.parse(response) : response;
+                        } catch (e) {
+                            return reject("Phản hồi không hợp lệ từ server.");
+                        }
+
+                        if (json.orderId) {
+                            resolve(json);
+                        } else if (json.error) {
+                            reject(json.error);
+                        } else {
+                            reject("Không thể tạo đơn hàng. Vui lòng thử lại.");
+                        }
+                    },
+                    error: function (xhr) {
+                        let message = "Tạo đơn hàng thất bại.";
+                        if (xhr.responseText) {
+                            try {
+                                const json = JSON.parse(xhr.responseText);
+                                message = json.error || message;
+                            } catch (_) {
+                            }
+                        }
+                        reject(message);
+                    }
+                });
+            });
         }
 
         // Đóng popup khi nhấn "Đóng"
@@ -396,8 +439,26 @@
 
             const paymentMethod = paymentMethodInput.value;
             if (paymentMethod === "chuyen_khoan" && !isPopupConfirmed) {
-                event.preventDefault(); // Ngừng gửi form nếu chưa xác nhận thanh toán
-                showQRCode(); // Hiển thị popup mã QR
+                event.preventDefault(); // Ngăn form gửi
+
+                // Lấy dữ liệu cần gửi cho createorder
+                const orderData = {
+                    sdt: document.querySelector("#sdt").value,
+                    hoten_nhan: document.querySelector("#hoten_nhan").value,
+                    diachi_nhan: document.querySelector("#diachi_nhan").value,
+                    phuong_thuc: "chuyen_khoan",
+                    tongtien: document.querySelector("#tongtien").value,
+                    giamgia: document.querySelector("#giamgia").value,
+                    tong_thanhtoan: <?= $tong_thanhtoan ?>,
+                };
+
+                // Tạo đơn hàng trước
+                createOrder(orderData).then((res) => {
+                    let orderId = res.orderId || Math.floor(Math.random() * 100000); // fallback
+                    showQRCode(orderId, <?= $tong_thanhtoan ?>);
+                }).catch((err) => {
+                    alert(err);
+                });
             }
         });
     });

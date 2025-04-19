@@ -14,26 +14,35 @@ class adminController extends Controller
 
     public function tongquan()
     {
-        if (isset($_SESSION['tennhanvien'])){
-        $this->view('header');
-        $this->view('admin/dashboard');
+        if (isset($_SESSION["role"]) && $_SESSION["role"] == "2") {
+            header("location: /inis/admin/sanpham");
+        } else {
+            if (isset($_SESSION['tennhanvien'])){
+                $this->view('header');
+                $this->view('admin/dashboard');
+            }
+            else {
+                header("location: /inis/taikhoan/login");
+            }
         }
-        else {
-            header("location: /inis/taikhoan/login");
-        }
+
     }
 
     public function nhanvien()
     {
-        if (isset($_SESSION['tennhanvien'])){
-        $listnv = $this->adminModel->getlistnv();
-        $role = $this->adminModel->getRoles();
-        $this->view('header');
-        $this->view('admin/listnv', ['listnv' => $listnv, 'role' => $role]);
-    }
-    else {
-        header("location: /inis/taikhoan/login");
-    }
+        if (isset($_SESSION["role"]) && $_SESSION["role"] == "2") {
+            header("location: /inis/admin/sanpham");
+        } else {
+            if (isset($_SESSION['tennhanvien'])){
+                $listnv = $this->adminModel->getlistnv();
+                $role = $this->adminModel->getRoles();
+                $this->view('header');
+                $this->view('admin/listnv', ['listnv' => $listnv, 'role' => $role]);
+            }
+            else {
+                header("location: /inis/taikhoan/login");
+            }
+        }
     }
 
     public function khachhang()

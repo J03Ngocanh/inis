@@ -10,6 +10,42 @@ class giohangController extends Controller
         $this->giohangModel = $this->model('giohangModel');
     }
 
+    public function createorder()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $mahoadon = $this->genUUIDv4();
+            // Lấy thông tin từ form
+            $sdt = $_POST['sdt'] ?? '';
+            $hoten_nhan = $_POST['hoten_nhan'] ?? '';
+            $diachi_nhan = $_POST['diachi_nhan'] ?? '';
+            $phuong_thuc = $_POST['phuong_thuc'] ?? '';
+            $tongtien = $_POST['tongtien'];
+            $giamgia = $_POST['giamgia'];
+            $tong_thanhtoan = $_POST['tong_thanhtoan'];
+            $ngay_tao = date('Y-m-d H:i:s');
+
+            // Lấy mã khách hàng từ session (phải có đăng nhập)
+            $makhachhang = $_SESSION['makhachhang'] ?? 'KH0000';
+
+            // Thêm đơn hàng và lấy mã hóa đơn vừa tạo
+            $result = $this->giohangModel->addOrder($mahoadon, $makhachhang, $tongtien, $giamgia, $tong_thanhtoan, $hoten_nhan, $sdt, $diachi_nhan, $phuong_thuc, $ngay_tao);
+
+            if ($result) {
+                if (!empty($_SESSION['giohang'])) {
+                    foreach ($_SESSION['giohang'] as $masanpham => $sanpham) {
+                        $soluong = $sanpham['soluong'];
+                        $giagoc = $sanpham['giagoc'];
+                        $this->giohangModel->addOrderDetail($mahoadon, $masanpham, $soluong, $giagoc);
+                    }
+                }
+                echo json_encode(["orderId" => $mahoadon]);
+            } else {
+                http_response_code(400); // Gửi mã lỗi HTTP cho client
+                echo json_encode(["error" => "Không thể tạo đơn hàng. Vui lòng thử lại."]);
+            }
+        }
+    }
+
     public function giohang()
     {
         // Lấy dữ liệu loại sản phẩm

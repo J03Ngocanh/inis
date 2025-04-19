@@ -182,6 +182,7 @@ class taikhoanController extends Controller
                     $_SESSION['tennhanvien'] = $row['tennhanvien']; // Đồng bộ với bảng nhanvien
                     $_SESSION['sdt'] = $row['sdt'];
                     $_SESSION['manhanvien'] = $row['manhanvien']; // Thêm mã nhân viên
+                    $_SESSION['role'] = $row['id']; // Thêm mã nhân viên
 
                     if (!empty($_POST['rememberMe'])) {
                         setcookie('login_sdt', $sdt, time() + (7 * 24 * 60 * 60), "/");
