@@ -333,7 +333,7 @@
                 </div>
                 <div class="radio-group">
                     <input type="radio" id="vnpay_qr" name="phuong_thuc" value="vnpay_qr">
-                    <label for="vnpay_qr">Thanh toán qua VNPAY (QR)</label><br>
+                    <label for="vnpay_qr">Thanh toán qua VNPAY</label><br>
                 </div>
             </div>
 
