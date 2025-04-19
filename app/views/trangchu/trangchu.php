@@ -511,6 +511,8 @@
             padding: 16px;
             background-color: #fff;
             border-bottom: 1px solid #eee;
+            scroll-behavior: smooth; /* Cuộn mượt */
+            max-height: 300px; /* Giới hạn chiều cao để cuộn */
         }
 
         /* Tin nhắn */
@@ -845,12 +847,30 @@ if (isset($_SESSION['loidangnhap'])) {
     });
     document.getElementById("chat-toggle").addEventListener("click", () => {
         const chatbox = document.getElementById("chatbox");
-        chatbox.style.display = chatbox.style.display === "flex" ? "none" : "flex";
+        if (chatbox.style.display === "flex") {
+            chatbox.style.display = "none";
+        } else {
+            resetChatbox(); // Gọi hàm reset khi mở lại
+            chatbox.style.display = "flex";
+        }
     });
     // Mặc định ẩn chatbox
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('chatbox').style.display = 'none';
     });
+
+    function resetChatbox() {
+        selectedCategory = "";
+        document.getElementById("chat-input").value = "";
+        document.getElementById("chat-log").innerHTML = "";
+        document.getElementById("chat-area").style.display = "none";
+        document.getElementById("category-step").style.display = "flex";
+
+        // Gọi lại API để hiển thị lại danh mục
+        fetch('<?php echo WEBROOT; ?>chat/categories')
+            .then(res => res.json())
+            .then(data => renderCategories(data));
+    }
 </script>
 
 <?php
