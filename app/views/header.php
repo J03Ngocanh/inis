@@ -43,7 +43,7 @@
 
         .icon-menu {
             display: flex;
-            gap: 10px;
+            gap: 3%;
         }
 
         .logo img {

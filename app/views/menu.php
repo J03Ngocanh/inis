@@ -59,7 +59,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 5%;
+            gap: 3%;
         }
 
         .icon-menu span {

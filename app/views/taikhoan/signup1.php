@@ -81,17 +81,31 @@
     <script src="https://web.nvnstatic.net/js/translate/vi-vn.js" defer></script>
 </head>
 <style>
+    body{
+        line-height: 1.5;
+    }
+    main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+    line-height: 1.5;
+}
     .user-wrapper {
-        max-width: 600px;
-        /* background: #f5f5f5; */
-        margin: 35px auto;
-        border: 1px solid #f5f5f5;
-        border-radius: 3px;
+    max-width: 500px;
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     .user-nav {
         overflow: hidden;
-        box-shadow: 0 1px 3px rgba(146, 146, 146, 0.14);
+        display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
     }
 
     .user-nav a {
@@ -100,7 +114,7 @@
         float: left;
         display: inline-block;
         text-transform: uppercase;
-        font-size: 18px;
+        font-size: 16px;
         text-align: center;
         padding: 5px 10px;
         border-bottom: 2px solid transparent;
@@ -149,6 +163,7 @@
 </style>
 <body>
 <!-- <script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.validationEngine.js?v=19"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/js/jquery/jquery.validationEngine-vi.js?v=19"></script><script defer type="text/javascript" src="https://web.nvnstatic.net/tp/T0299/js/user.js?v=2"></script><link rel="stylesheet" href="https://web.nvnstatic.net/css/validationEngine.jquery.css?v=3" type="text/css"><link rel="stylesheet" href="https://web.nvnstatic.net/css/appLib.css" type="text/css"><main class="main-site main-childs"> -->
+<main class="main-site main-childs">
 <div class="user-wrapper">
     <div class="user-nav anonymous-awe">
         <a href="<?php echo WEBROOT . 'taikhoan/login' ?>" rel="nofollow">Đăng nhập</a>
@@ -213,6 +228,7 @@
                 Đăng ký
             </button>
         </div>
+</main>
         <script src="https://kit.fontawesome.com/eda05fcf5c.js" crossorigin="anonymous"></script>
         <script src="js/main.js"></script>
         <script>
